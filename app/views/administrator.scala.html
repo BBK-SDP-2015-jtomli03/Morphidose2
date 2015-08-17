@@ -1,0 +1,65 @@
+@(signInForm: Form[models.forms.SignInForm.Data], loginClass: String, passwordResetClass: String, login: String, passwordReset: String)(implicit request: RequestHeader, messages: Messages)
+
+@import helper._
+@import b3.inline.fieldConstructor
+
+@implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+
+@main("Morphidose Log In") {
+
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <ul class="nav navbar-nav">
+      <li class="active">
+        <p class="navbar-text" >The Morphine Dosing Solution</p>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container-fluid" id="signin">
+    <div class="row" id="signinForm">
+      <div class="span12">
+        <div class="" id="loginModal">
+          <h2>Administrator login</h2>
+          <div class="modal-body">
+            <div class="well">
+                <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class=@loginClass><a href="#login" aria-controls="home" role="tab" data-toggle="tab">Login</a></li>
+                <li role="presentation" id=@passwordResetClass><a href="#passwordReset" aria-controls="messages" role="tab" data-toggle="tab">Forgotten Password?</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane @login" id="login">
+                    <h4 class="form-signin-heading">Login </h4>
+                    @helper.form(action = routes.CredentialsAuthController.authenticate()) {
+                      @helper.CSRF.formField
+                      <label>Email address:</label><br>
+                      @b3.text(signInForm("email"), '_hiddenLabel -> "Email", 'placeholder -> "Email", 'class -> "form-control input-lg")
+                      <br><br>
+                      <label>Password:</label><br>
+                      @b3.password(signInForm("password"), '_hiddenLabel -> "Password", 'placeholder -> "Password", 'class -> "form-control input-lg")
+                      <br><br>
+                    <br>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    }
+                </div>
+                <div class = "tab-pane @passwordReset" id="passwordReset">
+                  <form class="form-signin">
+                    <h4 class="form-signin-heading">Password Reset</h4>
+                    <p>Please enter your authorised email address and we will email you the details on how to reset your password.</p>
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                      <input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
+                    </div>
+                    <br>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Reset Password</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+}
