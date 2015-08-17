@@ -4,7 +4,7 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfig}
 import slick.driver.JdbcProfile
 
 /**
- * Trait that contains gimport models.daos.DBTableDefinitions
+ * Trait that contains import models.daos.DBTableDefinitions
  * generic slick db handling code to be mixed in with DAOs
  */
 trait DAOSlick extends DBTableDefinitions with HasDatabaseConfig[JdbcProfile] {

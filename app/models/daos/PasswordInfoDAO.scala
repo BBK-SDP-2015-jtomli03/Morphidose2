@@ -27,13 +27,13 @@ class PasswordInfoDAO extends DelegableAuthInfoDAO[PasswordInfo] with DAOSlick{
   protected def addAction(loginInfo: LoginInfo, authInfo: PasswordInfo) =
     loginInfoQuery(loginInfo).result.head.flatMap { dbLoginInfo =>
       slickPasswordInfos +=
-        DBPasswordInfo(authInfo.hasher, authInfo.password, dbLoginInfo.userID) //authInfo.salt, <-2nd to last
+        DBPasswordInfo(authInfo.hasher, authInfo.password, dbLoginInfo.userID)
     }.transactionally
     
   protected def updateAction(loginInfo: LoginInfo, authInfo: PasswordInfo) =
     passwordInfoSubQuery(loginInfo).
-      map(dbPasswordInfo => (dbPasswordInfo.hasher, dbPasswordInfo.password)). //dbPasswordInfo.salt <-last
-      update((authInfo.hasher, authInfo.password)) //, authInfo.salt <-last
+      map(dbPasswordInfo => (dbPasswordInfo.hasher, dbPasswordInfo.password)).
+      update((authInfo.hasher, authInfo.password))
   
   /**
    * Finds the auth info which is linked with the specified login info.
@@ -44,7 +44,7 @@ class PasswordInfoDAO extends DelegableAuthInfoDAO[PasswordInfo] with DAOSlick{
   def find(loginInfo: LoginInfo): Future[Option[PasswordInfo]] = {
     db.run(passwordInfoQuery(loginInfo).result.headOption).map { dbPasswordInfoOption =>
       dbPasswordInfoOption.map(dbPasswordInfo => 
-        PasswordInfo(dbPasswordInfo.hasher, dbPasswordInfo.password)) //dbPasswordInfo.salt <-last
+        PasswordInfo(dbPasswordInfo.hasher, dbPasswordInfo.password))
     }
   }
 

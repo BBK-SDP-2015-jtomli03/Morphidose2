@@ -5,16 +5,15 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
-import com.mohiva.play.silhouette.api.services.AvatarService
 import com.mohiva.play.silhouette.api.util.PasswordHasher
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers._
-import forms.SignUpForm
+import models.forms.SignUpForm
 import models.User
 import models.services.UserService
 import play.api.i18n.{ MessagesApi, Messages }
-import play.api.libs.concurrent.Execution.Implicits._
 import play.api.mvc.Action
+import play.api.libs.concurrent.Execution.Implicits._
 
 import scala.concurrent.Future
 

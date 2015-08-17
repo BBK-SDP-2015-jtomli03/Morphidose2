@@ -22,8 +22,7 @@ class UserDAOImpl extends UserDAO with DAOSlick {
   def find(loginInfo: LoginInfo) = {
     val userQuery = for {
       dbLoginInfo <- loginInfoQuery(loginInfo)
-//      dbUserLoginInfo <- slickUserLoginInfos.filter(_.loginInfoId === dbLoginInfo.id)
-      dbUser <- slickUsers.filter(_.userID === dbLoginInfo.userID) //(_.id === dbUsersLoginInfo.userID)
+      dbUser <- slickUsers.filter(_.userID === dbLoginInfo.userID)
     } yield dbUser
     db.run(userQuery.result.headOption).map { dbUserOption =>
       dbUserOption.map { user =>
@@ -41,8 +40,6 @@ class UserDAOImpl extends UserDAO with DAOSlick {
   def find(userID: UUID) = {
     val query = for {
       dbUser <- slickUsers.filter(_.userID === userID.toString)
-//      dbUserLoginInfo <- slickUserLoginInfos.filter(_.userID === dbUser.id)
-//      dbLoginInfo <- slickLoginInfos.filter(_.id === dbUserLoginInfo.loginInfoId)
       dbLoginInfo <- slickLoginInfos.filter(_.userID === dbUser.userID)
     } yield (dbUser, dbLoginInfo)
     db.run(query.result.headOption).map { resultOption =>
@@ -67,33 +64,22 @@ class UserDAOImpl extends UserDAO with DAOSlick {
    */
   def save(user: User) = {
     val dbUser = DBUser(user.userID.toString, user.firstName, user.lastName, user.fullName, user.email)
-    val dbLoginInfo = DBLoginInfo(dbUser.userID, user.loginInfo.providerID, user.loginInfo.providerKey)
-    // We don't have the LoginInfo id so we try to get it first.
-    // If there is no LoginInfo yet for this user we retrieve the id on insertion.    
+    //get a Slick database Action to run in actions below
+    // -> if the user already exists then do nothing, and if this is a new user then save details to the database
     val loginInfoAction = {
       val retrieveLoginInfo = slickLoginInfos.filter(
         info => info.providerID === user.loginInfo.providerID &&
         info.providerKey === user.loginInfo.providerKey).result.headOption
-//      val insertLoginInfo = slickLoginInfos.returning(slickLoginInfos.map(_.id)).
-//        into((info, id) => info.copy(id = Some(id))) += dbLoginInfo
-
-//      val insertLoginInfo = slickLoginInfos.map(info => (info.userID, info.providerID, info.providerKey)) += (dbUser.userID, user.loginInfo.providerID, user.loginInfo.providerKey)
       val insertLoginInfo = slickLoginInfos += DBLoginInfo(dbUser.userID, user.loginInfo.providerID, user.loginInfo.providerKey)
-
-      //retrieveLoginInfo is either LoginInfo if a user exists, or None if not
-      //so loginInfo is either "retrieveLoginInfo" if user exists, or val insertLoginInfo if not
       for {
         loginInfoOption <- retrieveLoginInfo
         loginInfo <- loginInfoOption.map(DBIO.successful(_)).getOrElse(insertLoginInfo)
       } yield loginInfo
     }
-
-
-    // combine database actions to be run sequentially
+    // combine database actions to be run sequentially and as a whole transaction
     val actions = (for {
       _ <- slickUsers.insertOrUpdate(dbUser)
       loginInfo <- loginInfoAction
-//      _ <- slickUserLoginInfos += DBUserLoginInfo(dbUser.userID, loginInfo.id.get)
     } yield ()).transactionally
     // run actions and return user afterwards
     db.run(actions).map(_ => user)

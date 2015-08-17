@@ -10,7 +10,7 @@ import com.mohiva.play.silhouette.api.util.{ Clock, Credentials }
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import com.mohiva.play.silhouette.impl.providers._
-import forms.SignInForm
+import models.forms.SignInForm
 import models.User
 import models.services.UserService
 import net.ceedubs.ficus.Ficus._
