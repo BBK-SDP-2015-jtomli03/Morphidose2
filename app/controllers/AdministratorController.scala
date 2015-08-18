@@ -12,12 +12,13 @@ import play.api.mvc.Controller
 import scala.concurrent.Future
 
 
-class AdministratorController @Inject()(val messagesApi: MessagesApi,
-                                        val env: Environment[User, CookieAuthenticator])
-  extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport {
+class AdministratorController @Inject()(val messagesApi: MessagesApi, val env: Environment[User, CookieAuthenticator])
+                                    extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport {
 
   /**
-   * The index action.
+   * The adminLogin action.
+   * If a user is already logged in then they will be redirected to the addPrescriber page
+   * otherwise they will be directed to the admin sign in page.
    */
   def adminLogin = UserAwareAction.async { implicit request =>
     request.identity match {

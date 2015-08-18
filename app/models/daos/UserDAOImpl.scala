@@ -3,7 +3,7 @@ package models.daos
 import java.util.UUID
 
 import com.mohiva.play.silhouette.api.LoginInfo
-import models.User
+import models.{Administrator, User}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 /**
@@ -26,7 +26,7 @@ class UserDAOImpl extends UserDAO with DAOSlick {
     } yield dbUser
     db.run(userQuery.result.headOption).map { dbUserOption =>
       dbUserOption.map { user =>
-        User(UUID.fromString(user.userID), loginInfo, user.firstName, user.lastName, user.fullName, user.email)
+        Administrator(UUID.fromString(user.userID), loginInfo, user.firstName, user.lastName, user.fullName, user.email)
       }
     }
   }
@@ -45,7 +45,7 @@ class UserDAOImpl extends UserDAO with DAOSlick {
     db.run(query.result.headOption).map { resultOption =>
       resultOption.map {
         case (user, loginInfo) =>
-          User(
+          Administrator(
             UUID.fromString(user.userID),
             LoginInfo(loginInfo.providerID, loginInfo.providerKey),
             user.firstName,
