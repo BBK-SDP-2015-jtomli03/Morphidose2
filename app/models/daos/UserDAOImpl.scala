@@ -23,29 +23,17 @@ class UserDAOImpl extends UserDAO with DAOSlick {
    * @param loginInfo The login info of the user to find.
    * @return The found user or None if no user for the given login info could be found.
    */
-//  def find(loginInfo: LoginInfo) = {
-//      val userQuery = for {
-//        dbLoginInfo <- loginInfoQuery(loginInfo)
-//        dbUser <- slickUsers.filter(_.userID === dbLoginInfo.userID)
-//      } yield dbUser
-//      db.run(userQuery.result.headOption).map { dbUserOption =>
-//        dbUserOption.map { user =>
-//          Administrator(UUID.fromString(user.userID), loginInfo, user.firstName, user.lastName, user.fullName, user.email)
-//        }
-//      }
-//  }
-
   def find(loginInfo: LoginInfo) = {
-      val userTypeAndID = getUserType(loginInfo)
+      val userTypeAndID = getUserTypeAndID(loginInfo)
       val userToReturn = Await.result(userTypeAndID, 5 second)
       val userType = userToReturn map (usr => usr._2)
       val userTypeToString = userType match {
-        case Some(x) => x
+        case Some(userTypeString) => userTypeString
         case None => ""
       }
       val findUserAction = userToReturn map {
-        case (id, user) => if (user == "administrator") slickUsers.filter(_.userID === id)
-                           else slickUsers.filter(_.userID === id)
+        case (id, user) if user == "administrator" => slickUsers.filter(_.userID === id)
+        case (id, user) if user == "prescriber" => slickUsers.filter(_.userID === id)
       }
       val actionToRun = findUserAction match{
         case Some(actn) if userTypeToString == "administrator" => db.run(actn.result.headOption).map { resultOption =>
@@ -60,12 +48,17 @@ class UserDAOImpl extends UserDAO with DAOSlick {
                 usr.email)
           }
         }
-          
       }
       actionToRun
   }
 
-  def getUserType(loginInfo: LoginInfo) = {
+  /**
+   * Gets the userID and userType of the user from the users loginInfo.
+   *
+   * @param loginInfo The loginInfo of the user to find.
+   * @return The userID and userType of the user.
+   */
+  def getUserTypeAndID(loginInfo: LoginInfo) = {
     val userQuery = for {
       dbLoginInfo <- loginInfoQuery(loginInfo)
     } yield dbLoginInfo
