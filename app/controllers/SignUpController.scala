@@ -68,6 +68,7 @@ class SignUpController @Inject() (
             for {
               user <- userService.save(user)
               authInfo <- authInfoRepository.add(loginInfo, authInfo)
+            //shouldn't need below data -> it creates cookie info to continue as the user added
               authenticator <- env.authenticatorService.create(loginInfo)
               value <- env.authenticatorService.init(authenticator)
               result <- env.authenticatorService.embed(value, Redirect(routes.ApplicationController.index()))

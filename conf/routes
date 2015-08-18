@@ -4,6 +4,7 @@
 
 # Home page
 GET         /admin                           @controllers.AdministratorController.adminLogin
+GET         /adminhome                       @controllers.AdministratorController.index
 GET         /                                @controllers.ApplicationController.index
 GET         /signIn                          @controllers.ApplicationController.signIn
 GET         /signUp                          @controllers.ApplicationController.signUp

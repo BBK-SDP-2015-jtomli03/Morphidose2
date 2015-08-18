@@ -13,6 +13,7 @@ CREATE TABLE logininfo (
   userID varchar NOT NULL,
   providerID varchar NOT NULL,
   providerKey varchar NOT NULL,
+  usertype varchar NOT NULL,
   PRIMARY KEY (userID)
 );
 

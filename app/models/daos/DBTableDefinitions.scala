@@ -29,14 +29,16 @@ trait DBTableDefinitions {
   case class DBLoginInfo (
      userID: String,
      providerID: String,
-     providerKey: String
+     providerKey: String,
+     userType: String
   )
 
   class LoginInfos(tag: Tag) extends Table[DBLoginInfo](tag, "logininfo") {
     def userID = column[String]("userid", O.PrimaryKey)
     def providerID = column[String]("providerid")
     def providerKey = column[String]("providerkey")
-    def * = (userID, providerID, providerKey) <> (DBLoginInfo.tupled, DBLoginInfo.unapply)
+    def userType = column[String]("usertype")
+    def * = (userID, providerID, providerKey, userType) <> (DBLoginInfo.tupled, DBLoginInfo.unapply)
   }
 
   case class DBPasswordInfo (
@@ -60,4 +62,5 @@ trait DBTableDefinitions {
   // queries used in multiple places
   def loginInfoQuery(loginInfo: LoginInfo) = 
     slickLoginInfos.filter(dbLoginInfo => dbLoginInfo.providerID === loginInfo.providerID && dbLoginInfo.providerKey === loginInfo.providerKey)
+
 }

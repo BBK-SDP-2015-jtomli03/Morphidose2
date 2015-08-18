@@ -1,0 +1,70 @@
+@(prescriber: Form[models.forms.AddPrescriberForm.Data], user: models.User, titles: List[String])(implicit messages: Messages)
+
+@import helper._
+@implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+
+@main("Morphidose Log In") {
+
+    <div class="container-fluid" id="signin">
+        <div class="row" id="signinForm">
+            <div class="span12">
+                <div class="" id="loginModal">
+                    <h2>Create a new prescriber account</h2>
+                    <div class="modal-body">
+                        <div class="well">
+                                @*<!-- Nav tabs -->*@
+                            @*<ul class="nav nav-tabs" role="tablist">*@
+                                @*<li role="presentation" class="active"><a href="#createAccount" aria-controls="profile" role="tab" data-toggle="tab">Create Account</a></li>*@
+                            @*</ul>*@
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane active in" id="createAccount">
+                                    <div class="form-signin">
+                                        @form(routes.ApplicationController.signUp()) {
+                                            <p>
+                                                Please enter the following information to create a new prescriber account.<br>
+                                            </p>
+                                            <br>
+                                            <label>Title: </label>
+                                            @select(
+                                                prescriber("title"),
+                                                options(titles)
+                                            )
+                                            <br><br>
+                                            <label>First Name:</label><br>
+                                            @inputText(prescriber("firstName"))
+                                            <br><br>
+                                            <label>Surname:</label><br>
+                                            @inputText(prescriber("surname"))
+                                            <br><br>
+                                            <label for="newEmail">Please enter a valid workplace email address;</label><br>
+                                            @inputText(prescriber("email"))
+                                            <br><br>
+                                            <label for="newpassword">Please create a password to access your Morphidose account;</label><br>
+                                            @inputText(prescriber("password"))
+                                            <br><br>
+                                            @*<input type="password" id="confirmedPassword" class="form-control" placeholder="Please re-enter your password" required>*@
+                                            <br>
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+                                        }
+                                        @if(prescriber.hasErrors || prescriber.hasGlobalErrors) {
+                                            <div class="alert alert-danger prescriber-alert">
+                                                <a class="close" data-dismiss="alert">x</a>
+                                                <p>
+                                                    Caution: prescriber not submitted!
+                                                    <br>
+                                                    Please complete all fields correctly.
+                                                </p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
