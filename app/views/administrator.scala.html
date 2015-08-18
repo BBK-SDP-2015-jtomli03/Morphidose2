@@ -1,19 +1,11 @@
 @(signInForm: Form[models.forms.SignInForm.Data], loginClass: String, passwordResetClass: String, login: String, passwordReset: String)(implicit request: RequestHeader, messages: Messages)
 
 @import helper._
-@import b3.inline.fieldConstructor
+@import b3.vertical.fieldConstructor
 
 @implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
 
 @main("Morphidose Log In") {
-
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <ul class="nav navbar-nav">
-      <li class="active">
-        <p class="navbar-text" >The Morphine Dosing Solution</p>
-      </li>
-    </ul>
-  </nav>
 
   <div class="container-fluid" id="signin">
     <div class="row" id="signinForm">
@@ -30,15 +22,11 @@
               <div id="myTabContent" class="tab-content">
                 <div class="tab-pane @login" id="login">
                     <h4 class="form-signin-heading">Login </h4>
-                    @helper.form(action = routes.CredentialsAuthController.authenticate()) {
+                    @form(action = routes.CredentialsAuthController.authenticate()) {
                       @helper.CSRF.formField
-                      <label>Email address:</label><br>
-                      @b3.text(signInForm("email"), '_hiddenLabel -> "Email", 'placeholder -> "Email", 'class -> "form-control input-lg")
+                      @inputText(signInForm("email"), '_label -> "Email", 'placeholder -> "example@mail.com", 'class -> "form-control input-lg")
+                      @inputText(signInForm("password"), '_label -> "Password", 'placeholder -> "Password", 'class -> "form-control input-lg")
                       <br><br>
-                      <label>Password:</label><br>
-                      @b3.password(signInForm("password"), '_hiddenLabel -> "Password", 'placeholder -> "Password", 'class -> "form-control input-lg")
-                      <br><br>
-                    <br>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                     }
                 </div>
