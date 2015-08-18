@@ -5704,3 +5704,45 @@ Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: Background
 Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(warn,c.z.h.HikariConfig - validationTimeout is greater than connectionTimeout, setting validationTimeout to connectionTimeout.))
 Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,p.a.l.c.ActorSystemProvider - Starting application default Akka system: application))
 Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,play.api.Play - Application started (Dev)))
+Got request: ExecutionRequest(jobStop 2)
+Reading next message from client.
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: (98,ExecutionRequestReceived(120))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: ExecutionWaiting(120,jobStop 2,ClientInfo(80566e63-d85c-435a-9135-2b52e1181f33,activator,Activator,3,Vector()))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: ExecutionStarting(120)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,> jobStop 2))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,Evaluating tasks: *:jobStop))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,Running task... Cancel: sbt.server.ServerTaskCancellation@66c643e1, check cycles: false))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,cancel strategy start enabled=true lastCommand=Some(LastCommand(CommandExecutionWork(ExecutionId(120),jobStop 2,Set(LiveClient(activator 80566e63-d85c-435a-9135-2b52e1181f33)),sbt.server.WorkCancellationStatus$$anon$1@5ada050d)))))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: TaskStarted(120,16961,Some(AttributeKey[void]("jobStop") in Scope(Global)))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: TaskFinished(120,16961,Some(AttributeKey[void]("jobStop") in Scope(Global)),true,None)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: TaskStarted(120,16960,None)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: TaskFinished(120,16960,None,true,None)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: TaskStarted(120,16959,None)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: TaskFinished(120,16959,None,true,None)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,cancel strategy finish enabled=false lastCommand=Some(LastCommand(CommandExecutionWork(ExecutionId(120),jobStop 2,Set(LiveClient(activator 80566e63-d85c-435a-9135-2b52e1181f33)),sbt.server.WorkCancellationStatus$$anon$1@5ada050d)))))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogSuccess(Total time: 0 s, completed 18-Aug-2015 23:42:03))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,> server-post-command-cleanup))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: ExecutionSuccess(120)
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: DetachedLogEvent(LogMessage(debug,> server-handle-next-server-request))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,Stopping Play fork run ...))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,p.a.l.c.ActorSystemProvider - Shutdown application default Akka system: application))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,JVM exiting, shutting down Play fork run ...))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,Play fork run already stopped ...))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobLogEvent(2,LogMessage(info,Forked Play process exited with status: 0))
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: BackgroundJobFinished(29,2)
+Got request: UnlistenToEvents()
+Reading next message from client.
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: (99,ReceivedResponse())
+Got request: UnlistenToValue(AttributeKey[scala.collection.Seq[java.lang.String]]("discoveredMainClasses") in Scope(Build: file:/Users/Jo/repos/play-silhouette-slick-seed/, , Project: ProjectReference(file:/Users/Jo/repos/play-silhouette-slick-seed/,root), Config: compile))
+Reading next message from client.
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: (100,ReceivedResponse())
+Got request: UnlistenToValue(AttributeKey[scala.Option[java.lang.String]]("mainClass") in Scope(Build: file:/Users/Jo/repos/play-silhouette-slick-seed/, , Project: ProjectReference(file:/Users/Jo/repos/play-silhouette-slick-seed/,root), Config: compile))
+Reading next message from client.
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: (101,ReceivedResponse())
+Got request: UnlistenToBuildChange()
+Reading next message from client.
+Sending msg to client activator-80566e63-d85c-435a-9135-2b52e1181f33: (102,ReceivedResponse())
+Client activator-80566e63-d85c-435a-9135-2b52e1181f33 EOF, shutting down.
+Stopping client.
+Client activator-80566e63-d85c-435a-9135-2b52e1181f33 thread exiting.
+Dropping message (0,ReceivedResponse()) to dead client activator-80566e63-d85c-435a-9135-2b52e1181f33
