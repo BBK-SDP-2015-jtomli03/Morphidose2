@@ -10,7 +10,7 @@ GET         /signIn                          @controllers.ApplicationController.
 GET         /signUp                          @controllers.ApplicationController.signUp
 GET         /signOut                         @controllers.ApplicationController.signOut
 POST        /authenticate/credentials        @controllers.CredentialsAuthController.authenticate
-POST        /signUp                          @controllers.SignUpController.signUp
+POST        /signUp                          @controllers.SignUpController.signUp(userType: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

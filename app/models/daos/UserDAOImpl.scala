@@ -231,7 +231,10 @@ class UserDAOImpl extends UserDAO with DAOSlick {
    */
   def save(user: User) = {
     val dbUser = DBUser(user.userID.toString, user.title, user.firstName, user.lastName, user.email)
-    val userType = "administrator";
+    val userType = user.getClass.getTypeName match {
+      case "models.Administrator" => "administrator"
+    }
+
     //get a Slick database Action to run in actions below
     // -> if the user already exists then do nothing, and if this is a new user then save details to the database
     val loginInfoAction = {
@@ -251,5 +254,17 @@ class UserDAOImpl extends UserDAO with DAOSlick {
     } yield ()).transactionally
     // run actions and return user afterwards
     db.run(actions).map(_ => user)
+
+//    if(userType.equals("administrator")) {
+//      val actions = (for {
+//        _ <- slickAdministrators.insertOrUpdate(dbUser)
+//        loginInfo <- loginInfoAction
+//      } yield ()).transactionally
+//      // run actions and return user afterwards
+//      db.run(actions).map(_ => user)
+//    }
+
+
+
   }
 }

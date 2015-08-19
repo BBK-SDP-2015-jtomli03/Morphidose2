@@ -26,6 +26,15 @@ trait DBTableDefinitions {
     def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
   }
 
+  class Administrators(tag: Tag) extends Table[DBUser](tag, "administrators") {
+    def userID = column[String]("userid", O.PrimaryKey)
+    def title = column[Option[String]]("title")
+    def firstName = column[Option[String]]("firstname")
+    def lastName = column[Option[String]]("lastname")
+    def email = column[Option[String]]("email")
+    def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
+  }
+
   case class DBLoginInfo (
      userID: String,
      providerID: String,
@@ -56,6 +65,7 @@ trait DBTableDefinitions {
 
   // table query definitions
   val slickUsers = TableQuery[Users]
+  val slickAdministrators = TableQuery[Administrators]
   val slickLoginInfos = TableQuery[LoginInfos]
   val slickPasswordInfos = TableQuery[PasswordInfos]
   

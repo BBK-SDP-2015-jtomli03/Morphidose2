@@ -39,7 +39,7 @@ class SignUpController @Inject() (
    *
    * @return The result to display.
    */
-  def signUp = Action.async { implicit request =>
+  def signUp(userType: String) = Action.async { implicit request =>
     SignUpForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.signUp(form))),
       data => {
@@ -49,22 +49,17 @@ class SignUpController @Inject() (
             Future.successful(Redirect(routes.ApplicationController.signUp()).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
-//            val user = User(
-//              userID = UUID.randomUUID(),
-//              loginInfo = loginInfo,
-//              firstName = Some(data.firstName),
-//              lastName = Some(data.lastName),
-//              fullName = Some(data.firstName + " " + data.lastName),
-//              email = Some(data.email)
-//            )
-            val user = Administrator(
-              userID = UUID.randomUUID(),
-              loginInfo = loginInfo,
-              title = Some(data.title),
-              firstName = Some(data.firstName),
-              lastName = Some(data.lastName),
-              email = Some(data.email)
-            )
+//            val user = Administrator(
+//                userID = UUID.randomUUID(),
+//                loginInfo = loginInfo,
+//                title = Some(data.title),
+//                firstName = Some(data.firstName),
+//                lastName = Some(data.lastName),
+//                email = Some(data.email)
+//              )
+
+            val user = getUser(userType, data, loginInfo)
+
             for {
               user <- userService.save(user)
               authInfo <- authInfoRepository.add(loginInfo, authInfo)
@@ -80,5 +75,24 @@ class SignUpController @Inject() (
         }
       }
     )
+  }
+
+  /**
+   * Creates a new user according to the specified userType.
+   *
+   * @param userType the type of user required
+   * @param data the data from the SignUpForm
+   * @param loginInfo the users loginInfo
+   * @return an instance of a User.
+   */
+  def getUser(userType: String, data: SignUpForm.Data, loginInfo: LoginInfo): User = userType match{
+    case "administrator" => Administrator(
+                    userID = UUID.randomUUID(),
+                    loginInfo = loginInfo,
+                    title = Some(data.title),
+                    firstName = Some(data.firstName),
+                    lastName = Some(data.lastName),
+                    email = Some(data.email)
+                  )
   }
 }

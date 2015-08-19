@@ -23,7 +23,7 @@ CREATE TABLE passwordinfo (
   userID varchar NOT NULL
 );
 
-CREATE TABLE "administrators" (
+CREATE TABLE administrators (
   userID varchar NOT NULL,
   title varchar NOT NULL,
   firstName varchar NOT NULL,
