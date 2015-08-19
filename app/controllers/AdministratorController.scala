@@ -6,7 +6,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import models.User
 import models.forms.{AddPrescriberForm, SignInForm}
-import models.utils.DropdownUtils
+import models.utils.{AuthorizedWithUserType, DropdownUtils}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Controller
 
@@ -33,7 +33,7 @@ class AdministratorController @Inject()(val messagesApi: MessagesApi, val env: E
    *
    * @return The result to display.
    */
-  def index = SecuredAction.async { implicit request =>
+  def index = SecuredAction(AuthorizedWithUserType("models.Administrator")).async { implicit request =>
     Future.successful(Ok(views.html.adminhome(AddPrescriberForm.prescriberForm, request.identity, DropdownUtils.getTitles)))
   }
 
