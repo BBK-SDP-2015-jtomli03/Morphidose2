@@ -13,6 +13,7 @@
         <legend>Sign up for a new account</legend>
         @helper.form(action = routes.SignUpController.signUp()) {
             @helper.CSRF.formField
+            @b3.text(signInForm("title"), '_hiddenLabel -> "First name", 'placeholder -> "Title", 'class -> "form-control input-lg")
             @b3.text(signInForm("firstName"), '_hiddenLabel -> "First name", 'placeholder -> "First name", 'class -> "form-control input-lg")
             @b3.text(signInForm("lastName"), '_hiddenLabel -> "Last name", 'placeholder -> "Last name", 'class -> "form-control input-lg")
             @b3.text(signInForm("email"), '_hiddenLabel -> "Email", 'placeholder -> "Email", 'class -> "form-control input-lg")

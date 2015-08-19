@@ -60,9 +60,9 @@ class SignUpController @Inject() (
             val user = Administrator(
               userID = UUID.randomUUID(),
               loginInfo = loginInfo,
+              title = Some(data.title),
               firstName = Some(data.firstName),
               lastName = Some(data.lastName),
-              fullName = Some(data.firstName + " " + data.lastName),
               email = Some(data.email)
             )
             for {

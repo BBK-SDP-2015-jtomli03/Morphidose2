@@ -11,19 +11,19 @@ trait DBTableDefinitions {
 
   case class DBUser (
     userID: String,
+    title: Option[String],
     firstName: Option[String],
     lastName: Option[String],
-    fullName: Option[String],
     email: Option[String]
   )
 
   class Users(tag: Tag) extends Table[DBUser](tag, "user") {
     def userID = column[String]("userid", O.PrimaryKey)
+    def title = column[Option[String]]("title")
     def firstName = column[Option[String]]("firstname")
     def lastName = column[Option[String]]("lastname")
-    def fullName = column[Option[String]]("fullname")
     def email = column[Option[String]]("email")
-    def * = (userID, firstName, lastName, fullName, email) <> (DBUser.tupled, DBUser.unapply)
+    def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
   }
 
   case class DBLoginInfo (

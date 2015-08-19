@@ -2,9 +2,9 @@
 
 CREATE TABLE "user" (
   userID varchar NOT NULL,
-  firstName varchar,
-  lastName varchar,
-  fullName varchar,
+  title varchar NOT NULL,
+  firstName varchar NOT NULL,
+  lastName varchar NOT NULL,
   email varchar,
   PRIMARY KEY (userID)
 );
@@ -21,6 +21,15 @@ CREATE TABLE passwordinfo (
   hasher varchar NOT NULL,
   password varchar NOT NULL,
   userID varchar NOT NULL
+);
+
+CREATE TABLE "administrators" (
+  userID varchar NOT NULL,
+  title varchar NOT NULL,
+  firstName varchar NOT NULL,
+  lastName varchar NOT NULL,
+  email varchar,
+  PRIMARY KEY (userID)
 );
 
 # --- !Downs
