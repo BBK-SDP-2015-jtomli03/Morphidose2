@@ -17,7 +17,7 @@ trait DBTableDefinitions {
     email: Option[String]
   )
 
-  class Users(tag: Tag) extends Table[DBUser](tag, "user") {
+  class Prescribers(tag: Tag) extends Table[DBUser](tag, "prescribers") {
     def userID = column[String]("userid", O.PrimaryKey)
     def title = column[Option[String]]("title")
     def firstName = column[Option[String]]("firstname")
@@ -64,7 +64,7 @@ trait DBTableDefinitions {
   }
 
   // table query definitions
-  val slickUsers = TableQuery[Users]
+  val slickPrescribers = TableQuery[Prescribers]
   val slickAdministrators = TableQuery[Administrators]
   val slickLoginInfos = TableQuery[LoginInfos]
   val slickPasswordInfos = TableQuery[PasswordInfos]

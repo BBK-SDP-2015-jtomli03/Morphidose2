@@ -14,11 +14,11 @@ sealed trait User extends Identity{
 }
 
 /**
- * The user object.
+ * The administrator object.
  *
  * @param userID The unique ID of the user.
  * @param loginInfo The linked login info.
- * @param title Maybe the full name of the authenticated user.
+ * @param title Maybe the title of the authenticated user.
  * @param firstName Maybe the first name of the authenticated user.
  * @param lastName Maybe the last name of the authenticated user.
  * @param email Maybe the email of the authenticated provider.
@@ -30,3 +30,21 @@ case class Administrator(
   firstName: Option[String],
   lastName: Option[String],
   email: Option[String]) extends User with Identity
+
+/**
+ * The prescriber object.
+ *
+ * @param userID The unique ID of the user.
+ * @param loginInfo The linked login info.
+ * @param title Maybe the title of the authenticated user.
+ * @param firstName Maybe the first name of the authenticated user.
+ * @param lastName Maybe the last name of the authenticated user.
+ * @param email Maybe the email of the authenticated provider.
+ */
+case class Prescriber(
+                          userID: UUID,
+                          loginInfo: LoginInfo,
+                          title: Option[String],
+                          firstName: Option[String],
+                          lastName: Option[String],
+                          email: Option[String]) extends User with Identity

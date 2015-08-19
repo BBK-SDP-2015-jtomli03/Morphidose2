@@ -1,14 +1,5 @@
 # --- !Ups
 
-CREATE TABLE "user" (
-  userID varchar NOT NULL,
-  title varchar NOT NULL,
-  firstName varchar NOT NULL,
-  lastName varchar NOT NULL,
-  email varchar,
-  PRIMARY KEY (userID)
-);
-
 CREATE TABLE logininfo (
   userID varchar NOT NULL,
   providerID varchar NOT NULL,
@@ -24,6 +15,15 @@ CREATE TABLE passwordinfo (
 );
 
 CREATE TABLE administrators (
+  userID varchar NOT NULL,
+  title varchar NOT NULL,
+  firstName varchar NOT NULL,
+  lastName varchar NOT NULL,
+  email varchar,
+  PRIMARY KEY (userID)
+);
+
+CREATE TABLE "prescribers" (
   userID varchar NOT NULL,
   title varchar NOT NULL,
   firstName varchar NOT NULL,

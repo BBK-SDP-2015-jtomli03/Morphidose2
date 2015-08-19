@@ -11,7 +11,7 @@
     }
     <fieldset class="col-md-6 col-md-offset-3">
         <legend>Sign up for a new account</legend>
-        @helper.form(action = routes.SignUpController.signUp("administrator")) {
+        @helper.form(action = routes.SignUpController.signUp("prescriber")) {
             @helper.CSRF.formField
             @b3.text(signInForm("title"), '_hiddenLabel -> "First name", 'placeholder -> "Title", 'class -> "form-control input-lg")
             @b3.text(signInForm("firstName"), '_hiddenLabel -> "First name", 'placeholder -> "First name", 'class -> "form-control input-lg")

@@ -9,7 +9,7 @@ import com.mohiva.play.silhouette.api.util.PasswordHasher
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers._
 import models.forms.SignUpForm
-import models.{Administrator, User}
+import models.{Prescriber, Administrator, User}
 import models.services.UserService
 import play.api.i18n.{ MessagesApi, Messages }
 import play.api.mvc.Action
@@ -49,15 +49,6 @@ class SignUpController @Inject() (
             Future.successful(Redirect(routes.ApplicationController.signUp()).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
-//            val user = Administrator(
-//                userID = UUID.randomUUID(),
-//                loginInfo = loginInfo,
-//                title = Some(data.title),
-//                firstName = Some(data.firstName),
-//                lastName = Some(data.lastName),
-//                email = Some(data.email)
-//              )
-
             val user = getUser(userType, data, loginInfo)
 
             for {
@@ -94,5 +85,13 @@ class SignUpController @Inject() (
                     lastName = Some(data.lastName),
                     email = Some(data.email)
                   )
+    case "prescriber" => Prescriber(
+      userID = UUID.randomUUID(),
+      loginInfo = loginInfo,
+      title = Some(data.title),
+      firstName = Some(data.firstName),
+      lastName = Some(data.lastName),
+      email = Some(data.email)
+    )
   }
 }
