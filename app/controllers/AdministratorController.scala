@@ -5,7 +5,7 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import models.User
-import models.forms.{AddPrescriberForm, SignInForm}
+import models.forms.{SignInForm, SignUpForm}
 import models.utils.{AuthorizedWithUserType, DropdownUtils}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Controller
@@ -29,12 +29,13 @@ class AdministratorController @Inject()(val messagesApi: MessagesApi, val env: E
   }
 
   /**
-   * Handles the index action.
+   * Handles the index action for the administrator home page.
+   * Only authenticated administrators can access this page, otherwise the user is redirected to the sign in page.
    *
    * @return The result to display.
    */
   def index = SecuredAction(AuthorizedWithUserType("models.Administrator")).async { implicit request =>
-    Future.successful(Ok(views.html.adminhome(AddPrescriberForm.prescriberForm, request.identity, DropdownUtils.getTitles)))
+    Future.successful(Ok(views.html.adminhome(SignUpForm.form, request.identity, DropdownUtils.getTitles, "active", "", "active in", "fade")))
   }
 
 }

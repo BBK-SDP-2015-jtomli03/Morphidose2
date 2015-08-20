@@ -1,0 +1,69 @@
+@(patient: Form[models.forms.AddPatientForm.Data], daysOfMonth: List[String], months: List[String], yearList: List[String])(implicit messages: Messages)
+
+@import helper._
+@implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+
+@main("Add a Patient") {
+  <div id="main_container">
+    <div class="side_nav_container">
+      <div class="list-group" id="side_nav">
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button>
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button>
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span>  Edit Patient Details</button>
+      </div>
+    </div>
+    <div class="right_div">
+      <div class="input">
+        <h3>Add A New Patient</h3>
+        <div class="form">
+        @form(routes.SignUpController.signUp("patient")) {
+          <p>
+            Please enter the following patient details;
+          </p>
+          <br>
+          <label>First Name:</label><br>
+          @inputText(patient("firstName"))
+          <br><br>
+          <label>Surname:</label><br>
+          @inputText(patient("surname"))
+          <br><br>
+          <label>Date Of Birth:</label>
+          @select(
+            patient("dobDayOfMonth"),
+            options(daysOfMonth), '_label -> "Day"
+          )
+          @select(
+            patient("dobMonth"),
+            options(months), '_label -> "Month"
+          )
+          @select(
+            patient("dobYear"),
+            options(yearList), '_label -> "Year"
+          )
+          @if(patient.hasGlobalErrors) {
+            @for(error <- patient.globalErrors) {
+              <p class="red">@error.message</p>
+            }
+          }
+          <br><br>
+          <label>Hospital Number:</label><br>
+          @inputText(patient("hospitalNumber"))
+          <br><br><br>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">ADD PATIENT</button>
+
+          @if(patient.hasErrors || patient.hasGlobalErrors) {
+            <div class="alert alert-danger patient-alert">
+              <a class="close" data-dismiss="alert">x</a>
+              <p>
+                Caution: patient not submitted!
+                <br>
+                Please complete all fields.
+              </p>
+            </div>
+          }
+        }
+        </div>
+      </div>
+    </div>
+  </div>
+}

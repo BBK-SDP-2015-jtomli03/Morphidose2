@@ -15,7 +15,7 @@ object AddPrescriberForm {
   /**
    * The mapping for the add prescriber form.
    */
-  val prescriberForm = Form {
+  val form = Form {
     mapping(
       "title" -> nonEmptyText,
       "firstName" -> nonEmptyText,

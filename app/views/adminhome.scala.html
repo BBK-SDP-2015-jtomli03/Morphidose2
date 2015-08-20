@@ -1,63 +1,65 @@
-@(prescriber: Form[models.forms.AddPrescriberForm.Data], user: models.User, titles: List[String])(implicit messages: Messages)
+@(userToAdd: Form[models.forms.SignUpForm.Data], user: models.User, titles: List[String], prescriberClass: String, administratorClass: String, prescriber: String, administrator: String)(implicit request: RequestHeader, messages: Messages)
 
 @import helper._
 @implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+@import b3.vertical.fieldConstructor
 
 @main("Morphidose Log In") {
-
-    <div class="container-fluid" id="signin">
+    @request.flash.get("error").map { msg =>
+        <div class="col-md-6 col-md-offset-3 alert alert-danger alert-error">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> @msg
+        </div>
+    }
+    @request.flash.get("success").map { msg =>
+        <div class="col-md-6 col-md-offset-3 alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> @msg
+        </div>
+    }
+    <div class="container-fluid" id="createUsers">
         <div class="row" id="signinForm">
             <div class="span12">
                 <div class="" id="loginModal">
-                    <h2>Create a new prescriber account</h2>
+                    <h2>Create a new user account</h2>
                     <div class="modal-body">
                         <div class="well">
-                                @*<!-- Nav tabs -->*@
-                            @*<ul class="nav nav-tabs" role="tablist">*@
-                                @*<li role="presentation" class="active"><a href="#createAccount" aria-controls="profile" role="tab" data-toggle="tab">Create Account</a></li>*@
-                            @*</ul>*@
+                                <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class=@prescriberClass><a href="#AddPrescriber" aria-controls="home" role="tab" data-toggle="tab">Add Prescriber</a></li>
+                                <li role="presentation" id=@administratorClass><a href="#AddAdministrator" aria-controls="messages" role="tab" data-toggle="tab">Add Administrator</a></li>
+                            </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div class="tab-pane active in" id="createAccount">
-                                    <div class="form-signin">
-                                        @form(routes.ApplicationController.signUp()) {
-                                            <p>
-                                                Please enter the following information to create a new prescriber account.<br>
-                                            </p>
-                                            <br>
-                                            <label>Title: </label>
-                                            @select(
-                                                prescriber("title"),
-                                                options(titles)
-                                            )
-                                            <br><br>
-                                            <label>First Name:</label><br>
-                                            @inputText(prescriber("firstName"))
-                                            <br><br>
-                                            <label>Surname:</label><br>
-                                            @inputText(prescriber("surname"))
-                                            <br><br>
-                                            <label for="newEmail">Please enter a valid workplace email address;</label><br>
-                                            @inputText(prescriber("email"))
-                                            <br><br>
-                                            <label for="newpassword">Please create a password to access your Morphidose account;</label><br>
-                                            @inputText(prescriber("password"))
-                                            <br><br>
-                                            @*<input type="password" id="confirmedPassword" class="form-control" placeholder="Please re-enter your password" required>*@
-                                            <br>
-                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
-                                        }
-                                        @if(prescriber.hasErrors || prescriber.hasGlobalErrors) {
-                                            <div class="alert alert-danger prescriber-alert">
-                                                <a class="close" data-dismiss="alert">x</a>
-                                                <p>
-                                                    Caution: prescriber not submitted!
-                                                    <br>
-                                                    Please complete all fields correctly.
-                                                </p>
-                                            </div>
-                                        }
+                                    <div class="tab-pane @prescriber" id="AddPrescriber">
+                                        <h4 class="form-signin-heading">Add a new Prescriber</h4>
+                                        <div class="form-signin-add-user">
+                                            @form(routes.SignUpController.signUp("prescriber"))  {
+                                                @helper.CSRF.formField
+                                                @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title", 'class -> "form-control input-lg")
+                                                @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name", 'class -> "form-control input-lg")
+                                                @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name", 'class -> "form-control input-lg")
+                                                @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com", 'class -> "form-control input-lg")
+                                                @b3.text(userToAdd("password"), '_label -> "Initial Password:", 'placeholder -> "Password", 'class -> "form-control input-lg")
+                                                <br>
+                                                <button class="btn btn-lg btn-primary btn-block" type="submit">Add Administrator</button>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="tab-pane @administrator" id="AddAdministrator">
+                                        <h4 class="form-signin-heading">Add a new Administrator</h4>
+                                        <div class="form-signin-add-user">
+                                                @form(routes.SignUpController.signUp("administrator"))  {
+                                                    @helper.CSRF.formField
+                                                    @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title", 'class -> "form-control input-lg")
+                                                    @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name", 'class -> "form-control input-lg")
+                                                    @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name", 'class -> "form-control input-lg")
+                                                    @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com", 'class -> "form-control input-lg")
+                                                    @b3.text(userToAdd("password"), '_label -> "Initial Password:", 'placeholder -> "Password", 'class -> "form-control input-lg")
+                                                    <br>
+                                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Add Administrator</button>
+                                                }
+                                            </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -65,6 +67,4 @@
             </div>
         </div>
     </div>
-
 }
-

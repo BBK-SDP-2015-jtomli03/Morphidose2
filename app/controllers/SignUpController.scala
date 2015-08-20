@@ -9,10 +9,10 @@ import com.mohiva.play.silhouette.api.util.PasswordHasher
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers._
 import models.forms.SignUpForm
-import models.{Prescriber, Administrator, User}
 import models.services.UserService
-import play.api.i18n.{ MessagesApi, Messages }
-import play.api.mvc.Action
+import models.utils.{DropdownUtils, AuthorizedWithUserType}
+import models.{Administrator, Prescriber, User}
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.concurrent.Execution.Implicits._
 
 import scala.concurrent.Future
@@ -34,14 +34,17 @@ class SignUpController @Inject() (
   passwordHasher: PasswordHasher)
   extends Silhouette[User, CookieAuthenticator] {
 
+
   /**
-   * Registers a new user.
+   * Registers a new administrator or prescriber.
+   * Only authenticated administrators can access this page, otherwise the user is redirected to the sign in page.
    *
+   * @param userType the type of user to register.
    * @return The result to display.
    */
-  def signUp(userType: String) = Action.async { implicit request =>
+  def signUp(userType: String) = SecuredAction(AuthorizedWithUserType("models.Administrator")).async { implicit request =>
     SignUpForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.signUp(form))),
+      form => Future.successful(BadRequest(views.html.adminhome(form, request.identity, DropdownUtils.getTitles, "active", "", "active in", "fade"))),
       data => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userService.retrieve(loginInfo).flatMap {
@@ -50,18 +53,18 @@ class SignUpController @Inject() (
           case None =>
             val authInfo = passwordHasher.hash(data.password)
             val user = getUser(userType, data, loginInfo)
-
             for {
               user <- userService.save(user)
               authInfo <- authInfoRepository.add(loginInfo, authInfo)
             //shouldn't need below data -> it creates cookie info to continue as the user added
-              authenticator <- env.authenticatorService.create(loginInfo)
-              value <- env.authenticatorService.init(authenticator)
-              result <- env.authenticatorService.embed(value, Redirect(routes.ApplicationController.index()))
+              //authenticator <- env.authenticatorService.create(loginInfo)
+              //value <- env.authenticatorService.init(authenticator)
+              //result <- env.authenticatorService.embed(value, Redirect(routes.ApplicationController.index()))
             } yield {
               env.eventBus.publish(SignUpEvent(user, request, request2Messages))
-              env.eventBus.publish(LoginEvent(user, request, request2Messages))
-              result
+              //env.eventBus.publish(LoginEvent(user, request, request2Messages))
+              //result
+              Redirect(routes.AdministratorController.index()).flashing("success" -> Messages("user.added"))
             }
         }
       }
@@ -78,13 +81,13 @@ class SignUpController @Inject() (
    */
   def getUser(userType: String, data: SignUpForm.Data, loginInfo: LoginInfo): User = userType match{
     case "administrator" => Administrator(
-                    userID = UUID.randomUUID(),
-                    loginInfo = loginInfo,
-                    title = Some(data.title),
-                    firstName = Some(data.firstName),
-                    lastName = Some(data.lastName),
-                    email = Some(data.email)
-                  )
+      userID = UUID.randomUUID(),
+      loginInfo = loginInfo,
+      title = Some(data.title),
+      firstName = Some(data.firstName),
+      lastName = Some(data.lastName),
+      email = Some(data.email)
+    )
     case "prescriber" => Prescriber(
       userID = UUID.randomUUID(),
       loginInfo = loginInfo,
