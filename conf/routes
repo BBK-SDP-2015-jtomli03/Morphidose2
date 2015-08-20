@@ -3,6 +3,7 @@
 # ~~~~
 
 # Home page
+GET         /home                            @controllers.PrescriberController.index
 GET         /admin                           @controllers.AdministratorController.adminLogin
 GET         /adminhome                       @controllers.AdministratorController.index
 GET         /                                @controllers.ApplicationController.index

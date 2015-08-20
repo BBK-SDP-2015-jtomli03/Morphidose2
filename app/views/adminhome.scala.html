@@ -35,11 +35,11 @@
                                         <div class="form-signin-add-user">
                                             @form(routes.SignUpController.signUp("prescriber"))  {
                                                 @helper.CSRF.formField
-                                                @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title", 'class -> "form-control input-lg")
-                                                @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name", 'class -> "form-control input-lg")
-                                                @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name", 'class -> "form-control input-lg")
-                                                @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com", 'class -> "form-control input-lg")
-                                                @b3.text(userToAdd("password"), '_label -> "Initial Password:", 'placeholder -> "Password", 'class -> "form-control input-lg")
+                                                @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
+                                                @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name")
+                                                @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name")
+                                                @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com")
+                                                @b3.text(userToAdd("password"), '_label -> "Initial Password:", 'placeholder -> "Password")
                                                 <br>
                                                 <button class="btn btn-lg btn-primary btn-block" type="submit">Add Administrator</button>
                                             }
@@ -50,11 +50,11 @@
                                         <div class="form-signin-add-user">
                                                 @form(routes.SignUpController.signUp("administrator"))  {
                                                     @helper.CSRF.formField
-                                                    @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title", 'class -> "form-control input-lg")
-                                                    @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name", 'class -> "form-control input-lg")
-                                                    @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name", 'class -> "form-control input-lg")
-                                                    @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com", 'class -> "form-control input-lg")
-                                                    @b3.text(userToAdd("password"), '_label -> "Initial Password:", 'placeholder -> "Password", 'class -> "form-control input-lg")
+                                                    @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
+                                                    @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name")
+                                                    @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name")
+                                                    @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com")
+                                                    @b3.text(userToAdd("password"), '_label -> "Initial Password:", 'placeholder -> "Password")
                                                     <br>
                                                     <button class="btn btn-lg btn-primary btn-block" type="submit">Add Administrator</button>
                                                 }

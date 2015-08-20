@@ -27,22 +27,24 @@ object AddPatientForm {
       "dobMonth" -> nonEmptyText,
       "dobYear" -> nonEmptyText,
       "hospitalNumber" -> nonEmptyText
-    )(Data.apply)(Data.unapply)
+    )(Data.apply)(Data.unapply)verifying("This field is required", fields => fields match {
+      case userData => validate(userData.title, userData.firstName, userData.surname, userData.dobDayOfMonth, userData.dobMonth, userData.dobYear, userData.hospitalNumber).isDefined
+    })
   }
 
-//  /**
-//   * Validates whether the date of birth has been entered
-//   * @return None if the dob hasn't been entered
-//   * @return Some() if the dob has been entered correctly
-//   */
-//  def validate(first_name: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String, hospital_number: String) = {
-//    (dobDayOfMonth, dobMonth, dobYear) match {
-//      case("Day", _, _) => None
-//      case(_, "Month", _) => None
-//      case(_, _, "Year") => None
-//      case(_, _, _) => Some(AddPatientForm(first_name, surname, dobDayOfMonth, dobMonth, dobYear, hospital_number))
-//    }
-//  }
+  /**
+   * Validates whether the date of birth has been entered correctly.
+   * @return None if the dob hasn't been entered
+   * @return Some() if the dob has been entered correctly
+   */
+  def validate(title: String, first_name: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String, hospital_number: String) = {
+    (dobDayOfMonth, dobMonth, dobYear) match {
+      case("Day", _, _) => None
+      case(_, "Month", _) => None
+      case(_, _, "Year") => None
+      case(_, _, _) => Some(Data(title, first_name, surname, dobDayOfMonth, dobMonth, dobYear, hospital_number))
+    }
+  }
 
   case class Data(title: String, firstName: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String, hospitalNumber: String)
 }

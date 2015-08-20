@@ -58,7 +58,7 @@ class CredentialsAuthController @Inject() (
             case Some(user) =>
               val result = user.getClass.getTypeName match {
                 case "models.Administrator" => Redirect(routes.AdministratorController.index())
-                case "models.Prescriber" => Redirect(routes.AdministratorController.index())
+                case "models.Prescriber" => Redirect(routes.PrescriberController.index())
               }
               val c = configuration.underlying
               env.authenticatorService.create(loginInfo).map {
