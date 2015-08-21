@@ -29,6 +29,6 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
    * @param user The user to save.
    * @return The saved user.
    */
-  def save(user: User) = userDAO.save(user)
+  def save(user: User, userType: String) = userDAO.save(user, userType)
 
 }

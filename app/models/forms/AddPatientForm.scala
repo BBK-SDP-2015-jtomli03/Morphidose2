@@ -20,15 +20,15 @@ object AddPatientForm {
    */
   val form = Form {
     mapping(
+      "hospitalNumber" -> nonEmptyText,
       "title" -> nonEmptyText,
       "firstName" -> nonEmptyText,
       "surname" -> nonEmptyText,
       "dobDayOfMonth" -> nonEmptyText,
       "dobMonth" -> nonEmptyText,
-      "dobYear" -> nonEmptyText,
-      "hospitalNumber" -> nonEmptyText
+      "dobYear" -> nonEmptyText
     )(Data.apply)(Data.unapply)verifying("This field is required", fields => fields match {
-      case userData => validate(userData.title, userData.firstName, userData.surname, userData.dobDayOfMonth, userData.dobMonth, userData.dobYear, userData.hospitalNumber).isDefined
+      case userData => validate(userData.hospitalNumber, userData.title, userData.firstName, userData.surname, userData.dobDayOfMonth, userData.dobMonth, userData.dobYear).isDefined
     })
   }
 
@@ -37,14 +37,14 @@ object AddPatientForm {
    * @return None if the dob hasn't been entered
    * @return Some() if the dob has been entered correctly
    */
-  def validate(title: String, first_name: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String, hospital_number: String) = {
+  def validate(hospitalNumber: String, title: String, firstName: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String) = {
     (dobDayOfMonth, dobMonth, dobYear) match {
       case("Day", _, _) => None
       case(_, "Month", _) => None
       case(_, _, "Year") => None
-      case(_, _, _) => Some(Data(title, first_name, surname, dobDayOfMonth, dobMonth, dobYear, hospital_number))
+      case(_, _, _) => Some(Data(hospitalNumber, title, firstName, surname, dobDayOfMonth, dobMonth, dobYear))
     }
   }
 
-  case class Data(title: String, firstName: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String, hospitalNumber: String)
+  case class Data(hospitalNumber: String, title: String, firstName: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String)
 }

@@ -154,6 +154,13 @@ class UserDAOImpl extends UserDAO with DAOSlick {
   //    if(userOption.isEmpty) userOption map {info => (info.userID, info.userType)}
   //    else None
   //  }
+
+    /**
+     * Gets the userID and userType of the user from the users loginInfo.
+     *
+     * @param loginInfo The loginInfo of the user to find.
+     * @return The userID and userType of the user.
+     */
   def getUserTypeAndID(loginInfo: LoginInfo) = {
     val userQuery = for {
       dbLoginInfo <- loginInfoQuery(loginInfo)
@@ -164,42 +171,13 @@ class UserDAOImpl extends UserDAO with DAOSlick {
   }
 
   /**
-   * Finds a user by its user ID.
-   *
-   * @param userID The ID of the user to find.
-   * @return The found user or None if no user for the given ID could be found.
-   */
-  def find(userID: UUID) = {
-    val query = for {
-      dbUser <- slickAdministrators.filter(_.userID === userID.toString)
-      dbLoginInfo <- slickLoginInfos.filter(_.userID === dbUser.userID)
-    } yield (dbUser, dbLoginInfo)
-    db.run(query.result.headOption).map { resultOption =>
-      resultOption.map {
-        case (user, loginInfo) =>
-          Administrator(
-            UUID.fromString(user.userID),
-            LoginInfo(loginInfo.providerID, loginInfo.providerKey),
-            user.title,
-            user.firstName,
-            user.lastName,
-            user.email)
-      }
-    }
-  }
-
-  /**
    * Saves a user.
    *
    * @param user The user to save.
    * @return The saved user.
    */
-  def save(user: User) = {
+  def save(user: User, userType: String) = {
     val dbUser = DBUser(user.userID.toString, user.title, user.firstName, user.lastName, user.email)
-    val userType = user.getClass.getTypeName match {
-      case "models.Administrator" => "administrator"
-      case "models.Prescriber" => "prescriber"
-    }
     //get a Slick database Action to run in actions below
     // -> if the user already exists then do nothing, and if this is a new user then save details to the database
     val loginInfoAction = {

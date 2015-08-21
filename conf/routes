@@ -4,6 +4,8 @@
 
 # Home page
 GET         /home                            @controllers.PrescriberController.index
+#GET         /prescription                    @controllers.PrescriberController.prescription()
+POST        /patient/add                     @controllers.PrescriberController.addPatient()
 GET         /admin                           @controllers.AdministratorController.adminLogin
 GET         /adminhome                       @controllers.AdministratorController.index
 GET         /                                @controllers.ApplicationController.index

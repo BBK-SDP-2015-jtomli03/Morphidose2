@@ -34,6 +34,8 @@ CREATE TABLE "prescribers" (
 
 # --- !Downs
 
+-- drop table "prescribers";
+-- drop table "administrators";
 -- drop table "passwordinfo";
 -- drop table "logininfo";
 -- drop table "user";

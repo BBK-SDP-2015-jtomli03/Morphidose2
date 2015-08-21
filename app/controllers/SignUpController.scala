@@ -8,13 +8,12 @@ import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.PasswordHasher
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers._
-import models.forms.{AddPatientForm, SignUpForm}
+import models.forms.SignUpForm
 import models.services.UserService
-import models.utils.{DropdownUtils, AuthorizedWithUserType}
+import models.utils.{AuthorizedWithUserType, DropdownUtils}
 import models.{Administrator, Prescriber, User}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.mvc.Action
 
 import scala.concurrent.Future
 
@@ -23,7 +22,7 @@ import scala.concurrent.Future
  *
  * @param messagesApi The Play messages API.
  * @param env The Silhouette environment.
- * @param userService The user service implementation.
+ * @param userService The user UserService implementation.
  * @param authInfoRepository The auth info repository implementation.
  * @param passwordHasher The password hasher implementation.
  */
@@ -55,7 +54,7 @@ class SignUpController @Inject() (
             val authInfo = passwordHasher.hash(data.password)
             val user = getUser(userType, data, loginInfo)
             for {
-              user <- userService.save(user)
+              user <- userService.save(user, userType)
               authInfo <- authInfoRepository.add(loginInfo, authInfo)
             //shouldn't need below data -> it creates cookie info to continue as the user added
               //authenticator <- env.authenticatorService.create(loginInfo)
@@ -99,36 +98,6 @@ class SignUpController @Inject() (
     )
   }
 
-  /**
-   * The add prescriber action.
-   *
-   * This is asynchronous, since we're invoking the asynchronous methods on PrescriberRepository.
-   */
-  def addPatient = SecuredAction(AuthorizedWithUserType("models.Prescriber")){ implicit request =>
-    // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle success.
-    AddPatientForm.form.bindFromRequest.fold(
-      // The error function. We return the index page with the error form, which will render the errors.
-      // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
-      // a future because the person creation function returns a future.
-      form => {
-        Future.successful(Ok(views.html.addPatient(form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears))
-      },
-      // There were no errors in the form, so create the person.
-      patient => {
-        repo.create(patient.firstName, patient.surname, dobToString(patient.dobDayOfMonth, patient.dobMonth, patient.dobYear), patient.hospitalNumber).map { _ =>
-          // If successful, we simply redirect to the index page.
-          Redirect(routes.PrescriberController.index()).flashing("success" -> Messages("user.added"))
-        }
-      }
-    )
-  }
-
-  /**
-   * @return the patients dob formatted as a single String
-   */
-  def dobToString(day: String, month: String, year: String): String = {
-    day + "-" + month + "-" + year
-  }
 
 //  /**
 //   * Registers a new administrator or prescriber.

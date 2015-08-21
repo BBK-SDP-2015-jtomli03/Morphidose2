@@ -1,6 +1,7 @@
 package models.daos
 
 import com.mohiva.play.silhouette.api.LoginInfo
+import models.Patient
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape.proveShapeOf
 
@@ -33,6 +34,15 @@ trait DBTableDefinitions {
     def lastName = column[Option[String]]("lastname")
     def email = column[Option[String]]("email")
     def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
+  }
+
+  class Patients(tag: Tag) extends Table[Patient](tag, "patients") {
+    def hospitalNumber = column[String]("hospitalnumber", O.PrimaryKey)
+    def title = column[String]("title")
+    def firstName = column[String]("firstname")
+    def surname = column[String]("surname")
+    def dob = column[String]("dob")
+    def * = (hospitalNumber, title, firstName, surname, dob) <> (Patient.tupled, Patient.unapply)
   }
 
   case class DBLoginInfo (
@@ -68,6 +78,7 @@ trait DBTableDefinitions {
   val slickAdministrators = TableQuery[Administrators]
   val slickLoginInfos = TableQuery[LoginInfos]
   val slickPasswordInfos = TableQuery[PasswordInfos]
+  val slickPatients = TableQuery[Patients]
   
   // queries used in multiple places
   def loginInfoQuery(loginInfo: LoginInfo) = 

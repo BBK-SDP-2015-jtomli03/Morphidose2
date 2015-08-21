@@ -1,0 +1,65 @@
+@(prescription: Form[models.forms.PrescriptionForm.Data],user: User, pt: Patient, MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
+
+@import helper._
+@implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+@import b3.vertical.fieldConstructor
+
+@main("Morphidose Prescriber Functions"){
+  @request.flash.get("error").map { msg =>
+    <div class="col-md-6 col-md-offset-3 alert alert-danger alert-error">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <strong>Error!</strong> @msg
+    </div>
+  }
+  @request.flash.get("success").map { msg =>
+    <div class="col-md-6 col-md-offset-3 alert alert-success">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <strong>Success!</strong> @msg
+    </div>
+  }
+  <div id="main_container">
+    <div class="side_nav_container">
+      <div class="list-group" id="side_nav">
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button>
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button>
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span>  Edit Patient Details</button>
+      </div>
+    </div>
+    <div class="right_div">
+      <h3>@pt.title @pt.firstName @pt.surname (@pt.hospitalNumber)</h3>
+      <div class="calculated_dose_titration">
+        <div class="input">
+          <h3>PRESCRIBE INITIAL DOSES</h3>
+          <div class="form">
+          @*/@form(routes.PrescriberController.getPrescription()) {*@
+            @*<br><br><br>*@
+            @*<label>Slow Release Morphine:</label>*@
+            @*<br>*@
+            @*/@select(*@
+              @*prescription("MRdrug"),*@
+              @*options(MRMorphine)*@
+            @*)*@
+            @*/@select(*@
+              @*prescription("MRdose"),*@
+              @*options(MRMorphineDoses)*@
+            @*)*@
+            @*<br><br>*@
+            @*<label>Breakthrough Morphine:</label>*@
+            @*<br>*@
+            @*/@select(*@
+              @*prescription("breakthroughDrug"),*@
+              @*options(BreakthroughMorphine)*@
+            @*)*@
+            @*/@select(*@
+              @*prescription("breakthroughDose"),*@
+              @*options(BreakthroughMorphineDoses)*@
+            @*)*@
+            @*<br><br><br>*@
+            @*<button class="btn btn-lg btn-primary btn-block" type="submit">Prescribe doses</button>*@
+          @*}*@
+          </div>@*End of form*@
+        </div>@*End of input*@
+      </div>@*End of calculated_dose_titration*@
+    </div>@*End of right_div*@
+  </div>@*End of main_container*@
+}

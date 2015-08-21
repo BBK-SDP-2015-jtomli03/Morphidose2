@@ -25,7 +25,7 @@ import scala.language.postfixOps
  *
  * @param messagesApi The Play messages API.
  * @param env The Silhouette environment.
- * @param userService The user service implementation.
+ * @param userService The user UserService implementation.
  * @param authInfoRepository The auth info repository implementation.
  * @param credentialsProvider The credentials provider.
  * @param configuration The Play configuration.

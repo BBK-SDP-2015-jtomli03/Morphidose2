@@ -29,14 +29,15 @@
       <div class="input">
         <h3>Add A New Patient</h3>
         <div class="form">
-        @form(routes.SignUpController.signUp("patient")) {
+        @form(routes.PrescriberController.addPatient()) {
           @helper.CSRF.formField
           <p>
             Please enter the following patient details;
           </p>
+          @b3.text(patient("hospitalNumber"), '_label -> "Hospital Number:", 'placeholder -> "Patients Hospital Number")
           @b3.select(patient("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
           @b3.text(patient("firstName"), '_label -> "First Name:",'placeholder -> "First name")
-          @b3.text(patient("lastName"), '_label -> "Surname:", 'placeholder -> "Last name")
+          @b3.text(patient("surname"), '_label -> "Surname:", 'placeholder -> "Last name")
           <label>Date Of Birth:</label>
           @select(
             patient("dobDayOfMonth"),
@@ -55,21 +56,19 @@
               <p class="red">@error.message</p>
             }
           }
-          <br><br>
-          @b3.text(patient("hospitalNumber"), '_label -> "Hospital Number:", 'placeholder -> "Patients Hospital Number")
-          <br>
+          <br><br><br>
           <button class="btn btn-lg btn-primary btn-block" type="submit">ADD PATIENT</button>
 
-          @if(patient.hasErrors || patient.hasGlobalErrors) {
-            <div class="alert alert-danger patient-alert">
-              <a class="close" data-dismiss="alert">x</a>
-              <p>
-                Caution: patient not submitted!
-                <br>
-                Please complete all fields.
-              </p>
-            </div>
-          }
+          @*/@/*@@*if(patient.hasErrors || patient.hasGlobalErrors) {*@
+@*<div class="alert alert-danger patient-alert">*@
+@*<a class="close" data-dismiss="alert">x</a>*@
+@*<p>*@
+@*Caution: patient not submitted!*@
+@*<br>*@
+@*Please complete all fields.*@
+@*</p>*@
+@*</div>*@
+@*}*@
         }
         </div>
       </div>
