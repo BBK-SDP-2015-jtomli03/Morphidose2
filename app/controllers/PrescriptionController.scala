@@ -1,16 +1,17 @@
 package controllers
 
-import javax.inject.Inject
 import java.sql.Timestamp
+import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.PasswordHasher
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
-import models.{Prescription, Patient, User}
+import models.daos.PrescriptionDAO
 import models.forms.PrescriptionForm
 import models.services.UserService
-import models.utils.{DropdownUtils, AuthorizedWithUserType}
+import models.utils.{AuthorizedWithUserType, DropdownUtils}
+import models.{Patient, Prescription, User}
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.i18n.MessagesApi
 
@@ -31,6 +32,7 @@ class PrescriptionController @Inject() (
                                    userService: UserService,
                                    authInfoRepository: AuthInfoRepository,
                                    passwordHasher: PasswordHasher,
+                                   prescriptionDAO: PrescriptionDAO,
                                    val timeZone: DateTimeZone) extends Silhouette[User, CookieAuthenticator] {
 
   /**
@@ -42,8 +44,8 @@ class PrescriptionController @Inject() (
     PrescriptionForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
       prescriptionData => {
-        val prescription = Prescription(patient.hospitalNumber, request.identity.userID, new Timestamp(new DateTime().withZone(timeZone).getMillis), prescriptionData.MRDrug, prescriptionData.MRDose, prescriptionData.breakthroughDrug, prescriptionData.breakthroughDose)
-
+        val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), prescriptionData.MRDrug, prescriptionData.MRDose, prescriptionData.breakthroughDrug, prescriptionData.breakthroughDose)
+        prescriptionDAO.addPrescription(prescription)
         Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
 
       }

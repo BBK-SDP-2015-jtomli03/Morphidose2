@@ -23,18 +23,8 @@ CREATE TABLE administrators (
   PRIMARY KEY (userID)
 );
 
-CREATE TABLE "prescribers" (
-  userID varchar NOT NULL,
-  title varchar NOT NULL,
-  firstName varchar NOT NULL,
-  lastName varchar NOT NULL,
-  email varchar,
-  PRIMARY KEY (userID)
-);
-
 # --- !Downs
 
--- drop table "prescribers";
 -- drop table "administrators";
 -- drop table "passwordinfo";
 -- drop table "logininfo";

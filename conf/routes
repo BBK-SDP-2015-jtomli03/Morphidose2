@@ -4,7 +4,7 @@
 
 # Home page
 GET         /home                            @controllers.PrescriberController.index
-GET         /prescription                    @controllers.PrescriberController.newPrescription(patient: Patient)
+POST        /prescription                    @controllers.PrescriptionController.newPrescription(patient: models.Patient)
 POST        /patient                         @controllers.PrescriberController.addPatient()
 GET         /admin                           @controllers.AdministratorController.adminLogin
 GET         /adminhome                       @controllers.AdministratorController.index

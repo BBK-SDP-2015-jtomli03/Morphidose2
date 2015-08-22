@@ -1,7 +1,6 @@
 package models
 
 import java.sql.Timestamp
-import java.util.UUID
 
 /**
  * The prescription object.
@@ -16,7 +15,7 @@ import java.util.UUID
  */
 case class Prescription(
                     ptHospitalNumber: String,
-                    prescriberID: UUID,
+                    prescriberID: String,
                     date: Timestamp,
                     MRDrug: String,
                     MRDose: Double,

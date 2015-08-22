@@ -1,5 +1,7 @@
 package models
 
+import play.api.mvc.QueryStringBindable
+
 /**
  * The patient object.
  *
@@ -14,3 +16,27 @@ case class Patient(
                     firstName: String,
                     surname: String,
                     dob: String)
+
+object Patient{
+  implicit def queryStringBinder(implicit stringBinder: QueryStringBindable[String]) = new QueryStringBindable[Patient]{
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Patient]] = {
+      for{
+        ptHospitalNumber <- stringBinder.bind(key + ".hospitalNumber", params)
+        ptTitle <- stringBinder.bind(key + ".title", params)
+        ptFirstName <- stringBinder.bind(key + ".firstName", params)
+        ptSurname <- stringBinder.bind(key + ".surname", params)
+        ptDob <- stringBinder.bind(key + ".dob", params)
+      }yield{
+        (ptHospitalNumber, ptTitle, ptFirstName, ptSurname, ptDob) match {
+          case (Right(hospitalNumber), Right(title), Right(firstName), Right(surname), Right(dob)) =>
+            Right(Patient(hospitalNumber, title, firstName, surname, dob))
+          case _ => Left("Unable to bind Patient")
+        }
+      }
+    }
+
+    override def unbind(key: String, patient: Patient): String = {
+      stringBinder.unbind(key + ".hospitalNumber=", patient.hospitalNumber) + "&" + stringBinder.unbind(key + ".title=", patient.title) + "&" + stringBinder.unbind(key + ".firstName=", patient.firstName) + "&" + stringBinder.unbind(key + ".surname=", patient.surname) + "&" + stringBinder.unbind(key + ".dob=", patient.dob)
+    }
+  }
+}

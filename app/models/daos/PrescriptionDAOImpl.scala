@@ -2,15 +2,15 @@ package models.daos
 
 import models.Prescription
 
-/**
- * Created by Jo on 22/08/2015.
- */
 class PrescriptionDAOImpl extends PrescriptionDAO with DAOSlick  {
+  import driver.api._
 
   /**
-   * Adds a prescription.
+   * Adds a new prescription to the database.
    *
    * @param prescription The prescription to save.
    */
-  def addPrescription(prescription: Prescription) = ???
+  def addPrescription(prescription: Prescription) = db.run{
+    slickPrescriptions += prescription
+  }
 }

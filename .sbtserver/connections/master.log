@@ -1,64 +1,40 @@
-New log file opened at Sat Aug 22 17:01:33 BST 2015 by 3388@joannes-mbp.lan
-Taking next connection to: 53847
-New client attempting to connect on port: 53849-53847
-  Address = /192.168.1.68:53847
-This client on port 53849 has uuid 0fa07b81-4bc5-4f05-92a1-29f11efc1c5b configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
-Connected Clients: activator-0fa07b81-4bc5-4f05-92a1-29f11efc1c5b
-Taking next connection to: 53847
+New log file opened at Sat Aug 22 22:43:54 BST 2015 by 4493@joannes-mbp.lan
+Taking next connection to: 55891
+New client attempting to connect on port: 55893-55891
+  Address = /192.168.1.68:55891
+This client on port 55893 has uuid ef22c407-0b7c-4c3d-ad19-a2b693e0c3c1 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-ef22c407-0b7c-4c3d-ad19-a2b693e0c3c1
+Taking next connection to: 55891
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
+Taking next connection to: 55891
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
+Taking next connection to: 55891
+New client attempting to connect on port: 56348-55891
+  Address = /192.168.1.68:55891
+Handshake exception on socket: 56348
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 55891
+New client attempting to connect on port: 56349-55891
+  Address = /192.168.1.68:55891
+This client on port 56349 has uuid 2a794c81-1040-4ba9-baf8-d53067616bdf configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: activator-ef22c407-0b7c-4c3d-ad19-a2b693e0c3c1, play-fork-run-2a794c81-1040-4ba9-baf8-d53067616bdf
+Taking next connection to: 55891
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
+Taking next connection to: 55891
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
+Taking next connection to: 55891
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 53847
+Taking next connection to: 55891

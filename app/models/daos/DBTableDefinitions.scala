@@ -3,7 +3,7 @@ package models.daos
 import java.sql.Timestamp
 
 import com.mohiva.play.silhouette.api.LoginInfo
-import models.{Prescription, Patient}
+import models.Prescription
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape.proveShapeOf
 
@@ -38,13 +38,21 @@ trait DBTableDefinitions {
     def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
   }
 
-  class Patients(tag: Tag) extends Table[Patient](tag, "patients") {
-    def hospitalNumber = column[String]("hospitalnumber", O.PrimaryKey)
+  case class PtData (
+                      hospitalNumber: String,
+                      title: String,
+                      firstName: String,
+                      surname: String,
+                      dob: String
+                      )
+
+  class Patients(tag: Tag) extends Table[PtData](tag, "patients") {
+    def hospitalNumber = column[String]("hospital_number", O.PrimaryKey)
     def title = column[String]("title")
     def firstName = column[String]("firstname")
     def surname = column[String]("surname")
     def dob = column[String]("dob")
-    def * = (hospitalNumber, title, firstName, surname, dob) <> (Patient.tupled, Patient.unapply)
+    def * = (hospitalNumber, title, firstName, surname, dob) <> (PtData.tupled, PtData.unapply)
   }
 
   case class DBLoginInfo (
