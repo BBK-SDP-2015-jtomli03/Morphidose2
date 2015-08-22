@@ -43,8 +43,8 @@ class PrescriptionController @Inject() (
       form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
       prescriptionData => {
         val prescription = Prescription(patient.hospitalNumber, request.identity.userID, new Timestamp(new DateTime().withZone(timeZone).getMillis), prescriptionData.MRDrug, prescriptionData.MRDose, prescriptionData.breakthroughDrug, prescriptionData.breakthroughDose)
-        ptDAO.save(pt)
-        Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, pt, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+
+        Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
 
       }
     )

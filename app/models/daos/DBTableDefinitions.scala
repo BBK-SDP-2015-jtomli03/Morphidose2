@@ -1,7 +1,9 @@
 package models.daos
 
+import java.sql.Timestamp
+
 import com.mohiva.play.silhouette.api.LoginInfo
-import models.Patient
+import models.{Prescription, Patient}
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape.proveShapeOf
 
@@ -73,12 +75,27 @@ trait DBTableDefinitions {
     def * = (hasher, password, userID) <> (DBPasswordInfo.tupled, DBPasswordInfo.unapply)
   }
 
+  class Prescriptions(tag: Tag) extends Table[Prescription](tag, "prescriptions") {
+    def ptHospitalNumber = column[String]("pt_hospital_number")
+    def prescriberID = column[String]("prescriberID")
+    def date = column[Timestamp]("date")
+    def MRDrug = column[String]("mr_drug")
+    def MRDose = column[Double]("mr_dose")
+    def breakthroughDrug = column[String]("breakthrough_drug")
+    def breakthroughDose = column[Double]("breakthrough_dose")
+    def * = (ptHospitalNumber, prescriberID, date, MRDrug, MRDose, breakthroughDrug, breakthroughDose) <> (Prescription.tupled, Prescription.unapply)
+    def pkey = primaryKey("prescriptons_pk", (ptHospitalNumber, date))
+    def patient = foreignKey("patient_fk", ptHospitalNumber, slickPatients)(_.hospitalNumber)
+    def prescriber = foreignKey("prescriber_fk", prescriberID, slickPrescribers)(_.userID)
+  }
+
   // table query definitions
   val slickPrescribers = TableQuery[Prescribers]
   val slickAdministrators = TableQuery[Administrators]
   val slickLoginInfos = TableQuery[LoginInfos]
   val slickPasswordInfos = TableQuery[PasswordInfos]
   val slickPatients = TableQuery[Patients]
+  val slickPrescriptions = TableQuery[Prescriptions]
   
   // queries used in multiple places
   def loginInfoQuery(loginInfo: LoginInfo) = 
