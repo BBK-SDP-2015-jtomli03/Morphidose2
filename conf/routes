@@ -4,8 +4,8 @@
 
 # Home page
 GET         /home                            @controllers.PrescriberController.index
-#GET         /prescription                    @controllers.PrescriberController.prescription()
-POST        /patient/add                     @controllers.PrescriberController.addPatient()
+GET         /prescription                    @controllers.PrescriberController.newPrescription(patient: Patient)
+POST        /patient                         @controllers.PrescriberController.addPatient()
 GET         /admin                           @controllers.AdministratorController.adminLogin
 GET         /adminhome                       @controllers.AdministratorController.index
 GET         /                                @controllers.ApplicationController.index
@@ -13,7 +13,7 @@ GET         /signIn                          @controllers.ApplicationController.
 GET         /signUp                          @controllers.ApplicationController.signUp
 GET         /signOut                         @controllers.ApplicationController.signOut
 POST        /authenticate/credentials        @controllers.CredentialsAuthController.authenticate
-POST        /signUp                          @controllers.SignUpController.signUp(userType: String)
+POST        /user                            @controllers.SignUpController.addUser(userType: String)
 
 
 

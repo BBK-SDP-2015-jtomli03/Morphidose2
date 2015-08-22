@@ -42,7 +42,7 @@ class SignUpController @Inject() (
    * @param userType the type of user to register.
    * @return The result to display.
    */
-  def signUp(userType: String) = SecuredAction(AuthorizedWithUserType("models.Administrator")).async { implicit request =>
+  def addUser(userType: String) = SecuredAction(AuthorizedWithUserType("models.Administrator")).async { implicit request =>
     SignUpForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.adminhome(form, request.identity, DropdownUtils.getTitles, "active", "", "active in", "fade"))),
       data => {
@@ -52,7 +52,7 @@ class SignUpController @Inject() (
             Future.successful(Redirect(routes.ApplicationController.signUp()).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
-            val user = getUser(userType, data, loginInfo)
+            val user = createUser(userType, data, loginInfo)
             for {
               user <- userService.save(user, userType)
               authInfo <- authInfoRepository.add(loginInfo, authInfo)
@@ -79,7 +79,7 @@ class SignUpController @Inject() (
    * @param loginInfo the users loginInfo
    * @return an instance of a User.
    */
-  def getUser(userType: String, data: SignUpForm.Data, loginInfo: LoginInfo): User = userType match{
+  def createUser(userType: String, data: SignUpForm.Data, loginInfo: LoginInfo): User = userType match{
     case "administrator" => Administrator(
       userID = UUID.randomUUID(),
       loginInfo = loginInfo,

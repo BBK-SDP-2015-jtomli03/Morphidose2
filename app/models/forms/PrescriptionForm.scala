@@ -2,28 +2,30 @@ package models.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.data.format.Formats._
 
 object PrescriptionForm {
 
   /**
-   * The mapping for the patient form.
+   * The mapping for the prescription form.
    */
   val form: Form[Data] = Form {
     mapping(
-      "ptName" -> nonEmptyText,
-      "datePrescribed" -> nonEmptyText,
-      "MRdose" -> nonEmptyText,
-      "breakthroughDose" -> nonEmptyText
+      "MRDrug" -> nonEmptyText,
+      "MRDose" -> of(doubleFormat),
+      "breakthroughDrug" -> nonEmptyText,
+      "breakthroughDose" -> of(doubleFormat)
     )(Data.apply)(Data.unapply)
   }
 
   /**
-   * The create patient form.
+   * The form data.
    *
-   * Generally for forms, you should define separate objects to your models, since forms very often need to present data
-   * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
-   * that is generated once it's created.
+   * @param MRDrug the name of the MR drug prescribed.
+   * @param MRDose the dose of the MR drug prescribed.
+   * @param breakthroughDrug the name of the breakthrough drug prescribed.
+   * @param breakthroughDose the dose of the breakthrough drug prescribed.
    */
-  case class Data(ptName: String, datePrescribed: String, MRdose: String, breakthroughDose: String)
+  case class Data(MRDrug: String, MRDose: Double, breakthroughDrug: String, breakthroughDose: Double)
 }
 

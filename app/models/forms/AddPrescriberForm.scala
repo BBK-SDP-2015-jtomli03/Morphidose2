@@ -25,5 +25,14 @@ object AddPrescriberForm {
     )(Data.apply)(Data.unapply)
   }
 
+  /**
+   * The form data.
+   *
+   * @param title The title of the user.
+   * @param firstName The first name of a user.
+   * @param surname The last name of a user.
+   * @param email The email of the user.
+   * @param password The password of the user.
+   */
   case class Data(title: String, firstName: String, surname: String, email: String, password: String)
 }

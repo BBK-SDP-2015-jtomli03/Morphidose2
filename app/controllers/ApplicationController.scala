@@ -43,7 +43,7 @@ class ApplicationController @Inject() (
   }
 
   /**
-   * Handles the Sign Up action.
+   * Handles the Add User action.
    *
    * @return The result to display.
    */

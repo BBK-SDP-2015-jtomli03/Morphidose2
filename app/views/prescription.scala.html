@@ -2,7 +2,6 @@
 
 @import helper._
 @implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
-@import b3.vertical.fieldConstructor
 
 @main("Morphidose Prescriber Functions"){
   @request.flash.get("error").map { msg =>
@@ -31,32 +30,32 @@
         <div class="input">
           <h3>PRESCRIBE INITIAL DOSES</h3>
           <div class="form">
-          @*/@form(routes.PrescriberController.getPrescription()) {*@
-            @*<br><br><br>*@
-            @*<label>Slow Release Morphine:</label>*@
-            @*<br>*@
-            @*/@select(*@
-              @*prescription("MRdrug"),*@
-              @*options(MRMorphine)*@
-            @*)*@
-            @*/@select(*@
-              @*prescription("MRdose"),*@
-              @*options(MRMorphineDoses)*@
-            @*)*@
-            @*<br><br>*@
-            @*<label>Breakthrough Morphine:</label>*@
-            @*<br>*@
-            @*/@select(*@
-              @*prescription("breakthroughDrug"),*@
-              @*options(BreakthroughMorphine)*@
-            @*)*@
-            @*/@select(*@
-              @*prescription("breakthroughDose"),*@
-              @*options(BreakthroughMorphineDoses)*@
-            @*)*@
-            @*<br><br><br>*@
-            @*<button class="btn btn-lg btn-primary btn-block" type="submit">Prescribe doses</button>*@
-          @*}*@
+          @form(routes.PrescriptionController.newPrescription(pt)) {
+            <br><br><br>
+            <label>Slow Release Morphine:</label>
+            <br>
+            @select(
+              prescription("MRDrug"),
+              options(MRMorphine)
+            )
+            @select(
+              prescription("MRDose"),
+              options(MRMorphineDoses)
+            )
+            <br><br>
+            <label>Breakthrough Morphine:</label>
+            <br>
+            @select(
+              prescription("breakthroughDrug"),
+              options(BreakthroughMorphine)
+            )
+            @select(
+              prescription("breakthroughDose"),
+              options(BreakthroughMorphineDoses)
+            )
+            <br><br><br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Prescribe doses</button>
+          }
           </div>@*End of form*@
         </div>@*End of input*@
       </div>@*End of calculated_dose_titration*@

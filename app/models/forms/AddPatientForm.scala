@@ -13,7 +13,7 @@ import play.api.data.Forms._
 object AddPatientForm {
 
   /**
-   * The mapping for the add prescriber form.
+   * The mapping for the add patient form.
    */
   /**
    * The mapping for the patient form.
@@ -46,5 +46,16 @@ object AddPatientForm {
     }
   }
 
+  /**
+   * The form data.
+   *
+   * @param hospitalNumber The patients hospital number.
+   * @param title The title of the patient.
+   * @param firstName The first name of a patient.
+   * @param surname The last name of a patient.
+   * @param dobDayOfMonth The day of the month the patient was born (eg, 15).
+   * @param dobMonth The month the patient was born.
+   * @param dobYear The year the patient was born.
+   */
   case class Data(hospitalNumber: String, title: String, firstName: String, surname: String, dobDayOfMonth: String, dobMonth: String, dobYear: String)
 }

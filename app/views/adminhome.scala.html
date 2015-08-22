@@ -33,7 +33,7 @@
                                     <div class="tab-pane @prescriber" id="AddPrescriber">
                                         <h4 class="form-signin-heading">Add a new Prescriber</h4>
                                         <div class="form-signin-add-user">
-                                            @form(routes.SignUpController.signUp("prescriber"))  {
+                                            @form(routes.SignUpController.addUser("prescriber"))  {
                                                 @helper.CSRF.formField
                                                 @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
                                                 @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name")
@@ -48,7 +48,7 @@
                                     <div class="tab-pane @administrator" id="AddAdministrator">
                                         <h4 class="form-signin-heading">Add a new Administrator</h4>
                                         <div class="form-signin-add-user">
-                                                @form(routes.SignUpController.signUp("administrator"))  {
+                                                @form(routes.SignUpController.addUser("administrator"))  {
                                                     @helper.CSRF.formField
                                                     @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
                                                     @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name")
