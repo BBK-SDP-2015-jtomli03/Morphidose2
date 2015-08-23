@@ -1,4 +1,4 @@
-@(prescription: Form[models.forms.PrescriptionForm.Data],user: User, pt: Patient, MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
+@(prescription: Form[models.forms.PrescriptionForm.Data], user: User, pt: Patient, MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
 
 @import helper._
 @implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}

@@ -33,14 +33,14 @@ class PrescriptionController @Inject() (
                                    authInfoRepository: AuthInfoRepository,
                                    passwordHasher: PasswordHasher,
                                    prescriptionDAO: PrescriptionDAO,
-                                   val timeZone: DateTimeZone) extends Silhouette[User, CookieAuthenticator] {
+                                   timeZone: DateTimeZone) extends Silhouette[User, CookieAuthenticator] {
 
   /**
    * The add patient action.
    *
    * This is asynchronous, since we're invoking the asynchronous methods on PatientRepository.
    */
-  def newPrescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async{ implicit request =>
+  def newPrescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     PrescriptionForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
       prescriptionData => {

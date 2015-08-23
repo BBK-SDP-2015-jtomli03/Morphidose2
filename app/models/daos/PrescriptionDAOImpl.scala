@@ -1,8 +1,11 @@
 package models.daos
 
+
+import javax.inject.Inject
+
 import models.Prescription
 
-class PrescriptionDAOImpl extends PrescriptionDAO with DAOSlick  {
+class PrescriptionDAOImpl @Inject() extends PrescriptionDAO with DAOSlick  {
   import driver.api._
 
   /**

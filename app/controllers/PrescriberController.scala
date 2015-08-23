@@ -28,28 +28,18 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
     Future.successful(Ok(views.html.addPatient(AddPatientForm.form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)))
   }
 
-//  /**
-//   * Handles the action for the prescription page.
-//   * Only authenticated prescribers can access this page, otherwise the user is redirected to the sign in page.
-//   *
-//   * @return The result to display (prescription view).
-//   */
-//  def prescription() = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
-//    //TODO
-//  }
-
   /**
    * The add patient action.
    *
    * This is asynchronous, since we're invoking the asynchronous methods on PatientRepository.
    */
-    def addPatient() = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async{ implicit request =>
+    def addPatient() = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
       AddPatientForm.form.bindFromRequest.fold(
         form => Future.successful(BadRequest(views.html.addPatient(form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears))),
         // There were no errors in the form, so create the patient.
         patient => {
           ptDAO.findPatient(patient.hospitalNumber).flatMap{
-            case Some(user) =>
+            case Some(patientExists) =>
               Future.successful(Redirect(routes.PrescriberController.index()).flashing("error" -> Messages("patient.exists")))
             case None =>
               val pt = Patient(patient.hospitalNumber, patient.title, patient.firstName, patient.surname, dobToString(patient.dobDayOfMonth, patient.dobMonth, patient.dobYear))

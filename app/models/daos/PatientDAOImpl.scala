@@ -1,12 +1,14 @@
 package models.daos
 
+import javax.inject.Inject
+
 import models.Patient
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import scala.concurrent.Future
 import scala.language.postfixOps
 
-class PatientDAOImpl extends PatientDAO with DAOSlick {
+class PatientDAOImpl @Inject() extends PatientDAO with DAOSlick {
   import driver.api._
 
   /**
@@ -38,7 +40,7 @@ class PatientDAOImpl extends PatientDAO with DAOSlick {
    * @param patient The patient to save.
    */
   override def save(patient: Patient) = db.run {
-      slickPatients.insertOrUpdate(patient)
+      slickPatients.insertOrUpdate(PtData(patient.hospitalNumber, patient.title, patient.firstName, patient.surname, patient.dob))
   }
 }
 
