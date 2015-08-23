@@ -30,7 +30,8 @@
         <div class="input">
           <h3>PRESCRIBE INITIAL DOSES</h3>
           <div class="form">
-          @form(routes.PrescriptionController.newPrescription(pt)) {
+          @form(routes.PrescriptionController.addPrescription(pt)) {
+            @helper.CSRF.formField
             <br><br><br>
             <label>Slow Release Morphine:</label>
             <br>

@@ -2,7 +2,6 @@ package models.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.data.format.Formats._
 
 object PrescriptionForm {
 
@@ -12,9 +11,9 @@ object PrescriptionForm {
   val form: Form[Data] = Form {
     mapping(
       "MRDrug" -> nonEmptyText,
-      "MRDose" -> of(doubleFormat),
+      "MRDose" -> nonEmptyText,
       "breakthroughDrug" -> nonEmptyText,
-      "breakthroughDose" -> of(doubleFormat)
+      "breakthroughDose" -> nonEmptyText
     )(Data.apply)(Data.unapply)
   }
 
@@ -26,6 +25,6 @@ object PrescriptionForm {
    * @param breakthroughDrug the name of the breakthrough drug prescribed.
    * @param breakthroughDose the dose of the breakthrough drug prescribed.
    */
-  case class Data(MRDrug: String, MRDose: Double, breakthroughDrug: String, breakthroughDose: Double)
+  case class Data(MRDrug: String, MRDose: String, breakthroughDrug: String, breakthroughDose: String)
 }
 

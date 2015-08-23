@@ -62,7 +62,6 @@ class ApplicationController @Inject() (
   def signOut = SecuredAction.async { implicit request =>
     val result = Redirect(routes.ApplicationController.index())
     env.eventBus.publish(LogoutEvent(request.identity, request, request2Messages))
-
     env.authenticatorService.discard(request.authenticator, result)
   }
 }
