@@ -28,24 +28,6 @@ class PrescriptionController @Inject()(
                                         prescriptionDAO: PrescriptionDAO,
                                         timeZone: DateTimeZone) extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport{
 
-  /**
-   * The add a prescription action.
-   *
-   * This is asynchronous, since we're invoking the asynchronous methods on prescriptionDAO.
-   */
-//  def newPrescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
-//    PrescriptionForm.form.bindFromRequest.fold(
-//      form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
-//      prescriptionData => {
-//        //val patient = Patient("A1234N", "Mrs", "Janet", "Carr", "5-JUN-1948")
-//        val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), prescriptionData.MRDrug, prescriptionData.MRDose, prescriptionData.breakthroughDrug, prescriptionData.breakthroughDose)
-//        prescriptionDAO.addPrescription(prescription)
-//        //        Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
-//        Future.successful(Ok(views.html.test(request.identity)))
-//
-//      }
-//    )
-//  }
 
   /**
    * The show a new prescription action.
@@ -65,12 +47,9 @@ class PrescriptionController @Inject()(
     PrescriptionForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
       data => {
-        //val patient = Patient("A1234N", "Mrs", "Janet", "Carr", "5-JUN-1948")
         val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), data.MRDrug, getDose(data.MRDose), data.breakthroughDrug, getDose(data.breakthroughDose))
-//        val prescription = Prescription("huohdos", "udaihu", new Timestamp(new DateTime().withZone(timeZone).getMillis), "Morphine", 5.00, "hufhuoa", 10.00)
         prescriptionDAO.addPrescription(prescription)
         val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, data.MRDose, prescription.breakthroughDrug, data.breakthroughDose)
-        //        Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
         Future.successful(Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
       }
     )

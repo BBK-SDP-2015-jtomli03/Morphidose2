@@ -28,33 +28,36 @@
     </div>
 
     <div class="right_div">
-      <h5>@pt.firstName @pt.surname (@pt.hospitalNumber) DOB: @pt.dob</h5>
+      <div class="ptDetails"><span class="large">@pt.title @pt.firstName @pt.surname</span>  (@pt.hospitalNumber)  DOB: @pt.dob</div>
       <div class="current_prescription">
         <h3>CURRENT PRESCRIPTION</h3>
         <div class="info">
-          <p>Prescribed by @currentPrescriptionData.prescriber on @currentPrescriptionData.date</p>
+          <p>Prescribed by @currentPrescriptionData.prescriber on @currentPrescriptionData.date ;</p>
           <p class="bg-success">
             @currentPrescriptionData.MRDrug @currentPrescriptionData.MRDose <br>
             @currentPrescriptionData.breakthroughDrug @currentPrescriptionData.breakthroughDose
           </p>
         </div>
       </div>
+      <span id="edit_doses"></span>
       <div class="calculated_dose_titration">
         <h3>CALCULATED DOSE TITRATION</h3>
         <div class="info">
-          <p> Based on the frequency of prn doses taken since the last consultation the next calculated doses are;</p>
+          <p> Recommended doses based on the frequency of as required doses taken since the last consultation;</p>
           <p class="bg-success">
             MST Continus 40mg BD <br>
             Oramorph 10mg/5ml Oral Solution 5ml prn
           </p>
-          <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button> <br><br>
+          <div class="buttons">
+          <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button>
+          <a href="#edit_doses"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button></a>
           <a href="#dose_calculation"><button type="button" class="btn btn-danger" ><span class="glyphicon glyphicon-phone"></span>   View calculations</button></a>
-          <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-stats"></span>   View graph of doses taken</button>
-          <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-calendar"></span>   View prescription history</button>
-
-          <div class="edit_doses">
-            <h4>Edit Doses to Prescribe</h4><br>
+          </div>
+          <div class="input">
+            <h4>Edit Doses to Prescribe</h4>
+            <div class="form" id="edit_doses">
             @form(routes.PrescriptionController.addPrescription(pt)) {
+              @helper.CSRF.formField
               <label>Slow Release Morphine:</label>
               <br>
               @select(
@@ -79,7 +82,8 @@
               <br><br><span id="dose_calculation"></span>
               <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe edited doses</button> <br><br>
               }
-          </div>
+            </div>
+            </div>
         </div>
       </div>
       <div class="dose_calculation">

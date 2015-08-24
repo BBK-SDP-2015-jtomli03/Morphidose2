@@ -78,25 +78,31 @@ h3 {
     width: 100%;
     text-align: center;
     color: #ffffff;
-    background-color: #5E7639;
+    background-color: #669900;
     padding: 1% 2%;
     margin: 0 0 2% 0;
 }
 
 h4{
     font-size: 24px;
+    text-align: center;
+    padding-top: 2%;
 }
 
-h5{
+.ptDetails{
     float: left;
     width: 100%;
+    font-size: 18px;
     text-align: center;
     color: #ffffff;
-    font-size: 20px;
-    background-color: #2F3B1C;
+    background-color: #5E7639;
     border: 0;
     padding: 1% 2%;
     margin: 0 0 3% 0;
+}
+
+.large{
+    font-size: 24px;
 }
 
 .form-signin{
@@ -140,6 +146,11 @@ a.menu:hover, a.menu:active, a.menu:focus{
 p.bodyP {
     width: 65%;
     margin: 1% auto;
+}
+
+.buttons{
+    width: 70%;
+    margin: 2% auto 5% auto;
 }
 
 footer{
@@ -266,4 +277,5 @@ footer a{
 
 .bg-success{
     text-align: center;
+    padding: 1% 0;
 }
