@@ -58,6 +58,16 @@ input{
     margin: 7% 0 4% 0;
 }
 
+h1{
+    float: left;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    background-color: #5E7639;
+    padding: 1% 2%;
+    margin: 0 0 5% 0;
+}
+
 h2{
     width: 80%;
     margin: 0 auto;
@@ -73,6 +83,10 @@ h3 {
     margin: 0 0 2% 0;
 }
 
+h4{
+    font-size: 24px;
+}
+
 h5{
     float: left;
     width: 100%;
@@ -80,22 +94,9 @@ h5{
     color: #ffffff;
     font-size: 20px;
     background-color: #2F3B1C;
+    border: 0;
     padding: 1% 2%;
     margin: 0 0 3% 0;
-}
-
-h4{
-    font-size: 24px;
-}
-
-.view_pt_details{
-    float: right;
-    color: white;
-}
-
-a.view_pt_details:hover, a.view_pt_details:active, a.view_pt_details:focus{
-    color: white;
-    cursor: pointer;
 }
 
 .form-signin{
@@ -107,13 +108,13 @@ a.view_pt_details:hover, a.view_pt_details:active, a.view_pt_details:focus{
     margin: 3% auto 0 auto;
 }
 
-.btn-primary{
-    background-color: #669900;
+.btn-green, .btn-primary{
+    background: #669900;
     border-color: #669900;
 }
 
-.btn-primary:hover{
-    background-color: #476B00;
+.btn-primary:hover, .btn-green:hover{
+    background: #476B00;
     border-color: #476B00;
 }
 
@@ -124,6 +125,16 @@ a.view_pt_details:hover, a.view_pt_details:active, a.view_pt_details:focus{
 
 nav a {
     font-weight: bold;
+}
+
+a.menu{
+    color: #4D4D4D;
+    text-decoration: none;
+}
+
+a.menu:hover, a.menu:active, a.menu:focus{
+    color: #000;
+    cursor: pointer;
 }
 
 p.bodyP {
@@ -178,8 +189,7 @@ footer a{
     float: left;
     background-color: #ffffff;
     width: 75%;
-    border: 1px solid #ffffff;
-    border-radius: 10px;
+    border: 0;
     margin: 5% 4% 5% 3%;
 }
 
@@ -239,4 +249,21 @@ footer a{
     background-color: #ffffff;
     width: 49%;
     margin-left: 1%;
+}
+
+.prescriber_welcome{
+    float: left;
+    width: 100%;
+    text-align: center;
+    padding: 3% 5% 15% 5%;
+}
+
+.prescriber_welcome p{
+    font-size: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+.bg-success{
+    text-align: center;
 }

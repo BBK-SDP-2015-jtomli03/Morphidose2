@@ -1,6 +1,7 @@
 package controllers
 
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
@@ -8,7 +9,7 @@ import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import models.daos.PrescriptionDAO
 import models.forms.PrescriptionForm
 import models.utils.{AuthorizedWithUserType, DropdownUtils}
-import models.{Prescription, Patient, User}
+import models.{Patient, Prescription, PrescriptionData, User}
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Controller
@@ -63,15 +64,14 @@ class PrescriptionController @Inject()(
   def addPrescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     PrescriptionForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
-      prescriptionData => {
+      data => {
         //val patient = Patient("A1234N", "Mrs", "Janet", "Carr", "5-JUN-1948")
-        val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), prescriptionData.MRDrug, getDose(prescriptionData.MRDose), prescriptionData.breakthroughDrug, getDose(prescriptionData.breakthroughDose))
+        val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), data.MRDrug, getDose(data.MRDose), data.breakthroughDrug, getDose(data.breakthroughDose))
 //        val prescription = Prescription("huohdos", "udaihu", new Timestamp(new DateTime().withZone(timeZone).getMillis), "Morphine", 5.00, "hufhuoa", 10.00)
-
         prescriptionDAO.addPrescription(prescription)
+        val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, data.MRDose, prescription.breakthroughDrug, data.breakthroughDose)
         //        Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
-        Future.successful(Ok(views.html.test(request.identity)))
-
+        Future.successful(Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
       }
     )
   }
@@ -86,4 +86,24 @@ class PrescriptionController @Inject()(
     stringDose.substring(0, stringDose.indexOf("mg")).toDouble
   }
 
+  /**
+   * Formats a prescribers details into a String.
+   *
+   * @param title the prescribers title
+   * @param firstName the prescribers first name
+   * @param surname the prescribers surname
+   * @return the prescribers details as a String
+   */
+  def getPrescriberDetails(title: String, firstName: String, surname: String) = title + " " + firstName + " " + surname
+
+  /**
+   * Converts a timestamp to a formatted string.
+   *
+   * @param timestamp the timestamp
+   * @return the formatted timestamp
+   */
+  def getDateAsString(timestamp: Timestamp) = {
+    val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
+    dateFormat.format(timestamp)
+  }
 }

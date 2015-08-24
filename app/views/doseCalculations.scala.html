@@ -1,0 +1,129 @@
+@(prescription: Form[models.forms.PrescriptionForm.Data], user: User, pt: Patient, currentPrescriptionData: PrescriptionData, MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
+
+
+@import helper._
+@implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+
+@main("Morphidose Prescriber Functions"){
+  @request.flash.get("error").map { msg =>
+    <div class="col-md-6 col-md-offset-3 alert alert-danger alert-error">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <strong>Error!</strong> @msg
+    </div>
+  }
+  @request.flash.get("success").map { msg =>
+    <div class="col-md-6 col-md-offset-3 alert alert-success">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <strong>Success!</strong> @msg
+    </div>
+  }
+  <div id="main_container">
+
+    <div class="side_nav_container">
+      <div class="list-group" id="side_nav">
+        <a href="" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
+        <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
+        <a href="" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span>  Edit Patient Details</button></a>
+      </div>
+    </div>
+
+    <div class="right_div">
+      <h5>@pt.firstName @pt.surname (@pt.hospitalNumber) DOB: @pt.dob</h5>
+      <div class="current_prescription">
+        <h3>CURRENT PRESCRIPTION</h3>
+        <div class="info">
+          <p>Prescribed by @currentPrescriptionData.prescriber on @currentPrescriptionData.date</p>
+          <p class="bg-success">
+            @currentPrescriptionData.MRDrug @currentPrescriptionData.MRDose <br>
+            @currentPrescriptionData.breakthroughDrug @currentPrescriptionData.breakthroughDose
+          </p>
+        </div>
+      </div>
+      <div class="calculated_dose_titration">
+        <h3>CALCULATED DOSE TITRATION</h3>
+        <div class="info">
+          <p> Based on the frequency of prn doses taken since the last consultation the next calculated doses are;</p>
+          <p class="bg-success">
+            MST Continus 40mg BD <br>
+            Oramorph 10mg/5ml Oral Solution 5ml prn
+          </p>
+          <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button> <br><br>
+          <a href="#dose_calculation"><button type="button" class="btn btn-danger" ><span class="glyphicon glyphicon-phone"></span>   View calculations</button></a>
+          <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-stats"></span>   View graph of doses taken</button>
+          <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-calendar"></span>   View prescription history</button>
+
+          <div class="edit_doses">
+            <h4>Edit Doses to Prescribe</h4><br>
+            @form(routes.PrescriptionController.addPrescription(pt)) {
+              <label>Slow Release Morphine:</label>
+              <br>
+              @select(
+                prescription("MRdrug"),
+                options(MRMorphine)
+              )
+              @select(
+                prescription("MRdose"),
+                options(MRMorphineDoses)
+              )
+              <br><br>
+              <label>Breakthrough Morphine:</label>
+              <br>
+              @select(
+                prescription("breakthroughDrug"),
+                options(BreakthroughMorphine)
+              )
+              @select(
+                prescription("breakthroughDose"),
+                options(BreakthroughMorphineDoses)
+              )
+              <br><br><span id="dose_calculation"></span>
+              <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe edited doses</button> <br><br>
+              }
+          </div>
+        </div>
+      </div>
+      <div class="dose_calculation">
+        <h3>DOSE CALCULATIONS</h3>
+        <div class="info">
+          <p>The titration doses were calculated as follows;</p>
+          <div class="main_titration_calculations">
+            <p>
+              {{14}} breakthrough doses taken over the {{7}} days since the last consultation.<br><br>
+              Therefore;
+            </p>
+            <p>
+              <b>Average sum of breakthrough doses per 24 hours</b> =  (number of doses taken x breakthrough dose) / days <br>
+              = ({{doses_taken}} x {{breakthrough_dose}}mg) / {{days}}days <br>
+              = {{avg_24hr_breakthrough_dose}}mg
+            </p>
+            <p>
+              <b>Average total daily dose</b> = total daily MR dose + average sum of breakthrough doses per 24 hours <br>
+              = {{daily_mr_dose}}mg + {{avg_24hr_breakthrough_dose}}mg <br>
+              = {{avg_total_daily_dose}}mg
+            </p>
+          </div>
+          <div class="mr_calc">
+            <h4>{{MST Continus}}</h4>
+            <p>
+              Next dose of {{mr_drug}} to prescribe<br>
+              = average total daily dose / 2 <br>
+              = {{avg_total_daily_dose}}mg / 2 <br>
+              = {{titrated_mr_dose}}mg <br>
+              (rounded down to the nearest measurable dose)
+            </p>
+          </div>
+          <div class="prn_calc">
+            <h4>{{Oramorph 10mg/5ml Oral Solution}}</h4>
+            <p>
+              Next dose of {{breakthough_drug}} to prescribe <br>
+              = average total daily dose / 6 <br>
+              = {{avg_total_daily_dose}}mg / 6 <br>
+              = {{titrated_breakthrough_dose}}mg <br>
+              (rounded down to the nearest measurable dose)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

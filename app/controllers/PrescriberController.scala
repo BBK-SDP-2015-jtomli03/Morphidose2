@@ -27,6 +27,10 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
    * @return The result to display.
    */
   def index = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+    Future.successful(Ok(views.html.prescriberHome(AddPatientForm.form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)))
+  }
+
+  def addPatientForm = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     Future.successful(Ok(views.html.addPatient(AddPatientForm.form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)))
   }
 
@@ -41,9 +45,9 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
       patient => {
         ptDAO.findPatient(patient.hospitalNumber).flatMap{
           case Some(patientExists) =>
-            Future.successful(Redirect(routes.PrescriberController.index()).flashing("error" -> Messages("patient.exists")))
+            Future.successful(Redirect(routes.PrescriberController.addPatientForm()).flashing("error" -> Messages("patient.exists")))
           case None =>
-            val pt = Patient(patient.hospitalNumber, patient.title, patient.firstName, patient.surname, dobToString(patient.dobDayOfMonth, patient.dobMonth, patient.dobYear))
+            val pt = Patient(patient.hospitalNumber, patient.title, formatName(patient.firstName), formatName(patient.surname), dobToString(patient.dobDayOfMonth, patient.dobMonth, patient.dobYear))
             ptDAO.save(pt)
             Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, pt, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
         }
@@ -56,6 +60,13 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
    */
   def dobToString(day: String, month: String, year: String): String = {
     day + "-" + month + "-" + year
+  }
+
+  /**
+   * @return the patients name formatted as a String with the first letter in upper case and the rest lower case
+   */
+  def formatName(name: String): String = {
+    name.charAt(0).toUpper + name.substring(1).toLowerCase
   }
 
 

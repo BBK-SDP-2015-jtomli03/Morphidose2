@@ -7,10 +7,10 @@ import com.mohiva.play.silhouette.api.{ Identity, LoginInfo }
 sealed trait User extends Identity{
   val userID: UUID
   val loginInfo: LoginInfo
-  val title: Option[String]
-  val firstName: Option[String]
-  val lastName: Option[String]
-  val email: Option[String]
+  val title: String
+  val firstName: String
+  val lastName: String
+  val email: String
 }
 
 /**
@@ -26,10 +26,10 @@ sealed trait User extends Identity{
 case class Administrator(
   userID: UUID,
   loginInfo: LoginInfo,
-  title: Option[String],
-  firstName: Option[String],
-  lastName: Option[String],
-  email: Option[String]) extends User with Identity
+  title: String,
+  firstName: String,
+  lastName: String,
+  email: String) extends User with Identity
 
 /**
  * The prescriber object.
@@ -44,9 +44,9 @@ case class Administrator(
 case class Prescriber(
                           userID: UUID,
                           loginInfo: LoginInfo,
-                          title: Option[String],
-                          firstName: Option[String],
-                          lastName: Option[String],
-                          email: Option[String]) extends User with Identity
+                          title: String,
+                          firstName: String,
+                          lastName: String,
+                          email: String) extends User with Identity
 
 

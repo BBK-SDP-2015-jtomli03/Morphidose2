@@ -47,18 +47,6 @@ class ApplicationController @Inject() (
   }
 
   /**
-   * Handles the Add User action.
-   *
-   * @return The result to display.
-   */
-  def signUp = UserAwareAction.async { implicit request =>
-    request.identity match {
-      case Some(user) => Future.successful(Redirect(routes.ApplicationController.login()))
-      case None => Future.successful(Ok(views.html.signUp(SignUpForm.form)))
-    }
-  }
-
-  /**
    * Handles the Log out action.
    *
    * @return The result to display.

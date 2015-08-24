@@ -83,18 +83,18 @@ class SignUpController @Inject() (
     case "administrator" => Administrator(
       userID = UUID.randomUUID(),
       loginInfo = loginInfo,
-      title = Some(data.title),
-      firstName = Some(data.firstName),
-      lastName = Some(data.lastName),
-      email = Some(data.email)
+      title = data.title,
+      firstName = data.firstName,
+      lastName = data.lastName,
+      email = data.email
     )
     case "prescriber" => Prescriber(
       userID = UUID.randomUUID(),
       loginInfo = loginInfo,
-      title = Some(data.title),
-      firstName = Some(data.firstName),
-      lastName = Some(data.lastName),
-      email = Some(data.email)
+      title = data.title,
+      firstName = data.firstName,
+      lastName = data.lastName,
+      email = data.email
     )
   }
 

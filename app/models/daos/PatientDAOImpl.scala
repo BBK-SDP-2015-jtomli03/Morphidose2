@@ -20,7 +20,7 @@ class PatientDAOImpl @Inject() extends PatientDAO with DAOSlick {
   override def findPatient(hospitalNumber: String): Future[Option[Patient]] = {
         val query = for {
           patient <- slickPatients.filter(_.hospitalNumber === hospitalNumber)
-        } yield (patient)
+        } yield patient
         db.run(query.result.headOption).map { resultOption =>
           resultOption.map {
             case (pt) =>

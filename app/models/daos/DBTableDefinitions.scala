@@ -14,37 +14,36 @@ trait DBTableDefinitions {
 
   case class DBUser (
     userID: String,
-    title: Option[String],
-    firstName: Option[String],
-    lastName: Option[String],
-    email: Option[String]
+    title: String,
+    firstName: String,
+    lastName: String,
+    email: String
   )
 
   class Prescribers(tag: Tag) extends Table[DBUser](tag, "prescribers") {
     def userID = column[String]("userid", O.PrimaryKey)
-    def title = column[Option[String]]("title")
-    def firstName = column[Option[String]]("firstname")
-    def lastName = column[Option[String]]("lastname")
-    def email = column[Option[String]]("email")
+    def title = column[String]("title")
+    def firstName = column[String]("firstname")
+    def lastName = column[String]("lastname")
+    def email = column[String]("email")
     def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
   }
 
   class Administrators(tag: Tag) extends Table[DBUser](tag, "administrators") {
     def userID = column[String]("userid", O.PrimaryKey)
-    def title = column[Option[String]]("title")
-    def firstName = column[Option[String]]("firstname")
-    def lastName = column[Option[String]]("lastname")
-    def email = column[Option[String]]("email")
+    def title = column[String]("title")
+    def firstName = column[String]("firstname")
+    def lastName = column[String]("lastname")
+    def email = column[String]("email")
     def * = (userID, title, firstName, lastName, email) <> (DBUser.tupled, DBUser.unapply)
   }
 
   case class PtData (
-                      hospitalNumber: String,
-                      title: String,
-                      firstName: String,
-                      surname: String,
-                      dob: String
-                      )
+    hospitalNumber: String,
+    title: String,
+    firstName: String,
+    surname: String,
+    dob: String)
 
   class Patients(tag: Tag) extends Table[PtData](tag, "patients") {
     def hospitalNumber = column[String]("hospital_number", O.PrimaryKey)
