@@ -48,7 +48,7 @@ class CredentialsAuthController @Inject() (
    */
   def authenticate = Action.async { implicit request =>
     SignInForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.administrator(form, "active", "", "active in", "fade"))),
+      form => Future.successful(BadRequest(views.html.login(form, "active", "", "active in", "fade"))),
       data => {
         val credentials = Credentials(data.email, data.password)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
@@ -74,7 +74,7 @@ class CredentialsAuthController @Inject() (
           }
         }.recover {
           case e: ProviderException =>
-            Redirect(routes.AdministratorController.adminLogin()).flashing("error" -> Messages("invalid.credentials"))
+            Redirect(routes.ApplicationController.login()).flashing("error" -> Messages("invalid.credentials"))
         }
       }
     )

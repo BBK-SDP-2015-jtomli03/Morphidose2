@@ -49,7 +49,7 @@ class SignUpController @Inject() (
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userService.retrieve(loginInfo).flatMap {
           case Some(user) =>
-            Future.successful(Redirect(routes.ApplicationController.signUp()).flashing("error" -> Messages("user.exists")))
+            Future.successful(Redirect(routes.AdministratorController.index()).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
             val user = createUser(userType, data, loginInfo)
@@ -98,41 +98,4 @@ class SignUpController @Inject() (
     )
   }
 
-
-//  /**
-//   * Registers a new administrator or prescriber.
-//   * Only authenticated administrators can access this page, otherwise the user is redirected to the sign in page.
-//   *
-//   * @param userType the type of user to register.
-//   * @return The result to display.
-//   */
-//  def addPatient(userType: String) = SecuredAction(AuthorizedWithUserType("models.Prescriber")) { implicit request =>
-//    AddPatientForm.form.bindFromRequest.fold(
-//      form => BadRequest(views.html.addPatient(form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)),
-//      data => {  Redirect(routes.PrescriberController.index()).flashing("success" -> Messages("user.added"))
-//
-//        val loginInfo = LoginInfo(CredentialsProvider.ID, data.hospitalNumber)
-//        userService.retrieve(loginInfo).flatMap {
-//          case Some(user) =>
-//            Future.successful(Redirect(routes.ApplicationController.signUp()).flashing("error" -> Messages("user.exists")))
-//          case None =>
-//            val authInfo = passwordHasher.hash(data.password)
-//            val user = getUser(userType, data, loginInfo)
-//            for {
-//              user <- userService.save(user)
-//              authInfo <- authInfoRepository.add(loginInfo, authInfo)
-//            //shouldn't need below data -> it creates cookie info to continue as the user added
-//            //authenticator <- env.authenticatorService.create(loginInfo)
-//            //value <- env.authenticatorService.init(authenticator)
-//            //result <- env.authenticatorService.embed(value, Redirect(routes.ApplicationController.index()))
-//            } yield {
-//              env.eventBus.publish(SignUpEvent(user, request, request2Messages))
-//              //env.eventBus.publish(LoginEvent(user, request, request2Messages))
-//              //result
-//              Redirect(routes.AdministratorController.index()).flashing("success" -> Messages("user.added"))
-//            }
-//        }
-//      }
-//    )
-//  }
 }

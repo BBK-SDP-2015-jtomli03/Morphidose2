@@ -31,14 +31,18 @@ class ApplicationController @Inject() (
   }
 
   /**
-   * Handles the Sign In action.
+   * Handles the login action. If a user is already logged in then they will be redirected to their relevant home page,
+   * otherwise they will be directed to the login page.
    *
    * @return The result to display.
    */
-  def signIn = UserAwareAction.async { implicit request =>
+  def login = UserAwareAction.async { implicit request =>
     request.identity match {
-      case Some(user) => Future.successful(Redirect(routes.ApplicationController.index()))
-      case None => Future.successful(Ok(views.html.signIn(SignInForm.form)))
+      case Some(user) => user.getClass.getTypeName match {
+        case "models.Administrator" => Future.successful(Redirect(routes.AdministratorController.index()))
+        case "models.Prescriber" => Future.successful(Redirect(routes.PrescriberController.index()))
+      }
+      case None => Future.successful(Ok(views.html.login(SignInForm.form, "active", "", "active in", "fade")))
     }
   }
 
@@ -49,18 +53,18 @@ class ApplicationController @Inject() (
    */
   def signUp = UserAwareAction.async { implicit request =>
     request.identity match {
-      case Some(user) => Future.successful(Redirect(routes.ApplicationController.index()))
+      case Some(user) => Future.successful(Redirect(routes.ApplicationController.login()))
       case None => Future.successful(Ok(views.html.signUp(SignUpForm.form)))
     }
   }
 
   /**
-   * Handles the Sign Out action.
+   * Handles the Log out action.
    *
    * @return The result to display.
    */
   def signOut = SecuredAction.async { implicit request =>
-    val result = Redirect(routes.ApplicationController.index())
+    val result = Redirect(routes.ApplicationController.login())
     env.eventBus.publish(LogoutEvent(request.identity, request, request2Messages))
     env.authenticatorService.discard(request.authenticator, result)
   }

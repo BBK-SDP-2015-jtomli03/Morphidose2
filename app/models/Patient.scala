@@ -17,6 +17,8 @@ case class Patient(
                     surname: String,
                     dob: String)
 
+
+//The QueryStringBinder for the Patient class
 object Patient{
   implicit def queryStringBinder(implicit stringBinder: QueryStringBindable[String]) = new QueryStringBindable[Patient]{
     override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Patient]] = {
@@ -36,7 +38,7 @@ object Patient{
     }
 
     override def unbind(key: String, patient: Patient): String = {
-      stringBinder.unbind(key + ".hospitalNumber=", patient.hospitalNumber) + "&" + stringBinder.unbind(key + ".title=", patient.title) + "&" + stringBinder.unbind(key + ".firstName=", patient.firstName) + "&" + stringBinder.unbind(key + ".surname=", patient.surname) + "&" + stringBinder.unbind(key + ".dob=", patient.dob)
+      stringBinder.unbind(key + ".hospitalNumber", patient.hospitalNumber) + "&" + stringBinder.unbind(key + ".title", patient.title) + "&" + stringBinder.unbind(key + ".firstName", patient.firstName) + "&" + stringBinder.unbind(key + ".surname", patient.surname) + "&" + stringBinder.unbind(key + ".dob", patient.dob)
     }
   }
 }

@@ -84,8 +84,8 @@ trait DBTableDefinitions {
   }
 
   class Prescriptions(tag: Tag) extends Table[Prescription](tag, "prescriptions") {
-    def ptHospitalNumber = column[String]("pt_hospital_number")
-    def prescriberID = column[String]("prescriberID")
+    def ptHospitalNumber = column[String]("pt_hospital_number", O.PrimaryKey)
+    def prescriberID = column[String]("prescriberid")
     def date = column[Timestamp]("date")
     def MRDrug = column[String]("mr_drug")
     def MRDose = column[Double]("mr_dose")

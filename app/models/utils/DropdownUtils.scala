@@ -29,22 +29,23 @@ object DropdownUtils {
   /**
    * @return List[String] possible brands of MR Morphine with the first element set as an empty String
    */
-  def getMRMorphine : List[String] = List("", "Morphgesic SR Tablets", "MST Continus Suspension", "MST Continus Tablets","Zomorph Capsules")
+  def getMRMorphine : List[String] = List("Drug", "Morphgesic SR Tablets", "MST Continus Suspension", "MST Continus Tablets","Zomorph Capsules")
 
   /**
    * @return List[String] possible doses of MR Morphine with the first element set as an empty String
    */
-  def getMRMorphineDoses : List[String] = List("","5mg BD","10mg BD", "15mg", "20mg BD", "30mg BD", "60mg BD", "100mg BD", "200mg BD")
-
+  def getMRMorphineDoses : List[String] = createDoseList(5.0, 400.0, 5.0, "mg BD")
   /**
    * @return List[String] possible brands of breakthrough Morphine with the first element set as an empty String
    */
-  def getBreakthroughMorphine : List[String] = List("","Oramorph 10mg/5ml","Sevredol Tablets")
+  def getBreakthroughMorphine : List[String] = List("Drug","Oramorph 10mg/5ml","Sevredol Tablets")
 
   /**
    * @return List[String] possible doses of breakthrough Morphine with the first element set as an empty String
    */
-  def getBreakthroughMorphineDoses : List[String] = List("","5mg prn","10mg prn", "20mg prn")
+//  def getBreakthroughMorphineDoses: List[String] = "Dose" :: List.range(2.5, 51.0, 2.5).foldLeft(List[String]()){intListToDoseList}.map(dose => dose + "mg prn")
+  def getBreakthroughMorphineDoses: List[String] = createDoseList(2.5, 51.0, 2.5, "mg prn")
+
 
   /***********************
     * HELPER METHODS BELOW
@@ -61,5 +62,22 @@ object DropdownUtils {
    * Converts a List[Int] to List[String]
    */
   def intListToStringList = (acc: List[String], num: Int) => acc :+ num.toString
+
+  /**
+   * Converts a List[Double] to List[String]
+   */
+  def doubleListToStringList = (acc: List[String], num: Double) => acc :+ num.toString
+
+  /**
+   * Creates a List[String] of a range of doses
+   *
+   * @param rangeStart the lowest dose in the range
+   * @param rangeEnd the highest dose in the range
+   * @param rangeIncrement the dose increment
+   * @param unitAndFrequency the dosage unit and frequency to be shown in the dropdown list (eg mg BD)
+   */
+  def createDoseList(rangeStart: Double, rangeEnd: Double, rangeIncrement: Double, unitAndFrequency: String): List[String] = {
+    "Dose" :: (rangeStart to rangeEnd by rangeIncrement).toList.foldLeft(List[String]()){doubleListToStringList}.map(dose => dose + unitAndFrequency)
+  }
 
 }

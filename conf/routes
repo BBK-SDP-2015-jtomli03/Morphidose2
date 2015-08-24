@@ -7,11 +7,8 @@ GET         /home                            @controllers.PrescriberController.i
 POST        /patient                         @controllers.PrescriberController.addPatient()
 POST        /prescription/add                @controllers.PrescriptionController.addPrescription(patient: models.Patient)
 GET         /script                          @controllers.PrescriptionController.prescription(patient: models.Patient)
-#POST        /prescription                    @controllers.PrescriptionController.newPrescription(patient: models.Patient)
-GET         /admin                           @controllers.AdministratorController.adminLogin
 GET         /adminhome                       @controllers.AdministratorController.index
-GET         /                                @controllers.ApplicationController.index
-GET         /signIn                          @controllers.ApplicationController.signIn
+GET         /                                @controllers.ApplicationController.login
 GET         /signUp                          @controllers.ApplicationController.signUp
 GET         /signOut                         @controllers.ApplicationController.signOut
 POST        /authenticate/credentials        @controllers.CredentialsAuthController.authenticate

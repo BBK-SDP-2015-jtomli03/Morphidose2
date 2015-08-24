@@ -46,6 +46,11 @@ class PrescriptionController @Inject()(
 //    )
 //  }
 
+  /**
+   * The show a new prescription action.
+   *
+   * @param patient the patient for which the prescription will be written
+   */
   def prescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")) { implicit request =>
               Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))
   }
@@ -61,6 +66,8 @@ class PrescriptionController @Inject()(
       prescriptionData => {
         //val patient = Patient("A1234N", "Mrs", "Janet", "Carr", "5-JUN-1948")
         val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), prescriptionData.MRDrug, getDose(prescriptionData.MRDose), prescriptionData.breakthroughDrug, getDose(prescriptionData.breakthroughDose))
+//        val prescription = Prescription("huohdos", "udaihu", new Timestamp(new DateTime().withZone(timeZone).getMillis), "Morphine", 5.00, "hufhuoa", 10.00)
+
         prescriptionDAO.addPrescription(prescription)
         //        Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
         Future.successful(Ok(views.html.test(request.identity)))
@@ -69,7 +76,14 @@ class PrescriptionController @Inject()(
     )
   }
 
+  /**
+   * Converts the dose from a String to a Double.
+   *
+   * @param stringDose the dose as a String
+   * @return the dose as a Double
+   */
   def getDose(stringDose: String) = {
-    5.00
+    stringDose.substring(0, stringDose.indexOf("mg")).toDouble
   }
+
 }

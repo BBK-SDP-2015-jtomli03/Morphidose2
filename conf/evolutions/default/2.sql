@@ -20,7 +20,7 @@ CREATE TABLE "patients" (
 
 CREATE TABLE "prescriptions" (
   pt_hospital_number varchar NOT NULL,
-  prescriberID varchar NOT NULL,
+  prescriberid varchar NOT NULL,
   date timestamp NOT NULL,
   mr_drug varchar NOT NULL,
   mr_dose DOUBLE PRECISION NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE "prescriptions" (
   breakthrough_dose DOUBLE PRECISION NOT NULL,
   PRIMARY KEY (pt_hospital_number),
   FOREIGN KEY (pt_hospital_number) REFERENCES patients(hospital_number),
-  FOREIGN KEY (prescriberID) REFERENCES prescribers(userID)
+  FOREIGN KEY (prescriberid) REFERENCES prescribers(userID)
 );
 
 # --- !Downs

@@ -2,6 +2,7 @@
 
 @import helper._
 @implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+@import b3.vertical.fieldConstructor
 
 @main("Morphidose Prescriber Functions"){
   @request.flash.get("error").map { msg =>
