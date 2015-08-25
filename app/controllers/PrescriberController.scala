@@ -6,7 +6,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import models.daos.{PatientDAO, PrescriptionDAO}
-import models.forms.{AddPatientForm, PrescriptionForm}
+import models.forms.{EditPatientForm, AddPatientForm, PrescriptionForm}
 import models.utils.{AuthorizedWithUserType, DropdownUtils}
 import models.{Patient, User}
 import org.joda.time.DateTimeZone
@@ -34,6 +34,10 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
     Future.successful(Ok(views.html.addPatient(AddPatientForm.form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)))
   }
 
+  def editPatientForm(patient: models.Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+    Future.successful(Ok(views.html.editPtDetails(EditPatientForm.form, request.identity, patient: Patient, DropdownUtils.getTitles.updated(0, patient.title), DropdownUtils.getDaysOfMonth.updated(0, patient.dob.substring(0, patient.dob.length - 9)), DropdownUtils.getMonths.updated(0, patient.dob.substring(2,5)), DropdownUtils.getYears.updated(0, patient.dob.substring(6)))))
+  }
+
   /**
    * The add patient action.
    *
@@ -51,6 +55,23 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
             ptDAO.save(pt)
             Future.successful(Ok(views.html.prescription(PrescriptionForm.form, request.identity, pt, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
         }
+      }
+    )
+  }
+
+  /**
+   * The edit patient action.
+   *
+   * This is asynchronous, since we're invoking the asynchronous methods on PatientRepository.
+   */
+  def editPatient(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+    EditPatientForm.form.bindFromRequest.fold(
+      form => Future.successful(BadRequest(views.html.editPtDetails(form, request.identity, patient: Patient, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears))),
+      patientData => {
+            val pt = Patient(patient.hospitalNumber, patientData.title, formatName(patientData.firstName), formatName(patientData.surname), dobToString(patientData.dobDayOfMonth, patientData.dobMonth, patientData.dobYear))
+            ptDAO.save(pt)
+            //below error highlight compiles -> problem is with intellij
+            Future.successful(Redirect(routes.PrescriberController.editPatientForm(pt)).flashing("success" -> Messages("patient.edit")))
       }
     )
   }

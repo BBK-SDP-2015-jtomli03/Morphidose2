@@ -24,7 +24,7 @@ object DropdownUtils {
   /**
    * @return List[String] possible titles for people with the first element set as an empty String
    */
-  def getTitles : List[String] = List("","Dr","Professor","Mr","Mrs","Miss","Ms")
+  def getTitles : List[String] = List("Dr","Professor","Mr","Mrs","Miss","Ms")
 
   /**
    * @return List[String] possible brands of MR Morphine with the first element set as an empty String

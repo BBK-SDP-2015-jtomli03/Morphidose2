@@ -1,4 +1,4 @@
-@(prescription: Form[models.forms.PrescriptionForm.Data], user: User, pt: Patient, currentPrescriptionData: PrescriptionData, MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
+@(prescription: Form[models.forms.PrescriptionForm.Data], user: User, pt: Patient, currentPrescriptionData: PrescriptionData, doseTitrationData: Option[String], MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
 
 
 @import helper._
@@ -23,12 +23,13 @@
       <div class="list-group" id="side_nav">
         <a href="" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
-        <a href="" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span>  Edit Patient Details</button></a>
       </div>
     </div>
 
     <div class="right_div">
-      <div class="ptDetails"><span class="large">@pt.title @pt.firstName @pt.surname</span>  (@pt.hospitalNumber)  DOB: @pt.dob</div>
+      <div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>
+        <a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>
+        Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div>
       <div class="current_prescription">
         <h3>CURRENT PRESCRIPTION</h3>
         <div class="info">
@@ -53,35 +54,42 @@
           <a href="#edit_doses"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button></a>
           <a href="#dose_calculation"><button type="button" class="btn btn-danger" ><span class="glyphicon glyphicon-phone"></span>   View calculations</button></a>
           </div>
+
           <div class="input">
             <h4>Edit Doses to Prescribe</h4>
             <div class="form" id="edit_doses">
-            @form(routes.PrescriptionController.addPrescription(pt)) {
-              @helper.CSRF.formField
-              <label>Slow Release Morphine:</label>
-              <br>
-              @select(
-                prescription("MRdrug"),
-                options(MRMorphine)
-              )
-              @select(
-                prescription("MRdose"),
-                options(MRMorphineDoses)
-              )
-              <br><br>
-              <label>Breakthrough Morphine:</label>
-              <br>
-              @select(
-                prescription("breakthroughDrug"),
-                options(BreakthroughMorphine)
-              )
-              @select(
-                prescription("breakthroughDose"),
-                options(BreakthroughMorphineDoses)
-              )
-              <br><br><span id="dose_calculation"></span>
-              <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe edited doses</button> <br><br>
+              @form(routes.PrescriptionController.addPrescription(pt)) {
+                @helper.CSRF.formField
+                <label>Slow Release Morphine:</label>
+                <br>
+                @select(
+                  prescription("MRDrug"),
+                  options(MRMorphine)
+                )
+                @select(
+                  prescription("MRDose"),
+                  options(MRMorphineDoses)
+                )
+                <br><br>
+                <label>Breakthrough Morphine:</label>
+                <br>
+                @select(
+                  prescription("breakthroughDrug"),
+                  options(BreakthroughMorphine)
+                )
+                @select(
+                  prescription("breakthroughDose"),
+                  options(BreakthroughMorphineDoses)
+                )
+                @if(prescription.hasGlobalErrors) {
+                  @for(error <- prescription.globalErrors) {
+                    <p class="red">@error.message</p>
+                  }
+                }
+                <br><br><br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Prescribe doses</button>
               }
+              <br><br><span id="dose_calculation"></span>
             </div>
             </div>
         </div>

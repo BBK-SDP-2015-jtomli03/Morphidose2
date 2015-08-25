@@ -42,5 +42,14 @@ class PatientDAOImpl @Inject() extends PatientDAO with DAOSlick {
   override def save(patient: Patient) = db.run {
       slickPatients.insertOrUpdate(PtData(patient.hospitalNumber, patient.title, patient.firstName, patient.surname, patient.dob))
   }
+
+  /**
+   * Lists all the patients in the database.
+   */
+  def list(): Future[Seq[Patient]] = db.run {
+    slickPatients.result.map{resultOption => resultOption.map{
+      case(pt) => Patient(pt.hospitalNumber, pt.title, pt.firstName, pt.surname, pt.dob)
+    }}
+  }
 }
 

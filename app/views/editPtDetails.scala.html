@@ -1,0 +1,78 @@
+@(patient: Form[models.forms.EditPatientForm.Data], user: models.User, pt: Patient, titles: List[String], daysOfMonth: List[String], months: List[String], yearList: List[String])(implicit request: RequestHeader, messages: Messages)
+
+@import helper._
+@implicitField = @{FieldConstructor(helpers.InputFieldHelper.render)}
+@import b3.vertical.fieldConstructor
+
+@main("Add a Patient") {
+  @request.flash.get("error").map { msg =>
+    <div class="col-md-6 col-md-offset-3 alert alert-danger alert-error">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <strong>Error!</strong> @msg
+    </div>
+  }
+  @request.flash.get("success").map { msg =>
+    <div class="col-md-6 col-md-offset-3 alert alert-success">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <strong>Success!</strong> @msg
+    </div>
+  }
+  <div id="main_container">
+    <div class="side_nav_container">
+      <div class="list-group" id="side_nav">
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button>
+        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button>
+      </div>
+    </div>
+    <div class="right_div">
+      <div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>
+        <a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>
+        Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div>
+      <div class="input">
+        <h3>Edit Patient Details</h3>
+        <div class="form modal-body" id="myModal">
+        @form(routes.PrescriberController.editPatient(pt)) {
+          @helper.CSRF.formField
+          <p>
+            Note: you can <b>not</b> change a patients hospital number. Please speak to the administrator if this is required.
+          </p>
+          @b3.select(patient("title"), options(titles), '_label -> "Title:")
+          @b3.text(patient("firstName"), '_label -> "First Name:", 'placeholder -> "First name")
+          @b3.text(patient("surname"), '_label -> "Surname:", 'placeholder -> "Last name")
+          <label>Date Of Birth:</label>
+          @select(
+            patient("dobDayOfMonth"),
+            options(daysOfMonth), '_label -> "Day"
+          )
+          @select(
+            patient("dobMonth"),
+            options(months), '_label -> "Month"
+          )
+          @select(
+            patient("dobYear"),
+            options(yearList), '_label -> "Year"
+          )
+          @if(patient.hasGlobalErrors) {
+            @for(error <- patient.globalErrors) {
+              <p class="red">@error.message</p>
+            }
+          }
+          <br><br><br>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">ADD PATIENT</button>
+
+          @*/@/*@@*if(patient.hasErrors || patient.hasGlobalErrors) {*@
+          @*<div class="alert alert-danger patient-alert">*@
+          @*<a class="close" data-dismiss="alert">x</a>*@
+          @*<p>*@
+          @*Caution: patient not submitted!*@
+          @*<br>*@
+          @*Please complete all fields.*@
+          @*</p>*@
+          @*</div>*@
+          @*}*@
+        }
+        </div>
+      </div>
+    </div>
+  </div>
+}

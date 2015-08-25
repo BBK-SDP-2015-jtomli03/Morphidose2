@@ -13,9 +13,6 @@ import play.api.data.Forms._
 object AddPatientForm {
 
   /**
-   * The mapping for the add patient form.
-   */
-  /**
    * The mapping for the patient form.
    */
   val form = Form {

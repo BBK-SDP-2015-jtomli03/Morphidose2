@@ -14,7 +14,24 @@ object PrescriptionForm {
       "MRDose" -> nonEmptyText,
       "breakthroughDrug" -> nonEmptyText,
       "breakthroughDose" -> nonEmptyText
-    )(Data.apply)(Data.unapply)
+    )(Data.apply)(Data.unapply)verifying("This field is required", fields => fields match {
+      case userData => validate(userData.MRDrug, userData.MRDose, userData.breakthroughDrug, userData.breakthroughDose).isDefined
+    })
+  }
+
+  /**
+   * Validates whether the drugs and doses have been entered correctly.
+   * @return None if any haven't been entered
+   * @return Some() if the drugs and doses have been entered correctly
+   */
+  def validate(MRDrug: String, MRDose: String, breakthroughDrug: String, breakthroughDose: String) = {
+    (MRDrug, MRDose, breakthroughDrug, breakthroughDose) match {
+      case("Drug", _, _, _) => None
+      case(_, "Dose", _, _) => None
+      case(_, _, "Drug",_) => None
+      case(_, _, _ , "Dose") => None
+      case(_, _, _, _) => Some(Data(MRDrug, MRDose, breakthroughDrug, breakthroughDose))
+    }
   }
 
   /**

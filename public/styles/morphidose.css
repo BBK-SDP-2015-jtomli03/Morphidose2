@@ -279,3 +279,22 @@ footer a{
     text-align: center;
     padding: 1% 0;
 }
+
+a.edit_pt_details_nav{
+    float: right;
+    color: #fff;
+}
+
+a.edit_pt_details_nav:hover, a.edit_pt_details_nav:active, a.edit_pt_details_nav:focus{
+    cursor: pointer;
+}
+
+.edit_pt_details_nav_green{
+    float: left;
+    color: #5E7639;
+}
+
+p.center {
+    width: 100%;
+    margin: 1% auto;
+}

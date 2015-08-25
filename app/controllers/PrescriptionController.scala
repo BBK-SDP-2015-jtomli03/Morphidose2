@@ -50,10 +50,12 @@ class PrescriptionController @Inject()(
         val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), data.MRDrug, getDose(data.MRDose), data.breakthroughDrug, getDose(data.breakthroughDose))
         prescriptionDAO.addPrescription(prescription)
         val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, data.MRDose, prescription.breakthroughDrug, data.breakthroughDose)
-        Future.successful(Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+        Future.successful(Ok(views.html.currentPrescription(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
       }
     )
   }
+
+  //http://localhost:9000/prescription/add?patient.hospitalNumber=A7245253nm&patient.title=Mr&patient.firstName=Geore&patient.surname=Harris&patient.dob=1-JAN-2014
 
   /**
    * Converts the dose from a String to a Double.

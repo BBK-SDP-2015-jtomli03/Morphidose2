@@ -1,7 +1,6 @@
 package models.daos
 
 import models.Patient
-
 import scala.concurrent.Future
 
 /**
@@ -24,4 +23,8 @@ trait PatientDAO {
    */
   def save(patient: Patient)
 
+  /**
+   * Lists all the patients in the database.
+   */
+  def list(): Future[Seq[Patient]]
 }

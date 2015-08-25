@@ -22,7 +22,6 @@
       <div class="list-group" id="side_nav">
         <button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button>
         <button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button>
-        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span>  Edit Patient Details</button>
       </div>
     </div>
     <div class="right_div">
@@ -35,7 +34,7 @@
             Please enter the following patient details;
           </p>
           @b3.text(patient("hospitalNumber"), '_label -> "Hospital Number:", 'placeholder -> "Patients Hospital Number")
-          @b3.select(patient("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
+          @b3.select(patient("title"), options(titles), '_label -> "Title:", '_default -> "Title")
           @b3.text(patient("firstName"), '_label -> "First Name:",'placeholder -> "First name")
           @b3.text(patient("surname"), '_label -> "Surname:", 'placeholder -> "Last name")
           <label>Date Of Birth:</label>

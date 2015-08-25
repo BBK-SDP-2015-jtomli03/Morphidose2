@@ -1,5 +1,6 @@
 package models
 
+import play.api.libs.json.Json
 import play.api.mvc.QueryStringBindable
 
 /**
@@ -20,6 +21,8 @@ case class Patient(
 
 //The QueryStringBinder for the Patient class
 object Patient{
+  implicit val patientFormat = Json.format[Patient]
+
   implicit def queryStringBinder(implicit stringBinder: QueryStringBindable[String]) = new QueryStringBindable[Patient]{
     override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Patient]] = {
       for{
