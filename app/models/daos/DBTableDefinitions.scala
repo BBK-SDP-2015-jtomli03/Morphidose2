@@ -96,6 +96,18 @@ trait DBTableDefinitions {
     def prescriber = foreignKey("prescriber_fk", prescriberID, slickPrescribers)(_.userID)
   }
 
+  case class Dose (
+    ptHospitalNumber: String,
+    date: Timestamp
+    )
+
+  class Doses(tag: Tag) extends Table[Dose](tag, "doses"){
+    def ptHospitalNumber = column[String]("pt_hospital_number", O.PrimaryKey)
+    def date = column[Timestamp]("date")
+    def * = (ptHospitalNumber, date) <> (Dose.tupled, Dose.unapply)
+    def patient = foreignKey("patient_fk", ptHospitalNumber, slickPatients)(_.hospitalNumber)
+  }
+
   // table query definitions
   val slickPrescribers = TableQuery[Prescribers]
   val slickAdministrators = TableQuery[Administrators]
@@ -103,6 +115,7 @@ trait DBTableDefinitions {
   val slickPasswordInfos = TableQuery[PasswordInfos]
   val slickPatients = TableQuery[Patients]
   val slickPrescriptions = TableQuery[Prescriptions]
+  val slickDoses = TableQuery[Doses]
   
   // queries used in multiple places
   def loginInfoQuery(loginInfo: LoginInfo) = 

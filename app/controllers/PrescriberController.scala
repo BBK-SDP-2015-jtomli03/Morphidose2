@@ -6,7 +6,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import models.daos.{PatientDAO, PrescriptionDAO}
-import models.forms.{EditPatientForm, AddPatientForm, PrescriptionForm}
+import models.forms.{GetPatientForm, EditPatientForm, AddPatientForm, PrescriptionForm}
 import models.utils.{AuthorizedWithUserType, DropdownUtils}
 import models.{Patient, User}
 import org.joda.time.DateTimeZone
@@ -62,7 +62,7 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
   /**
    * The edit patient action.
    *
-   * This is asynchronous, since we're invoking the asynchronous methods on PatientRepository.
+   * @param patient the patient to edit
    */
   def editPatient(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     EditPatientForm.form.bindFromRequest.fold(

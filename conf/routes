@@ -3,9 +3,11 @@
 # ~~~~
 
 # Home page
-GET         /patients/select                 @controllers.PatientController.index()
-GET         /patients                        @controllers.PatientController.getPatients()
+GET         /patient/select                  @controllers.PrescriptionController.selectPatient()
+GET         /prescription/calcs              @controllers.PrescriptionController.doseCalculations(patient: models.Patient)
+#GET         /patients                        @controllers.PatientController.getPatients()
 GET         /home                            @controllers.PrescriberController.index
+GET         /patient/titrations              @controllers.PrescriptionController.getLatestPrescriptionWithDoseTitrations()
 POST        /patient/add                     @controllers.PrescriberController.addPatient()
 GET         /form/patient/new                @controllers.PrescriberController.addPatientForm()
 GET         /form/patient/edit               @controllers.PrescriberController.editPatientForm(patient: models.Patient)

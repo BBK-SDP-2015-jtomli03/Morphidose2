@@ -7,11 +7,11 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import models.daos.PrescriptionDAO
-import models.forms.PrescriptionForm
+import models.forms.{GetPatientForm, PrescriptionForm}
 import models.utils.{AuthorizedWithUserType, DropdownUtils}
 import models.{Patient, Prescription, PrescriptionData, User}
 import org.joda.time.{DateTime, DateTimeZone}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{Messages, I18nSupport, MessagesApi}
 import play.api.mvc.Controller
 
 import scala.concurrent.Future
@@ -38,6 +38,22 @@ class PrescriptionController @Inject()(
               Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))
   }
 
+  def doseCalculations(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")) { implicit request =>
+    val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, data.MRDose, prescription.breakthroughDrug, data.breakthroughDose)
+    //val doseTitrationData = None
+    Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, doseTitrationData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))
+  }
+
+  /**
+   * Handles the index action for the select patient.
+   * Only authenticated prescribers can access this page, otherwise the user is redirected to the sign in page.
+   *
+   * @return The page to display.
+   */
+  def selectPatient = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+    Future.successful(Ok(views.html.selectPatient(GetPatientForm.form, request.identity)))
+  }
+
   /**
    * The add a prescription action.
    *
@@ -55,7 +71,24 @@ class PrescriptionController @Inject()(
     )
   }
 
-  //http://localhost:9000/prescription/add?patient.hospitalNumber=A7245253nm&patient.title=Mr&patient.firstName=Geore&patient.surname=Harris&patient.dob=1-JAN-2014
+  /**
+   * The get patient action.
+   */
+  def getLatestPrescriptionWithDoseTitrations() = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+    GetPatientForm.form.bindFromRequest.fold(
+      form => Future.successful(BadRequest(views.html.selectPatient(form, request.identity))),
+      patientData => {
+        //        val pt = Patient(patient.hospitalNumber, patientData.title, formatName(patientData.firstName), formatName(patientData.surname), dobToString(patientData.dobDayOfMonth, patientData.dobMonth, patientData.dobYear))
+        prescriptionDAO.getLatestPrescriptionInfo(patientData.hospitalNumber)
+//          .flatMap {
+//          case None => Future.successful(Redirect(routes.PrescriptionController.selectPatient()).flashing("error" -> Messages("patient.notfound")))
+//          case Some(patient) =>
+//            //below error highlight compiles -> problem is with intellij
+//            Future.successful(Redirect(routes.PrescriptionController.doseCalculations(patient)))
+//        }
+      }
+    )
+  }
 
   /**
    * Converts the dose from a String to a Double.
@@ -86,5 +119,12 @@ class PrescriptionController @Inject()(
   def getDateAsString(timestamp: Timestamp) = {
     val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
     dateFormat.format(timestamp)
+  }
+
+  def getPrescription(prescriptionOption: Option[Prescription]) = {
+    prescriptionOption match{
+      case Some(prescription) => Prescription(prescription.ptHospitalNumber, prescription.prescriberID, prescription.date, prescription.MRDrug, prescription.MRDose, prescription.breakthroughDrug, prescription.breakthroughDose)
+      case None => None
+    }
   }
 }

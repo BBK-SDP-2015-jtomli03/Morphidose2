@@ -13,4 +13,11 @@ trait PrescriptionDAO {
    * @param prescription The prescription to save.
    */
   def addPrescription(prescription: Prescription)
+
+  /**
+   * Gets the latest patient, prescriber, and prescription information for a particular patient from the database.
+   *
+   * @param hospitalNumber the patients hospital number
+   */
+  def getLatestPrescriptionInfo(hospitalNumber: String)
 }

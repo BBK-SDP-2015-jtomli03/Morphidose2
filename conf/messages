@@ -7,3 +7,4 @@ user.added = You have successfully added a new user!
 patient.added = You have successfully added a new patient!
 patient.exists = There already exists a patient with this hospital number.
 patient.edit = Patient details updated.
+patient.notfound = Patient not found. Please check the hospital number and try again.
