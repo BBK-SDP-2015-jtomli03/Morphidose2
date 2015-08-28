@@ -5,6 +5,7 @@
 # Home page
 GET         /patient/select                  @controllers.PrescriptionController.selectPatient()
 GET         /prescription/current            @controllers.PrescriptionController.retrieveCurrentPrescription(patient: models.Patient)
+POST        /prescription/repeat             @controllers.PrescriptionController.repeatPrescription(doseTitrationData: models.DoseTitrationData, patient: models.Patient, mrDrug: String, breakthroughDrug: String)
 #GET         /patients                        @controllers.PatientController.getPatients()
 #GET         /calculations                    @controllers.PrescriptionController.doseCalculationsPage(patient: models.Patient, prescriptionData: models.PrescriptionData)
 GET         /home                            @controllers.PrescriberController.index

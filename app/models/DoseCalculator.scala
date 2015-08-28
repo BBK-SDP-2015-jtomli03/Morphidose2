@@ -36,19 +36,17 @@ object DoseCalculator {
   }
 
   /**
-   * Calculates the titrated breakthrough dose to the nearest 0.5 unit.
+   * Calculates the titrated breakthrough dose to the nearest 2.5 unit.
    *
    * @param averageTotalDailyDose the average total daily dose taken by the patient
-   * @return Double the breakthrough dose to titrate to next, to the nearest 0.5 unit
+   * @return Double the breakthrough dose to titrate to next, to the nearest 2.5 unit
    */
-  def breakthroughDoseTitration(averageTotalDailyDose: Double) = {
-    averageTotalDailyDose / 6.00 match {
+  def breakthroughDoseTitration(averageTotalDailyDose: Double, currentBreakthroughDose: Double, numOfBreakthroughDoses: Int) = {
+    Math.floor((averageTotalDailyDose / 6.00)/2.5) * 2.5 match {
       case dose if dose < 2.50 => 2.50
-      case dose =>
-        Math.floor(dose * 2)/2
+      case dose if numOfBreakthroughDoses == 0 && dose > currentBreakthroughDose => currentBreakthroughDose
+      case dose => dose
     }
   }
-
-  //      case _ => BigDecimal((dosesTaken * breakthroughDose)/days).setScale(2, BigDecimal.RoundingMode.HALF_DOWN).toDouble
 
 }

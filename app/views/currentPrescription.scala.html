@@ -21,7 +21,7 @@
 
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
-        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
+        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select A Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
@@ -33,12 +33,12 @@
       <div class="current_prescription">
         <h3>PRESCRIPTION SUCCESSFUL!</h3>
         <div class="info">
-          <p>Prescribed by @currentPrescriptionData.prescriber on @currentPrescriptionData.date ;</p>
+          <p>You have just prescribed;</p>
           <p class="bg-success">
             @currentPrescriptionData.MRDrug @currentPrescriptionData.MRDose <br>
             @currentPrescriptionData.breakthroughDrug @currentPrescriptionData.breakthroughDose
           </p>
-          <p class="center">Edit the doses below, or select a new patient in the menu on the left to proceed.</p>
+          <p class="center">If you wish to edit the prescribed doses you can do so below, otherwise select from the menu on the left to proceed, or log out.</p>
         </div>
       </div>
       <span id="edit_doses"></span>
@@ -73,7 +73,7 @@
                 )
                 @if(prescription.hasGlobalErrors) {
                   @for(error <- prescription.globalErrors) {
-                    <p class="red">@error.message</p>
+                    <p class="red">Please choose a drug and a dose for both slow release morphine and breakthrough morphine. </p>
                   }
                 }
                 <br><br><br>

@@ -21,7 +21,7 @@
 
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
-        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
+        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select A Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
@@ -50,7 +50,7 @@
             @currentPrescriptionData.breakthroughDrug @doseTitrationData.breakthroughDoseTitration prn
           </p>
           <div class="buttons">
-          <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button>
+            <a href="@routes.PrescriptionController.repeatPrescription(doseTitrationData, pt, currentPrescriptionData.MRDrug, currentPrescriptionData.breakthroughDrug)"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button></a>
           <a href="#edit_doses"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button></a>
           <a href="#dose_calculation"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-phone"></span>   View calculations</button></a>
           </div>
@@ -83,7 +83,7 @@
                 )
                 @if(prescription.hasGlobalErrors) {
                   @for(error <- prescription.globalErrors) {
-                    <p class="red">@error.message</p>
+                    <p class="red">Please choose a drug and a dose for both slow release morphine and breakthrough morphine. </p>
                   }
                 }
                 <br><br><br>

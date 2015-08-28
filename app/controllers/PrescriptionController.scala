@@ -58,7 +58,7 @@ class PrescriptionController @Inject()(
    */
   def addPrescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     PrescriptionForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
+      form => Future.successful(BadRequest(views.html.prescription(form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))),
       data => {
         val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), data.MRDrug, getDose(data.MRDose), data.breakthroughDrug, getDose(data.breakthroughDose))
         prescriptionDAO.addPrescription(prescription)
@@ -92,13 +92,20 @@ class PrescriptionController @Inject()(
     }
   }
 
+  def repeatPrescription(doseTitrationData: DoseTitrationData, patient: Patient, MRdrug: String, breakthroughDrug: String) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+    val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), MRdrug, getDose(doseTitrationData.mrDoseTitration), breakthroughDrug, getDose(doseTitrationData.breakthroughDoseTitration))
+    prescriptionDAO.addPrescription(prescription)
+    val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, doseTitrationData.mrDoseTitration, prescription.breakthroughDrug, doseTitrationData.breakthroughDoseTitration)
+    Future.successful(Ok(views.html.currentPrescription(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+  }
+
   /**
    * Converts the dose from a String to a Double.
    *
    * @param stringDose the dose as a String
    * @return the dose as a Double
    */
-  def getDose(stringDose: String) = {
+  def getDose(stringDose: String): Double = {
     stringDose.substring(0, stringDose.indexOf("mg")).toDouble
   }
 

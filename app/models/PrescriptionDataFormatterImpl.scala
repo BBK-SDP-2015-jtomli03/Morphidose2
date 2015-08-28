@@ -72,7 +72,7 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
       val totalDailyMRDose = DoseCalculator.totalDailyMRDose(prescription.MRDose)
       val averageTotalDailyDose = DoseCalculator.averageTotalDailyDose(totalDailyMRDose, average24hrBreakthroughDose)
       val MRDoseTitration = DoseCalculator.MRDoseTitration(averageTotalDailyDose)
-      val breakthroughDoseTitration = DoseCalculator.breakthroughDoseTitration(averageTotalDailyDose)
+      val breakthroughDoseTitration = DoseCalculator.breakthroughDoseTitration(averageTotalDailyDose, prescription.breakthroughDose, numOfBreakthroughDoses)
       DoseTitrationData(numOfBreakthroughDoses.toString, daysSinceCurrentPrescription.toString, getDoseAsString(average24hrBreakthroughDose), getDoseAsString(totalDailyMRDose), getDoseAsString(averageTotalDailyDose), getDoseAsString(MRDoseTitration), getDoseAsString(breakthroughDoseTitration))
   }
 
