@@ -56,7 +56,7 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
    */
     def getInstanceOfPrescriptionData(prescription: Prescription) = {
       val prescriberName = getPrescriberName(prescription: Prescription)
-      PrescriptionData(prescriberName, getDateAsString(prescription.date), prescription.MRDrug, getDoseAsString(prescription.MRDrug, prescription.MRDose), prescription.breakthroughDrug, getDoseAsString(prescription.breakthroughDrug, prescription.breakthroughDose))
+      PrescriptionData(prescriberName, getDateAsString(prescription.date), prescription.MRDrug, getDoseAsString(prescription.MRDose), prescription.breakthroughDrug, getDoseAsString(prescription.breakthroughDose))
     }
 
   /**
@@ -73,7 +73,7 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
       val averageTotalDailyDose = DoseCalculator.averageTotalDailyDose(totalDailyMRDose, average24hrBreakthroughDose)
       val MRDoseTitration = DoseCalculator.MRDoseTitration(averageTotalDailyDose)
       val breakthroughDoseTitration = DoseCalculator.breakthroughDoseTitration(averageTotalDailyDose)
-      DoseTitrationData(numOfBreakthroughDoses.toString, daysSinceCurrentPrescription.toString, average24hrBreakthroughDose.toString, totalDailyMRDose.toString, averageTotalDailyDose.toString, MRDoseTitration.toString, breakthroughDoseTitration.toString)
+      DoseTitrationData(numOfBreakthroughDoses.toString, daysSinceCurrentPrescription.toString, getDoseAsString(average24hrBreakthroughDose), getDoseAsString(totalDailyMRDose), getDoseAsString(averageTotalDailyDose), getDoseAsString(MRDoseTitration), getDoseAsString(breakthroughDoseTitration))
   }
 
   /**
@@ -90,15 +90,11 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
   /**
    * Converts a dose for a particular drug to a formatted string.
    *
-   * @param drug the drug
    * @param dose the dose
    * @return String the formatted dose
    */
-  def getDoseAsString(drug: String, dose: Double) = {
-    drug match {
-      case "Oramorph" => dose + "mg/ml"
-      case _ => dose + "mg"
-    }
+  def getDoseAsString(dose: Double) = {
+    dose + "mg"
   }
 
   /**
@@ -108,7 +104,7 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
    * @return Int the number of days
    */
   def numberOfDays(date: Timestamp) = {
-    Days.daysBetween(new DateTime(date.getTime()).toLocalDate(), new DateTime().withZone(timeZone).toLocalDate()).getDays
+    Days.daysBetween(new DateTime(date.getTime()).toLocalDate(), new DateTime().withZone(timeZone).toLocalDate()).getDays - 2
   }
 
 
