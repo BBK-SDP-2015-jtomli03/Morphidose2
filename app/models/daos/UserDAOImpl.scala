@@ -3,7 +3,7 @@ package models.daos
 import java.util.UUID
 
 import com.mohiva.play.silhouette.api.LoginInfo
-import models.{Prescriber, Administrator, User}
+import models.{Administrator, Prescriber, User}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import scala.concurrent._
@@ -190,14 +190,6 @@ class UserDAOImpl extends UserDAO with DAOSlick {
         loginInfo <- loginInfoOption.map(DBIO.successful(_)).getOrElse(insertLoginInfo)
       } yield loginInfo
     }
-    // combine database actions to be run sequentially and as a whole transaction
-    //        val actions = (for {
-    //          _ <- slickAdministrators.insertOrUpdate(dbUser)
-    //          loginInfo <- loginInfoAction
-    //        } yield ()).transactionally
-    //        // run actions and return user afterwards
-    //        db.run(actions).map(_ => user)}
-
     // combine database actions to be run sequentially and as a whole transaction
     userType match {
       case "administrator" => val actions = (for {

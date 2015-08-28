@@ -1,7 +1,8 @@
 package modules
 
 import com.google.inject.AbstractModule
-import models.daos.{PrescriptionDAOImpl, PrescriptionDAO, PatientDAOImpl, PatientDAO}
+import models.{PrescriptionDataFormatterImpl, PrescriptionDataFormatter}
+import models.daos._
 import net.codingwell.scalaguice.ScalaModule
 import org.joda.time.DateTimeZone
 
@@ -16,6 +17,9 @@ class ApplicationModule extends AbstractModule with ScalaModule {
   def configure() {
     bind[PatientDAO].to[PatientDAOImpl]
     bind[PrescriptionDAO].to[PrescriptionDAOImpl]
+    bind[PrescriberDAO].to[PrescriberDAOImpl]
+    bind[DoseDAO].to[DoseDAOImpl]
+    bind[PrescriptionDataFormatter].to[PrescriptionDataFormatterImpl]
     bind[DateTimeZone].toInstance(DateTimeZone.forID("Europe/London"))
   }
 

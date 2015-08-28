@@ -4,10 +4,11 @@
 
 # Home page
 GET         /patient/select                  @controllers.PrescriptionController.selectPatient()
-GET         /prescription/calcs              @controllers.PrescriptionController.doseCalculations(patient: models.Patient)
+GET         /prescription/current            @controllers.PrescriptionController.retrieveCurrentPrescription(patient: models.Patient)
 #GET         /patients                        @controllers.PatientController.getPatients()
+#GET         /calculations                    @controllers.PrescriptionController.doseCalculationsPage(patient: models.Patient, prescriptionData: models.PrescriptionData)
 GET         /home                            @controllers.PrescriberController.index
-GET         /patient/titrations              @controllers.PrescriptionController.getLatestPrescriptionWithDoseTitrations()
+GET         /patient/titrations              @controllers.PrescriptionController.getLatestPrescriptionWithDoseTitrations
 POST        /patient/add                     @controllers.PrescriberController.addPatient()
 GET         /form/patient/new                @controllers.PrescriberController.addPatientForm()
 GET         /form/patient/edit               @controllers.PrescriberController.editPatientForm(patient: models.Patient)

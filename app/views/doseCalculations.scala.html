@@ -1,4 +1,4 @@
-@(prescription: Form[models.forms.PrescriptionForm.Data], user: User, pt: Patient, currentPrescriptionData: PrescriptionData, doseTitrationData: Option[String], MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
+@(prescription: Form[models.forms.PrescriptionForm.Data], user: User, pt: Patient, currentPrescriptionData: PrescriptionData, doseTitrationData: DoseTitrationData, MRMorphine: List[String], MRMorphineDoses: List[String], BreakthroughMorphine: List[String], BreakthroughMorphineDoses: List[String])(implicit request: RequestHeader, messages: Messages)
 
 
 @import helper._
@@ -46,13 +46,13 @@
         <div class="info">
           <p> Recommended doses based on the frequency of as required doses taken since the last consultation;</p>
           <p class="bg-success">
-            MST Continus 40mg BD <br>
-            Oramorph 10mg/5ml Oral Solution 5ml prn
+            @currentPrescriptionData.MRDrug @doseTitrationData.mrDoseTitration BD <br>
+            @currentPrescriptionData.breakthroughDrug @doseTitrationData.breakthroughDoseTitration prn
           </p>
           <div class="buttons">
           <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button>
           <a href="#edit_doses"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button></a>
-          <a href="#dose_calculation"><button type="button" class="btn btn-danger" ><span class="glyphicon glyphicon-phone"></span>   View calculations</button></a>
+          <a href="#dose_calculation"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-phone"></span>   View calculations</button></a>
           </div>
 
           <div class="input">
@@ -89,7 +89,7 @@
                 <br><br><br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Prescribe doses</button>
               }
-              <br><br><span id="dose_calculation"></span>
+              <span id="dose_calculation"></span>
             </div>
             </div>
         </div>
@@ -100,37 +100,40 @@
           <p>The titration doses were calculated as follows;</p>
           <div class="main_titration_calculations">
             <p>
-              {{14}} breakthrough doses taken over the {{7}} days since the last consultation.<br><br>
+             <b> @doseTitrationData.numOfBreakthroughDoses breakthrough doses taken over the @doseTitrationData.daysSinceCurrentPrescription days since the last consultation.</b><br><br>
               Therefore;
             </p>
             <p>
-              <b>Average sum of breakthrough doses per 24 hours</b> =  (number of doses taken x breakthrough dose) / days <br>
-              = ({{doses_taken}} x {{breakthrough_dose}}mg) / {{days}}days <br>
-              = {{avg_24hr_breakthrough_dose}}mg
+              <b>Average sum of breakthrough doses per 24 hours</b> <br>
+              =  (number of doses taken x breakthrough dose) / days <br>
+              = (@doseTitrationData.numOfBreakthroughDoses x @currentPrescriptionData.breakthroughDose mg) / @doseTitrationData.daysSinceCurrentPrescription days <br>
+              = @doseTitrationData.average24hrBreakthroughDose mg
             </p>
             <p>
-              <b>Average total daily dose</b> = total daily MR dose + average sum of breakthrough doses per 24 hours <br>
-              = {{daily_mr_dose}}mg + {{avg_24hr_breakthrough_dose}}mg <br>
-              = {{avg_total_daily_dose}}mg
+              <b>Average total daily dose</b><br>
+              = total daily MR dose + average sum of breakthrough doses per 24 hours <br>
+              = @doseTitrationData.totalDailyMRDose mg + @doseTitrationData.average24hrBreakthroughDose mg <br>
+              = @doseTitrationData.averageTotalDailyDose mg
             </p>
           </div>
           <div class="mr_calc">
-            <h4>{{MST Continus}}</h4>
+            <h4>@currentPrescriptionData.MRDrug</h4>
             <p>
-              Next dose of {{mr_drug}} to prescribe<br>
+             <b> Next dose of @currentPrescriptionData.MRDrug to prescribe;</b><br>
+                (rounded down to the nearest measurable dose)<br>
               = average total daily dose / 2 <br>
-              = {{avg_total_daily_dose}}mg / 2 <br>
-              = {{titrated_mr_dose}}mg <br>
-              (rounded down to the nearest measurable dose)
+              = @doseTitrationData.averageTotalDailyDose mg / 2 <br>
+              = @doseTitrationData.mrDoseTitration mg
             </p>
           </div>
           <div class="prn_calc">
-            <h4>{{Oramorph 10mg/5ml Oral Solution}}</h4>
+            <h4>@currentPrescriptionData.breakthroughDrug</h4>
             <p>
-              Next dose of {{breakthough_drug}} to prescribe <br>
+              <b>Next dose of @currentPrescriptionData.breakthroughDrug to prescribe;</b> <br>
+                (rounded down to the nearest measurable dose)<br>
               = average total daily dose / 6 <br>
-              = {{avg_total_daily_dose}}mg / 6 <br>
-              = {{titrated_breakthrough_dose}}mg <br>
+              = doseTitrationData.averageTotalDailyDose mg / 6 <br>
+              = @doseTitrationData.breakthroughDoseTitration mg
               (rounded down to the nearest measurable dose)
             </p>
           </div>

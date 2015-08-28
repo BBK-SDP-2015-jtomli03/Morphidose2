@@ -6,15 +6,15 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
-import models.daos.PrescriptionDAO
+import models.daos.{PatientDAO, PrescriberDAO, PrescriptionDAO}
 import models.forms.{GetPatientForm, PrescriptionForm}
 import models.utils.{AuthorizedWithUserType, DropdownUtils}
-import models.{Patient, Prescription, PrescriptionData, User}
+import models._
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.i18n.{Messages, I18nSupport, MessagesApi}
 import play.api.mvc.Controller
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * The prescription controller.
@@ -26,7 +26,10 @@ class PrescriptionController @Inject()(
                                         val messagesApi: MessagesApi,
                                         val env: Environment[User, CookieAuthenticator],
                                         prescriptionDAO: PrescriptionDAO,
-                                        timeZone: DateTimeZone) extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport{
+                                        prescriberDAO: PrescriberDAO,
+                                        patientDAO: PatientDAO,
+                                        prescriptionDataFormatterImpl: PrescriptionDataFormatterImpl,
+                                        timeZone: DateTimeZone)(implicit ex: ExecutionContext) extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport{
 
 
   /**
@@ -36,12 +39,6 @@ class PrescriptionController @Inject()(
    */
   def prescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")) { implicit request =>
               Ok(views.html.prescription(PrescriptionForm.form, request.identity, patient, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))
-  }
-
-  def doseCalculations(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")) { implicit request =>
-    val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, data.MRDose, prescription.breakthroughDrug, data.breakthroughDose)
-    //val doseTitrationData = None
-    Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, doseTitrationData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses))
   }
 
   /**
@@ -71,23 +68,28 @@ class PrescriptionController @Inject()(
     )
   }
 
-  /**
-   * The get patient action.
-   */
-  def getLatestPrescriptionWithDoseTitrations() = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
+  def getLatestPrescriptionWithDoseTitrations = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     GetPatientForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.selectPatient(form, request.identity))),
       patientData => {
-        //        val pt = Patient(patient.hospitalNumber, patientData.title, formatName(patientData.firstName), formatName(patientData.surname), dobToString(patientData.dobDayOfMonth, patientData.dobMonth, patientData.dobYear))
-        prescriptionDAO.getLatestPrescriptionInfo(patientData.hospitalNumber)
-//          .flatMap {
-//          case None => Future.successful(Redirect(routes.PrescriptionController.selectPatient()).flashing("error" -> Messages("patient.notfound")))
-//          case Some(patient) =>
-//            //below error highlight compiles -> problem is with intellij
-//            Future.successful(Redirect(routes.PrescriptionController.doseCalculations(patient)))
-//        }
-      }
-    )
+        patientDAO.findPatient(patientData.hospitalNumber).flatMap{
+          //below error highlight compiles -> problem is with intellij
+          case Some(patient) => Future.successful(Redirect(routes.PrescriptionController.retrieveCurrentPrescription(patient)))
+          case None =>
+            Future.successful(Redirect(routes.PrescriptionController.selectPatient()).flashing("error" -> Messages("patient.notfound")))
+        }
+      })
+  }
+
+  def retrieveCurrentPrescription(patient: Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async{ implicit request =>
+    prescriptionDAO.getLatestPrescription(patient.hospitalNumber).flatMap {
+      case Some(prescription) =>
+        val prescriptionData = prescriptionDataFormatterImpl.getInstanceOfPrescriptionData(prescription)
+        val doseTitrationData = prescriptionDataFormatterImpl.getDoseTitrationData(prescription)
+        Future.successful(Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, doseTitrationData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+      //below error highlight compiles -> problem is with intellij
+      case None => Future.successful(Redirect(routes.PrescriptionController.prescription(patient)))
+    }
   }
 
   /**

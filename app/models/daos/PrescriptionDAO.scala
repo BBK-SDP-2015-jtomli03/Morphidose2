@@ -2,6 +2,8 @@ package models.daos
 
 import models.Prescription
 
+import scala.concurrent.Future
+
 /**
  * Created by Jo on 22/08/2015.
  */
@@ -15,9 +17,10 @@ trait PrescriptionDAO {
   def addPrescription(prescription: Prescription)
 
   /**
-   * Gets the latest patient, prescriber, and prescription information for a particular patient from the database.
+   * Gets the latest prescription information for a particular patient.
    *
    * @param hospitalNumber the patients hospital number
+   * @return A Future Option[Precsription] or None if a prescription doesn't exist.
    */
-  def getLatestPrescriptionInfo(hospitalNumber: String)
+  def getLatestPrescription(hospitalNumber: String): Future[Option[Prescription]]
 }

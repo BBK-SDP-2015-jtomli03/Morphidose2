@@ -3,7 +3,7 @@ package models.daos
 import java.sql.Timestamp
 
 import com.mohiva.play.silhouette.api.LoginInfo
-import models.Prescription
+import models.{Dose, Prescription}
 import slick.driver.JdbcProfile
 import slick.lifted.ProvenShape.proveShapeOf
 
@@ -95,11 +95,6 @@ trait DBTableDefinitions {
     def patient = foreignKey("patient_fk", ptHospitalNumber, slickPatients)(_.hospitalNumber)
     def prescriber = foreignKey("prescriber_fk", prescriberID, slickPrescribers)(_.userID)
   }
-
-  case class Dose (
-    ptHospitalNumber: String,
-    date: Timestamp
-    )
 
   class Doses(tag: Tag) extends Table[Dose](tag, "doses"){
     def ptHospitalNumber = column[String]("pt_hospital_number", O.PrimaryKey)
