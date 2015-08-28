@@ -21,7 +21,7 @@
 
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
-        <a href="" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
+        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="right_div">
       <div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>
         <a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>
-        Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div>
+       Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div>
       <div class="current_prescription">
         <h3>CURRENT PRESCRIPTION</h3>
         <div class="info">
@@ -116,7 +116,7 @@
             </p>
           </div>
           <div class="mr_calc">
-            <h4>@currentPrescriptionData.MRDrug</h4>
+            <h4 class="left">@currentPrescriptionData.MRDrug</h4>
             <p>
              <b> Next dose of @currentPrescriptionData.MRDrug to prescribe;</b><br>
               = average total daily dose / 2 <br>
@@ -126,7 +126,7 @@
             </p>
           </div>
           <div class="prn_calc">
-            <h4>@currentPrescriptionData.breakthroughDrug</h4>
+            <h4 class="left">@currentPrescriptionData.breakthroughDrug</h4>
             <p>
               <b>Next dose of @currentPrescriptionData.breakthroughDrug to prescribe;</b> <br>
               = average total daily dose / 6 <br>

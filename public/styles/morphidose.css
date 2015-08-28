@@ -85,8 +85,12 @@ h3 {
 
 h4{
     font-size: 24px;
-    text-align: left;
+    text-align: center;
     padding-top: 2%;
+}
+
+h4.left{
+    text-align: left;
 }
 
 .ptDetails{
@@ -251,15 +255,17 @@ footer a{
 .mr_calc{
     float: left;
     background-color: #ffffff;
-    width: 48%;
-    margin-right: 2%;
+    width: 49%;
+    margin-right: 1%;
+    padding: 0 1% 1% 1%;
 }
 
 .prn_calc{
     float: left;
     background-color: #ffffff;
-    width: 48%;
-    margin-left: 2%;
+    width: 49%;
+    margin-left: 1%;
+    padding: 0 1% 1% 1%;
 }
 
 .prescriber_welcome{
@@ -283,6 +289,7 @@ footer a{
 a.edit_pt_details_nav{
     float: right;
     color: #fff;
+    background-color: #5E7639
 }
 
 a.edit_pt_details_nav:hover, a.edit_pt_details_nav:active, a.edit_pt_details_nav:focus{
@@ -296,5 +303,12 @@ a.edit_pt_details_nav:hover, a.edit_pt_details_nav:active, a.edit_pt_details_nav
 
 p.center {
     width: 100%;
-    margin: 1% auto;
+    text-align: center;
+}
+
+.first-prescription{
+    background-color: #ffffff;
+    width: 100%;
+    padding-top: 2%;
+    margin: 2% 0 2% 0;
 }

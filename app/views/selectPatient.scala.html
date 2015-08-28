@@ -25,13 +25,13 @@
   <div id="main_container">
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
-        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button>
-        <button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button>
+        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
+        <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
     <div class="right_div">
       <div class="input">
-        <h3>Find a patient</h3>
+        <h3>Find a Patient</h3>
         <div class="form">
         @form(routes.PrescriptionController.getLatestPrescriptionWithDoseTitrations()) {
           @helper.CSRF.formField

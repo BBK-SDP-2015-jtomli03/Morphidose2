@@ -20,15 +20,16 @@
   <div id="main_container">
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
-        <a href="" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
+        <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
     <div class="right_div">
       <div class="ptDetails"><span class="large">@pt.title @pt.firstName @pt.surname</span>
         <br>Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div>
-      <div class="input">
-      <p class="center">If patient details are incorrect you can edit these in the next step.</p>
+      <div class="first-prescription">
+        <p class="center">If the patient details are incorrect you can edit these in the next step.</p>
+        <div class="input">
           <h3>PRESCRIBE INITIAL DOSES</h3>
           <div class="form">
           @form(routes.PrescriptionController.addPrescription(pt)) {
@@ -65,6 +66,7 @@
           }
           </div>@*End of form*@
         </div>@*End of input*@
+        </div>
       </div>@*End of calculated_dose_titration*@
     </div>@*End of right_div*@
   </div>@*End of main_container*@

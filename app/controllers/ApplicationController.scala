@@ -22,15 +22,6 @@ class ApplicationController @Inject() (
   extends Silhouette[User, CookieAuthenticator] {
 
   /**
-   * Handles the index action.
-   *
-   * @return The result to display.
-   */
-  def index = SecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.home(request.identity)))
-  }
-
-  /**
    * Handles the login action. If a user is already logged in then they will be redirected to their relevant home page,
    * otherwise they will be directed to the login page.
    *

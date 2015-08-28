@@ -35,7 +35,7 @@
                                         <div class="form-signin-add-user">
                                             @form(routes.SignUpController.addUser("prescriber"))  {
                                                 @helper.CSRF.formField
-                                                @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
+                                                @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title", '_default -> "Title")
                                                 @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name")
                                                 @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name")
                                                 @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com")
@@ -50,7 +50,7 @@
                                         <div class="form-signin-add-user">
                                                 @form(routes.SignUpController.addUser("administrator"))  {
                                                     @helper.CSRF.formField
-                                                    @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title")
+                                                    @b3.select(userToAdd("title"), options(titles), '_label -> "Title:", 'placeholder -> "Title", '_default -> "Title")
                                                     @b3.text(userToAdd("firstName"), '_label -> "First Name:",'placeholder -> "First name")
                                                     @b3.text(userToAdd("lastName"), '_label -> "Surname:", 'placeholder -> "Last name")
                                                     @b3.email(userToAdd("email"), '_label -> "Valid work email address:", 'placeholder -> "example@mail.com")

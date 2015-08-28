@@ -5,8 +5,8 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
-import models.User
-import models.daos.{PatientDAO, PrescriptionDAO}
+import models.daos.{DoseDAO, PrescriptionDAO}
+import models.{Dose, User}
 import org.joda.time.DateTimeZone
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Controller
@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext
 /**
  * The patient controller
  */
-class PatientController @Inject()(val messagesApi: MessagesApi, val env: Environment[User, CookieAuthenticator], val ptDAO: PatientDAO, credentialsProvider: CredentialsProvider, prescriptionDAO: PrescriptionDAO, timeZone: DateTimeZone)
+class PatientController @Inject()(val messagesApi: MessagesApi, val env: Environment[User, CookieAuthenticator], val doseDAO: DoseDAO, credentialsProvider: CredentialsProvider, prescriptionDAO: PrescriptionDAO, timeZone: DateTimeZone)
                                  (implicit ec: ExecutionContext) extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport {
 
 
@@ -38,4 +38,8 @@ class PatientController @Inject()(val messagesApi: MessagesApi, val env: Environ
 //      Ok(Json.toJson(patients))
 //    }
 //  }
+
+  def addDose(dose: Dose) = {
+    doseDAO.save(dose)
+  }
 }
