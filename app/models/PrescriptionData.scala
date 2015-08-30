@@ -18,4 +18,3 @@ case class PrescriptionData (
                               breakthroughDrug: String,
                               breakthroughDose: String)
 
-

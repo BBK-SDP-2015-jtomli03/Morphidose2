@@ -28,7 +28,7 @@ class PrescriptionController @Inject()(
                                         prescriptionDAO: PrescriptionDAO,
                                         prescriberDAO: PrescriberDAO,
                                         patientDAO: PatientDAO,
-                                        prescriptionDataFormatterImpl: PrescriptionDataFormatterImpl,
+                                        prescriptionDataFormatterImpl: PrescriptionDataFormatter,
                                         timeZone: DateTimeZone)(implicit ex: ExecutionContext) extends Silhouette[User, CookieAuthenticator] with Controller with I18nSupport{
 
 

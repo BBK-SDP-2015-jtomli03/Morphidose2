@@ -30,10 +30,22 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
     Future.successful(Ok(views.html.prescriberHome(AddPatientForm.form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)))
   }
 
+  /**
+   * Handles the addPatientForm action.
+   * Only authenticated prescribers can access this page, otherwise the user is redirected to the sign in page.
+   *
+   * @return The result to display.
+   */
   def addPatientForm = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     Future.successful(Ok(views.html.addPatient(AddPatientForm.form, request.identity, DropdownUtils.getTitles, DropdownUtils.getDaysOfMonth, DropdownUtils.getMonths, DropdownUtils.getYears)))
   }
 
+  /**
+   * Handles the editPatientForm action.
+   * Only authenticated prescribers can access this page, otherwise the user is redirected to the sign in page.
+   *
+   * @return The result to display.
+   */
   def editPatientForm(patient: models.Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
     Future.successful(Ok(views.html.editPtDetails(EditPatientForm.form, request.identity, patient: Patient, DropdownUtils.getTitles.updated(0, patient.title), DropdownUtils.getDaysOfMonth.updated(0, patient.dob.substring(0, patient.dob.length - 9)), DropdownUtils.getMonths.updated(0, patient.dob.substring(2,5)), DropdownUtils.getYears.updated(0, patient.dob.substring(6)))))
   }

@@ -6,9 +6,8 @@
 GET         /patient/select                  @controllers.PrescriptionController.selectPatient()
 GET         /prescription/current            @controllers.PrescriptionController.retrieveCurrentPrescription(patient: models.Patient)
 POST        /prescription/repeat             @controllers.PrescriptionController.repeatPrescription(doseTitrationData: models.DoseTitrationData, patient: models.Patient, mrDrug: String, breakthroughDrug: String)
-#GET         /patients                        @controllers.PatientController.getPatients()
-#GET         /calculations                    @controllers.PrescriptionController.doseCalculationsPage(patient: models.Patient, prescriptionData: models.PrescriptionData)
 GET         /home                            @controllers.PrescriberController.index
+POST        /patient/prescription            @controllers.PatientController.register
 GET         /patient/titrations              @controllers.PrescriptionController.getLatestPrescriptionWithDoseTitrations
 POST        /patient/add                     @controllers.PrescriberController.addPatient()
 GET         /form/patient/new                @controllers.PrescriberController.addPatientForm()
@@ -21,8 +20,6 @@ GET         /                                @controllers.ApplicationController.
 GET         /signOut                         @controllers.ApplicationController.signOut
 POST        /authenticate/credentials        @controllers.CredentialsAuthController.authenticate
 POST        /user                            @controllers.SignUpController.addUser(userType: String)
-
-
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.at(path="/public", file)

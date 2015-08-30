@@ -28,6 +28,14 @@ trait PrescriptionDataFormatter{
    */
   def getInstanceOfPrescriptionData(prescription: Prescription): PrescriptionData
 
+  /**
+   * Creates the dose titration data for a given patient.
+   *
+   * @param prescription the patients current prescription.
+   * @return the dose titration data.
+   */
+  def getDoseTitrationData(prescription: Prescription): DoseTitrationData
+
 }
 
 class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, doseDAO: DoseDAO, timeZone: DateTimeZone)(implicit ec: ExecutionContext) extends PrescriptionDataFormatter{

@@ -17,10 +17,23 @@ object DoseCalculator {
     }
   }
 
+  /**
+   * Calculates the total daily MR dose currently taken.
+   *
+   * @param dose the current 12hrly dose
+   * @return Double the total daily MR dose currently taken
+   */
   def totalDailyMRDose(dose: Double) = {
     dose * 2.00
   }
 
+  /**
+   * Calculates the average total daily dose currently taken.
+   *
+   * @param totalDailyMRDose the current total daily MR dose
+   * @param average24hrBreakthroughDose the average daily breakthrough dose currently taken
+   * @return Double the total daily dose currently taken
+   */
   def averageTotalDailyDose(totalDailyMRDose: Double, average24hrBreakthroughDose: Double ) = {
     totalDailyMRDose + average24hrBreakthroughDose
   }
