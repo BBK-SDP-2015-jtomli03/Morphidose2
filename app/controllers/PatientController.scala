@@ -50,10 +50,12 @@ class PatientController @Inject()(val messagesApi: MessagesApi, val env: Environ
               val prescriptionData = prescriptionDataFormatter.getInstanceOfPrescriptionData(prescription)
               val jsonData = Json.toJson(prescriptionData)
               Ok(jsonData)
-            case None => BadRequest(Json.obj("status" -> "KO", "message" -> ("prescription.notfound")))
+            case None =>
+              val emptyPrescriptionData = Json.toJson(getEmptyPrescriptionData)
+              Ok(emptyPrescriptionData)
           }
         case None => BadRequest(Json.obj("status" -> "KO", "message" -> ("patient.notfound")))
-      }
+    }
   }
 
   /**
@@ -75,6 +77,13 @@ class PatientController @Inject()(val messagesApi: MessagesApi, val env: Environ
   def retrievePrescription(hospitalNumber: String) = {
     Await.result(prescriptionDAO.getLatestPrescription(hospitalNumber: String), 5.seconds)
   }
+
+  /**
+   * Returns empty prescription data.
+   *
+   * @return PrescriptionData that is empty.
+   */
+  def getEmptyPrescriptionData = PrescriptionData("","","","","","")
 
 
   def addDose(dose: Dose) = {
