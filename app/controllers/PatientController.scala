@@ -29,8 +29,8 @@ class PatientController @Inject()(val messagesApi: MessagesApi, val env: Environ
     def writes(prescription: PrescriptionData) = Json.obj(
       "prescriber" -> prescription.prescriber,
       "date" -> prescription.date,
-      "MRDrug" -> prescription.MRDrug,
-      "MRDose" -> prescription.MRDose,
+      "mrdrug" -> prescription.MRDrug,
+      "mrdose" -> prescription.MRDose,
       "breakthroughDrug" -> prescription.breakthroughDrug,
       "breakthroughDose" -> prescription.breakthroughDose
     )
