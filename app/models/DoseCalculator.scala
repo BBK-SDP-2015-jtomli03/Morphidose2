@@ -4,7 +4,7 @@ package models
 object DoseCalculator {
 
   /**
-   * Calculates the average daily breakthrough dose to the nearest 0.5 unit.
+   * Calculates the average daily breakthrough dose rounded down to the nearest 0.5 unit.
    *
    * @param dosesTaken the number of doses taken over the period of time
    * @param days the number of days the doses were taken over
@@ -39,7 +39,7 @@ object DoseCalculator {
   }
 
   /**
-   * Calculates the titrated MR dose to the nearest 5 unit.
+   * Calculates the titrated MR dose rounded down to the nearest 5 unit.
    *
    * @param averageTotalDailyDose the average total daily dose taken by the patient
    * @return Double the MR dose to titrate to next, to the nearest 5 unit
@@ -49,7 +49,7 @@ object DoseCalculator {
   }
 
   /**
-   * Calculates the titrated breakthrough dose to the nearest 2.5 unit.
+   * Calculates the titrated breakthrough dose rounded down to the nearest 2.5 unit.
    *
    * @param averageTotalDailyDose the average total daily dose taken by the patient
    * @return Double the breakthrough dose to titrate to next, to the nearest 2.5 unit

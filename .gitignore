@@ -1,6 +1,7 @@
 logs
 project/project
 project/target
+project/.sbtserver
 target
 tmp
 .history
@@ -16,3 +17,5 @@ dist
 /bin
 /.cache-main
 /.cache-tests
+.sbtserver/*
+

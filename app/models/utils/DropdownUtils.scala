@@ -36,7 +36,7 @@ object DropdownUtils {
    */
   def getMRMorphineDoses : List[String] = createDoseList(5.0, 400.0, 5.0, "mg BD")
   /**
-   * @return List[String] possible brands of breakthrough Morphine with the first element set as an empty String
+   * @return List[String] possible brands of breakthrough Morphine with the first element set as a placeholder for "Drug"
    */
   def getBreakthroughMorphine : List[String] = List("Drug","Oramorph 10mg/5ml","Sevredol Tablets")
 

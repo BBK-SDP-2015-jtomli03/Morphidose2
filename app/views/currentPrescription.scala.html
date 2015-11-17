@@ -17,15 +17,26 @@
       <strong>Success!</strong> @msg
     </div>
   }
-  <div id="main_container">
 
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <ul class="nav navbar-nav">
+      <li class="active">
+        <p class="navbar-text" >The Morphine Dosing Solution</p>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav pull-right">
+      <li>
+        <a href="@routes.ApplicationController.signOut" class="logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
+      </li>
+    </ul>
+  </nav>
+  <div id="main_container">
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
         <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select A Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
-
     <div class="right_div">
       <div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>
         <a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>

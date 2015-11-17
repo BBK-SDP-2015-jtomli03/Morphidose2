@@ -24,7 +24,7 @@ class UserDAOImpl extends UserDAO with DAOSlick {
    * @return The found user or None if no user for the given login info could be found.
    */
   def find(loginInfo: LoginInfo) = {
-    getUserTypeAndID(loginInfo) match {
+    (getUserTypeAndID(loginInfo): @unchecked) match {
       case Some((id, userType)) if userType.equals("administrator") => val userQuery = for {
         dbUser <- slickAdministrators.filter(_.userID === id)
       } yield dbUser
@@ -41,15 +41,15 @@ class UserDAOImpl extends UserDAO with DAOSlick {
             Prescriber(UUID.fromString(user.userID), loginInfo, user.title, user.firstName, user.lastName, user.email)
           }
         }
-      case None => val userQuery = for {
-        dbLoginInfo <- loginInfoQuery(loginInfo)
-        dbUser <- slickAdministrators.filter(_.userID === dbLoginInfo.userID)
-      } yield dbUser
-        db.run(userQuery.result.headOption).map { dbUserOption =>
-          dbUserOption.map { user =>
-            Administrator(UUID.fromString(user.userID), loginInfo, user.title, user.firstName, user.lastName, user.email)
-          }
-        }
+      //      case None => val userQuery = for {
+//        dbLoginInfo <- loginInfoQuery(loginInfo)
+//        dbUser <- slickAdministrators.filter(_.userID === dbLoginInfo.userID)
+//      } yield dbUser
+//        db.run(userQuery.result.headOption).map { dbUserOption =>
+//          dbUserOption.map { user =>
+//            Administrator(UUID.fromString(user.userID), loginInfo, user.title, user.firstName, user.lastName, user.email)
+//          }
+//        }
     }
 
     //    val userQuery = for {
@@ -145,15 +145,25 @@ class UserDAOImpl extends UserDAO with DAOSlick {
 //   * @param loginInfo The loginInfo of the user to find.
 //   * @return The userID and userType of the user.
 //   */
-  //  def getUserTypeAndID(loginInfo: LoginInfo) = {
-  //    val userQuery = for {
-  //      dbLoginInfo <- loginInfoQuery(loginInfo)
-  //    } yield dbLoginInfo
-  //    val dbresult = db.run(userQuery.result.headOption)
-  //    val userOption = Await.result(dbresult, 5 second) // await until Future result is returned otherwise problems with Slick chronology of instantiating vals
-  //    if(userOption.isEmpty) userOption map {info => (info.userID, info.userType)}
-  //    else None
-  //  }
+//    def getUserTypeAndID(loginInfo: LoginInfo) = {
+//      val userQuery = for {
+//        dbLoginInfo <- loginInfoQuery(loginInfo)
+//      } yield dbLoginInfo
+//      val dbresult = db.run(userQuery.result.headOption)
+//      val userOption = Await.result(dbresult, 5 second) // await until Future result is returned otherwise problems with Slick chronology of instantiating vals
+//      if(userOption.isEmpty) userOption map {info => (info.userID, info.userType)}
+//      else None
+//    }
+
+  def userExists(loginInfo: LoginInfo): Boolean = {
+    val userQuery = for {
+      dbLoginInfo <- loginInfoQuery(loginInfo)
+    } yield dbLoginInfo
+    val dbresult = db.run(userQuery.result.headOption)
+    val userOption = Await.result(dbresult, 5 second) // await until Future result is returned otherwise problems with Slick chronology of instantiating vals
+    if(userOption.isEmpty) false
+    else true
+  }
 
     /**
      * Gets the userID and userType of the user from the users loginInfo.
@@ -207,4 +217,31 @@ class UserDAOImpl extends UserDAO with DAOSlick {
     }
   }
 }
+
+ //CREATE TABLE logininfo (
+   //userID varchar NOT NULL,
+   //providerID varchar NOT NULL,
+   //providerKey varchar NOT NULL,
+   //usertype varchar NOT NULL,
+   //PRIMARY KEY (userID)
+   //);
+ //
+ //CREATE TABLE passwordinfo (
+   //hasher varchar NOT NULL,
+   //password varchar NOT NULL,
+   //userID varchar NOT NULL
+   //);
+ //
+ //CREATE TABLE administrators (
+   //userID varchar NOT NULL,
+   //title varchar NOT NULL,
+   //firstName varchar NOT NULL,
+   //lastName varchar NOT NULL,
+   //email varchar,
+   //PRIMARY KEY (userID)
+   //);
+
+//-- drop table "administrators";
+//-- drop table "passwordinfo";
+//-- drop table "logininfo";
 

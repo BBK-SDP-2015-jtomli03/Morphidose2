@@ -23,18 +23,6 @@
     </head>
     <body>
         <img alt="Brand" src="@routes.Assets.at("images/ic_launcher.png")">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <p class="navbar-text" >The Morphine Dosing Solution</p>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav pull-right">
-                <li>
-                    <a href="@routes.ApplicationController.signOut" class="logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
-                </li>
-            </ul>
-        </nav>
         @content
         <footer>
             <p class="footer">This site uses graphics from <a href="http://glyphicons.com">http://glyphicons.com</a></p>

@@ -83,7 +83,7 @@ trait DBTableDefinitions {
   }
 
   class Prescriptions(tag: Tag) extends Table[Prescription](tag, "prescriptions") {
-    def ptHospitalNumber = column[String]("pt_hospital_number", O.PrimaryKey)
+    def ptHospitalNumber = column[String]("pt_hospital_number")
     def prescriberID = column[String]("prescriberid")
     def date = column[Timestamp]("date")
     def MRDrug = column[String]("mr_drug")
@@ -97,9 +97,10 @@ trait DBTableDefinitions {
   }
 
   class Doses(tag: Tag) extends Table[Dose](tag, "doses"){
-    def ptHospitalNumber = column[String]("pt_hospital_number", O.PrimaryKey)
+    def ptHospitalNumber = column[String]("pt_hospital_number")
     def date = column[Timestamp]("date")
     def * = (ptHospitalNumber, date) <> (Dose.tupled, Dose.unapply)
+    def pkey = primaryKey("doses_pk", (ptHospitalNumber, date))
     def patient = foreignKey("patient_fk", ptHospitalNumber, slickPatients)(_.hospitalNumber)
   }
 

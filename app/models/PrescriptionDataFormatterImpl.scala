@@ -91,7 +91,7 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
    * @return the formatted timestamp
    */
   def getDateAsString(timestamp: Timestamp) = {
-    val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
+    val dateFormat = new SimpleDateFormat("EEE, d MMM yyyy")
     dateFormat.format(timestamp)
   }
 
@@ -106,13 +106,13 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
   }
 
   /**
-   * Calculates the number of full days between a timestamp and the current day.
+   * Calculates the number of days between a timestamp and the current day.
    *
    * @param date the timestamp
    * @return Int the number of days
    */
   def numberOfDays(date: Timestamp) = {
-    Days.daysBetween(new DateTime(date.getTime()).toLocalDate(), new DateTime().withZone(timeZone).toLocalDate()).getDays - 2 match {
+    Days.daysBetween(new DateTime(date.getTime()).toLocalDate(), new DateTime().withZone(timeZone).toLocalDate()).getDays match {
       case days if days < 0 => 0
       case days => days
     }

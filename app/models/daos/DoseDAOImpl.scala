@@ -4,11 +4,12 @@ import java.sql.Timestamp
 import javax.inject.Inject
 
 import models.Dose
+import org.joda.time.DateTimeZone
 
 import scala.concurrent.ExecutionContext
 
 
-class DoseDAOImpl @Inject()(implicit ex: ExecutionContext) extends DoseDAO with DAOSlick {
+class DoseDAOImpl @Inject()(timeZone: DateTimeZone)(implicit ex: ExecutionContext) extends DoseDAO with DAOSlick {
   import driver.api._
 
   /**
@@ -17,7 +18,7 @@ class DoseDAOImpl @Inject()(implicit ex: ExecutionContext) extends DoseDAO with 
    * @param dose The dose to save.
    */
   override def save(dose: Dose) = db.run {
-    slickDoses += Dose(dose.ptHospitalNumber, dose.date)
+      slickDoses += dose
   }
 
   /**

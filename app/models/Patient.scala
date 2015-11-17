@@ -39,7 +39,6 @@ object Patient{
         }
       }
     }
-
     override def unbind(key: String, patient: Patient): String = {
       stringBinder.unbind(key + ".hospitalNumber", patient.hospitalNumber) + "&" + stringBinder.unbind(key + ".title", patient.title) + "&" + stringBinder.unbind(key + ".firstName", patient.firstName) + "&" + stringBinder.unbind(key + ".surname", patient.surname) + "&" + stringBinder.unbind(key + ".dob", patient.dob)
     }

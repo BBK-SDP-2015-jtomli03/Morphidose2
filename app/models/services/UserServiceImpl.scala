@@ -31,4 +31,15 @@ class UserServiceImpl @Inject() (userDAO: UserDAO) extends UserService {
    */
   def save(user: User, userType: String) = userDAO.save(user, userType)
 
+  /**
+   * Checks if a user exists.
+   *
+   * @param loginInfo The login info of the user to find.
+   * @return The found user or None if no user for the given login info could be found.
+   */
+  def exists(loginInfo: LoginInfo):Boolean = userDAO.userExists(loginInfo)
+
+
 }
+
+

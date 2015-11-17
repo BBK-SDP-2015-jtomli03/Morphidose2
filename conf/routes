@@ -8,6 +8,7 @@ GET         /prescription/current            @controllers.PrescriptionController
 POST        /prescription/repeat             @controllers.PrescriptionController.repeatPrescription(doseTitrationData: models.DoseTitrationData, patient: models.Patient, mrDrug: String, breakthroughDrug: String)
 GET         /home                            @controllers.PrescriberController.index
 POST        /patient/prescription            @controllers.PatientController.register
+POST        /patient/doses                   @controllers.PatientController.addDoses
 GET         /patient/titrations              @controllers.PrescriptionController.getLatestPrescriptionWithDoseTitrations
 POST        /patient/add                     @controllers.PrescriberController.addPatient()
 GET         /form/patient/new                @controllers.PrescriberController.addPatientForm()
