@@ -33,6 +33,15 @@
   <div id="main_container">
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
+        <div class="side_nav_pt_details">
+          <b class="ptName">@pt.title @pt.firstName @pt.surname</b>
+          <br><b>@pt.hospitalNumber</b>
+          <br>Date of Birth: @pt.dob
+          <div class="allergies">
+            <h6>Allergies</h6>
+            <div class="allergy_info">NKDA</div>
+          </div>
+        </div>
         <a href="@routes.PrescriberController.editPatientForm(pt)" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-edit"></span>  Edit Patient Details</button></a>
         <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select A Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
@@ -40,14 +49,12 @@
     </div>
     <div class="dose_calculations_background">
       <span id="top"></span>
-      <div class="ptDetails">
-      <h5>Patient Details</h5>
-      <div class="menu ptDetails_inner">
+      @*<div class="ptDetails">*@
+      @*<h5>Patient Details</h5>*@
         @*<div class="info">*@
-          <b class="ptName">@pt.title @pt.firstName @pt.surname</b>
-          <br><b>Hospital number:</b>  @pt.hospitalNumber
-          <br><b>Date of birth:</b>  @pt.dob
-          <br>
+          @*<b class="ptName">@pt.title @pt.firstName @pt.surname</b>*@
+          @*<br><b>Hospital number:</b>  @pt.hospitalNumber*@
+          @*<br><b>Date of birth:</b>  @pt.dob*@
         @*</div>*@
         @*<div class="diagnosis">*@
           @*<b class="ptName">Diagnosis</b>*@
@@ -57,44 +64,49 @@
           @*<h6>Allergies</h6>*@
           @*<div class="allergy_info">NKDA</div>*@
         @*</div>*@
-      </div>
-      </div>
+      @*</div>*@
       @*<div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>*@
         @*<a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>*@
        @*Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob *@
       @*</div>*@
       <div class="current_prescription">
-        <h5>Current Prescription</h5>
-      <div class="current_prescription_inner">
-        <div class="data">
-          <p>Prescribed by @currentPrescriptionData.prescriber on @currentPrescriptionData.date ;</p>
-          <p class="bg-success">
-            @currentPrescriptionData.MRDrug @currentPrescriptionData.MRDose BD<br>
-            @currentPrescriptionData.breakthroughDrug @currentPrescriptionData.breakthroughDose prn
-          </p>
+        <div class="block_header">Current <br>Prescription</div>
+        <div class="block_data bg-success">
+          <div class="block_data_inner_text">
+            <br>
+            <p class="bg-success">
+              @currentPrescriptionData.MRDrug @currentPrescriptionData.MRDose BD<br>
+              @currentPrescriptionData.breakthroughDrug @currentPrescriptionData.breakthroughDose prn
+            </p>
+          </div>
+          <div class="buttons">
+            <p>Prescribed by @currentPrescriptionData.prescriber on @currentPrescriptionData.date .</p>
+          </div>
         </div>
       </div>
-    </div>
       <div class="calculated_dose_titration">
-        <h5>Calculated Dose Titration</h5>
-      <div class="calculated_dose_titration_inner">
-        <div class="data">
-          <p> Recommended doses based on the frequency of as required doses taken since the last consultation;</p>
-          <p class="bg-success">
-            @currentPrescriptionData.MRDrug @doseTitrationData.mrDoseTitration BD <br>
-            @currentPrescriptionData.breakthroughDrug @doseTitrationData.breakthroughDoseTitration prn
-          </p>
-          <div class="buttons">
+        <div class="block_header">Suggested Dose Titrations</div>
+      @*<div class="calculated_dose_titration_inner">*@
+        <div class="block_data bg-success">
+          <div class="block_data_inner_text">
+            <p class="bg-success">
+              @currentPrescriptionData.MRDrug @doseTitrationData.mrDoseTitration BD <br>
+              @currentPrescriptionData.breakthroughDrug @doseTitrationData.breakthroughDoseTitration prn
+            </p>
             <a href="@routes.PrescriptionController.repeatPrescription(doseTitrationData, pt, currentPrescriptionData.MRDrug, currentPrescriptionData.breakthroughDrug)"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button></a>
-          <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#edit_doses"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button>
+            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#edit_doses"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button>
+          </div>
+          <div class="buttons">
+            <p> Doses based on the frequency of as required doses taken since the last consultation. </p>
           @*<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#dose_calculation"><span class="glyphicon glyphicon-phone"></span>   View calculations</button>*@
           </div>
         </div>
-
+      @*</div>*@
+      </div>
 
           <div class="input collapse" id="edit_doses">
             <h4>Edit Doses to Prescribe</h4>
-            <div class="form">
+            <div class="form_wide">
               @form(routes.PrescriptionController.addPrescription(pt)) {
                 @helper.CSRF.formField
                 <label>Slow Release Morphine:</label>
@@ -129,67 +141,53 @@
             </div>
             </div>
 
-        <div class="dose_calculation" id="dose_calculation">
-          <h3>DOSE CALCULATIONS</h3>
-          <div class="data">
-            <p>The titration doses were calculated as follows;</p>
-            <div class="main_titration_calculations">
-              <p>
-                <b> @doseTitrationData.numOfBreakthroughDoses breakthrough doses taken over the @doseTitrationData.daysSinceCurrentPrescription full day(s) since the last consultation.</b><br><br>
-                Therefore;
-              </p>
-              <p>
-                <b>Average sum of breakthrough doses per 24 hours</b> <br>
-                =  (number of doses taken x breakthrough dose) / days <br>
-                = (@doseTitrationData.numOfBreakthroughDoses x @currentPrescriptionData.breakthroughDose) / @doseTitrationData.daysSinceCurrentPrescription days <br>
-                = @doseTitrationData.average24hrBreakthroughDose
-              </p>
-              <p>
-                <b>Average <u>total</u> daily dose</b><br>
-                = total daily MR dose + average sum of breakthrough doses per 24 hours <br>
-                = @doseTitrationData.totalDailyMRDose + @doseTitrationData.average24hrBreakthroughDose <br>
-                = @doseTitrationData.averageTotalDailyDose
-              </p>
-            </div>
-            <div class="mr_calc">
-              <h4 class="left">@currentPrescriptionData.MRDrug</h4>
-              <p>
-                <b> Next dose of @currentPrescriptionData.MRDrug to prescribe;</b><br>
-                = average total daily dose / 2 <br>
-                = @doseTitrationData.averageTotalDailyDose / 2 <br>
-                = <b> @doseTitrationData.mrDoseTitration BD </b><br>
-                (rounded down to the nearest measurable dose)
-              </p>
-            </div>
-            <div class="prn_calc">
-              <h4 class="left">@currentPrescriptionData.breakthroughDrug</h4>
-              <p>
-                <b>Next dose of @currentPrescriptionData.breakthroughDrug to prescribe;</b> <br>
-                = average total daily dose / 6 <br>
-                = @doseTitrationData.averageTotalDailyDose / 6 <br>
-                = <b> @doseTitrationData.breakthroughDoseTitration prn </b> <br>
-                (rounded down to the nearest measurable dose or to 2.5mg prn, whichever is higher)
-              </p>
-            </div>
-            @*<div class="prn_calc">*@
-            @*<br>*@
-            @*<br>*@
-            @*<a href="#top">Back to top</a>*@
-            @*</div>*@
+      <div class="calculated_dose_titration">
+        <div class="block_header_long">Dose <br>Calculations</div>
+        <div class="block_data_long bg-success">
+          <br>
+          <p>The titration doses were calculated as follows;</p>
+          <div class="main_titration_calculations">
+            <p>
+              <b> @doseTitrationData.numOfBreakthroughDoses breakthrough doses taken over the @doseTitrationData.daysSinceCurrentPrescription full day(s) since the last consultation.</b><br><br>
+              Therefore;
+            </p>
+            <p>
+              <b>Average sum of breakthrough doses per 24 hours</b> <br>
+              =  (number of doses taken x breakthrough dose) / days <br>
+              = (@doseTitrationData.numOfBreakthroughDoses x @currentPrescriptionData.breakthroughDose) / @doseTitrationData.daysSinceCurrentPrescription days <br>
+              = @doseTitrationData.average24hrBreakthroughDose
+            </p>
+            <p>
+              <b>Average <u>total</u> daily dose</b><br>
+              = total daily MR dose + average sum of breakthrough doses per 24 hours <br>
+              = @doseTitrationData.totalDailyMRDose + @doseTitrationData.average24hrBreakthroughDose <br>
+              = @doseTitrationData.averageTotalDailyDose
+            </p>
+          </div>
+          <div class="mr_calc">
+            <h4 class="left">@currentPrescriptionData.MRDrug</h4>
+            <p>
+              <b> Next dose of @currentPrescriptionData.MRDrug to prescribe;</b><br>
+              = average total daily dose / 2 <br>
+              = @doseTitrationData.averageTotalDailyDose / 2 <br>
+              = <b> @doseTitrationData.mrDoseTitration BD </b><br>
+              (rounded down to the nearest measurable dose)
+            </p>
+          </div>
+          <div class="prn_calc">
+            <h4 class="left">@currentPrescriptionData.breakthroughDrug</h4>
+            <p>
+              <b>Next dose of @currentPrescriptionData.breakthroughDrug to prescribe;</b> <br>
+              = average total daily dose / 6 <br>
+              = @doseTitrationData.averageTotalDailyDose / 6 <br>
+              = <b> @doseTitrationData.breakthroughDoseTitration prn </b> <br>
+              (rounded down to the nearest measurable dose or to 2.5mg prn, whichever is higher)
+            </p>
           </div>
         </div>
       </div>
+
       </div>
 
-      @*<div class="container">*@
-        @*<h2>Simple Collapsible</h2>*@
-        @*<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>*@
-        @*<div id="demo" class="collapse">*@
-          @*Lorem ipsum dolor sit amet, consectetur adipisicing elit,*@
-          @*sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,*@
-          @*quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.*@
-        @*</div>*@
-      @*</div>*@
-    </div>
   </div>
 }

@@ -33,14 +33,23 @@
   <div id="main_container">
     <div class="side_nav_container">
       <div class="list-group" id="side_nav">
+        <div class="side_nav_pt_details">
+          <b class="ptName">@pt.title @pt.firstName @pt.surname</b>
+          <br><b>@pt.hospitalNumber</b>
+          <br>Date of Birth: @pt.dob
+          <div class="allergies">
+            <h6>Allergies</h6>
+            <div class="allergy_info">NKDA</div>
+          </div>
+        </div>
         <a href="@routes.PrescriptionController.selectPatient()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-search"></span>  Select A Patient</button></a>
         <a href="@routes.PrescriberController.addPatientForm()" class="menu"><button type="button" class="list-group-item"><span class="glyphicon glyphicon-plus"></span>  Add New Patient</button></a>
       </div>
     </div>
     <div class="right_div">
-      <div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>
-        <a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>
-        Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div><br><br>
+      @*<div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>*@
+        @*<a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>*@
+        @*Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob </div><br><br>*@
       <div class="first-prescription">
       <div class="input">
         <h3>Edit Patient Details</h3>
