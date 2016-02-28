@@ -97,7 +97,7 @@
             <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#edit_doses"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button>
           </div>
           <div class="buttons">
-            <p> Doses based on the frequency of as required doses taken since the last consultation. </p>
+            <p> See below for dose calculations. </p>
           @*<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#dose_calculation"><span class="glyphicon glyphicon-phone"></span>   View calculations</button>*@
           </div>
         </div>
@@ -144,8 +144,7 @@
       <div class="calculated_dose_titration">
         <div class="block_header_long">Dose <br>Calculations</div>
         <div class="block_data_long bg-success">
-          <br>
-          <p>The titration doses were calculated as follows;</p>
+          <p>The dose titrations were calculated according to the frequency of as required doses taken since the last consultation;</p>
           <div class="main_titration_calculations">
             <p>
               <b> @doseTitrationData.numOfBreakthroughDoses breakthrough doses taken over the @doseTitrationData.daysSinceCurrentPrescription full day(s) since the last consultation.</b><br><br>

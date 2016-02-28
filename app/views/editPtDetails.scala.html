@@ -13,8 +13,10 @@
   }
   @request.flash.get("success").map { msg =>
     <div class="col-md-6 col-md-offset-3 alert alert-success">
-      <a href="#" class="close" data-dismiss="alert">&times;</a>
       <strong>Success!</strong> @msg
+      <br>
+      <br>
+      <a href="@routes.PrescriptionController.retrieveCurrentPrescription(pt)"><button type="button" class="list-group-item" id="nav_to_pt">Back to Patient</button></a>
     </div>
   }
 
@@ -60,8 +62,8 @@
             Note: you can <b>not</b> change a patients hospital number. Please speak to the administrator if this is required.
           </p>
           @b3.select(patient("title"), options(titles), '_label -> "Title:")
-          @b3.text(patient("firstName"), '_label -> "First Name:", 'placeholder -> "First name")
-          @b3.text(patient("surname"), '_label -> "Surname:", 'placeholder -> "Last name")
+          @b3.text(patient("firstName"), '_label -> "First Name:", 'value -> pt.firstName)
+          @b3.text(patient("surname"), '_label -> "Surname:", 'value -> pt.surname)
           <label>Date Of Birth:</label>
           @select(
             patient("dobDayOfMonth"),

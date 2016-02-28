@@ -201,18 +201,17 @@ footer{
     float: left;
     width: 100%;
     height: 200px;
-    background-color: #333;
-    padding: 8%;
+    background-color: #E0EBCC;
+    padding: 2%;
+    margin: 0;
 }
 
 p.footer {
-    color: #669900;
-    width: 90%;
-    margin: 0 auto;
+    color: #000;
 }
 
 footer a{
-    color: fuchsia;
+    color: #000;
 }
 
 #main_container{
@@ -492,6 +491,7 @@ b.ptName{
     float: left;
     width: 80%;
     height: 600px;
+    padding-top: 5%;
     border: 0;
     margin: 2% 0 0 0;
 }
@@ -608,4 +608,10 @@ p.center {
     width: 100%;
     padding-top: 2%;
     margin: 2% 0 2% 0;
+}
+
+#nav_to_pt{
+    width: 30%;
+    color: #333333;
+    margin: 2% auto;
 }
