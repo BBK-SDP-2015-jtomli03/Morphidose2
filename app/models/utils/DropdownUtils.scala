@@ -14,7 +14,7 @@ object DropdownUtils {
   /**
    * @return List[String] the days of the months with the first element set as "Month"
    */
-  def getMonths : List[String] = List("Month","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEPT","OCT","NOV","DEC")
+  def getMonths : List[String] = List("Month","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC")
 
   /**
    * @return List[String] a list of years from 1900 to the present with the first element set as "Year"

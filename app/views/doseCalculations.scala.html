@@ -49,26 +49,6 @@
     </div>
     <div class="dose_calculations_background">
       <span id="top"></span>
-      @*<div class="ptDetails">*@
-      @*<h5>Patient Details</h5>*@
-        @*<div class="info">*@
-          @*<b class="ptName">@pt.title @pt.firstName @pt.surname</b>*@
-          @*<br><b>Hospital number:</b>  @pt.hospitalNumber*@
-          @*<br><b>Date of birth:</b>  @pt.dob*@
-        @*</div>*@
-        @*<div class="diagnosis">*@
-          @*<b class="ptName">Diagnosis</b>*@
-          @*<br>Ovarian Ca Stage IV*@
-        @*</div>*@
-        @*<div class="allergies">*@
-          @*<h6>Allergies</h6>*@
-          @*<div class="allergy_info">NKDA</div>*@
-        @*</div>*@
-      @*</div>*@
-      @*<div class="ptDetails"><span class="edit_pt_details_nav_green">Edit Patient Details</span><span class="large">@pt.title @pt.firstName @pt.surname</span>*@
-        @*<a href="@routes.PrescriberController.editPatientForm(pt)" class="edit_pt_details_nav">Edit Patient Details</a><br>*@
-       @*Hospital number: @pt.hospitalNumber,  Date of birth: @pt.dob *@
-      @*</div>*@
       <div class="current_prescription">
         <div class="block_header">Current <br>Prescription</div>
         <div class="block_data bg-success">
@@ -86,7 +66,6 @@
       </div>
       <div class="calculated_dose_titration">
         <div class="block_header">Suggested Dose Titrations</div>
-      @*<div class="calculated_dose_titration_inner">*@
         <div class="block_data bg-success">
           <div class="block_data_inner_text">
             <p class="bg-success">
@@ -94,14 +73,12 @@
               @currentPrescriptionData.breakthroughDrug @doseTitrationData.breakthroughDoseTitration prn
             </p>
             <a href="@routes.PrescriptionController.repeatPrescription(doseTitrationData, pt, currentPrescriptionData.MRDrug, currentPrescriptionData.breakthroughDrug)"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span>   Prescribe these doses</button></a>
-            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#edit_doses"><span class="glyphicon glyphicon-pencil"></span>   Edit these doses</button>
+            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#edit_doses"><span class="glyphicon glyphicon-pencil"></span>   Edit Prescription</button>
           </div>
           <div class="buttons">
             <p> See below for dose calculations. </p>
-          @*<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#dose_calculation"><span class="glyphicon glyphicon-phone"></span>   View calculations</button>*@
           </div>
         </div>
-      @*</div>*@
       </div>
 
           <div class="input collapse" id="edit_doses">
@@ -139,7 +116,7 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Prescribe doses</button>
               }
             </div>
-            </div>
+          </div>
 
       <div class="calculated_dose_titration">
         <div class="block_header_long">Dose <br>Calculations</div>

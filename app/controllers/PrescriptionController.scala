@@ -8,7 +8,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import models.daos.{PatientDAO, PrescriberDAO, PrescriptionDAO}
 import models.forms.{GetPatientForm, PrescriptionForm}
-import models.utils.{AuthorizedWithUserType, DropdownUtils}
+import models.utils.{DropdownUtils, AuthorizedWithUserType}
 import models._
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.i18n.{Messages, I18nSupport, MessagesApi}
@@ -63,7 +63,7 @@ class PrescriptionController @Inject()(
         val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), data.MRDrug, getDose(data.MRDose), data.breakthroughDrug, getDose(data.breakthroughDose))
         prescriptionDAO.addPrescription(prescription)
         val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, data.MRDose, prescription.breakthroughDrug, data.breakthroughDose)
-        Future.successful(Ok(views.html.currentPrescription(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+        Future.successful(Ok(views.html.currentPrescription(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine.updated(0, prescriptionData.MRDrug), DropdownUtils.getMRMorphineDoses.updated(0, prescriptionData.MRDose), DropdownUtils.getBreakthroughMorphine.updated(0, prescriptionData.breakthroughDrug), DropdownUtils.getBreakthroughMorphineDoses.updated(0, prescriptionData.breakthroughDose))))
       }
     )
   }
@@ -86,7 +86,7 @@ class PrescriptionController @Inject()(
       case Some(prescription) =>
         val prescriptionData = prescriptionDataFormatterImpl.getInstanceOfPrescriptionData(prescription)
         val doseTitrationData = prescriptionDataFormatterImpl.getDoseTitrationData(prescription)
-        Future.successful(Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, doseTitrationData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+        Future.successful(Ok(views.html.doseCalculations(PrescriptionForm.form, request.identity, patient, prescriptionData, doseTitrationData, DropdownUtils.getMRMorphine.updated(0, prescriptionData.MRDrug), DropdownUtils.getMRMorphineDoses.updated(0, getDropdownMRDose(doseTitrationData.mrDoseTitration)), DropdownUtils.getBreakthroughMorphine.updated(0, prescriptionData.breakthroughDrug), DropdownUtils.getBreakthroughMorphineDoses.updated(0, getDropdownBreakthroughDose(doseTitrationData.breakthroughDoseTitration)))))
       //below error highlight compiles -> problem is with intellij
       case None => Future.successful(Redirect(routes.PrescriptionController.prescription(patient)))
     }
@@ -96,7 +96,27 @@ class PrescriptionController @Inject()(
     val prescription = Prescription(patient.hospitalNumber, request.identity.userID.toString, new Timestamp(new DateTime().withZone(timeZone).getMillis), MRdrug, getDose(doseTitrationData.mrDoseTitration), breakthroughDrug, getDose(doseTitrationData.breakthroughDoseTitration))
     prescriptionDAO.addPrescription(prescription)
     val prescriptionData = PrescriptionData(getPrescriberDetails(request.identity.title, request.identity.firstName, request.identity.lastName), getDateAsString(prescription.date), prescription.MRDrug, doseTitrationData.mrDoseTitration, prescription.breakthroughDrug, doseTitrationData.breakthroughDoseTitration)
-    Future.successful(Ok(views.html.currentPrescription(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine, DropdownUtils.getMRMorphineDoses, DropdownUtils.getBreakthroughMorphine, DropdownUtils.getBreakthroughMorphineDoses)))
+    Future.successful(Ok(views.html.currentPrescription(PrescriptionForm.form, request.identity, patient, prescriptionData, DropdownUtils.getMRMorphine.updated(0, prescriptionData.MRDrug), DropdownUtils.getMRMorphineDoses.updated(0, getDropdownMRDose(doseTitrationData.mrDoseTitration)), DropdownUtils.getBreakthroughMorphine.updated(0, prescriptionData.breakthroughDrug), DropdownUtils.getBreakthroughMorphineDoses.updated(0, getDropdownBreakthroughDose(doseTitrationData.breakthroughDoseTitration)))))
+  }
+
+  /**
+   * Concatenates BD to the MR dose.
+   *
+   * @param mrDose the dose as a String number
+   * @return the dose as a full dose String
+   */
+  def getDropdownMRDose(mrDose: String): String = {
+    mrDose + " BD"
+  }
+
+  /**
+   * Concatenates PRN to the breakthrough dose.
+   *
+   * @param dose the dose as a String number
+   * @return the dose as a full dose String
+   */
+  def getDropdownBreakthroughDose(dose: String): String = {
+    dose + " PRN"
   }
 
   /**
