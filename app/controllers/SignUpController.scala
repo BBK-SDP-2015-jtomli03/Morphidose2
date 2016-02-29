@@ -48,26 +48,6 @@ class SignUpController @Inject() (
       form => Future.successful(BadRequest(views.html.adminhome(form, request.identity, DropdownUtils.getTitles, "active", "", "active in", "fade"))),
       data => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
-//        userService.retrieve(loginInfo).flatMap {
-//          case Some(user) =>
-//            Future.successful(Redirect(routes.AdministratorController.index()).flashing("error" -> Messages("user.exists")))
-//          case None =>
-//            val authInfo = passwordHasher.hash(data.password)
-//            val user = createUser(userType, data, loginInfo)
-//            for {
-//              user <- userService.save(user, userType)
-//              authInfo <- authInfoRepository.add(loginInfo, authInfo)
-//            //shouldn't need below data -> it creates cookie info to continue as the user added
-//              //authenticator <- env.authenticatorService.create(loginInfo)
-//              //value <- env.authenticatorService.init(authenticator)
-//              //result <- env.authenticatorService.embed(value, Redirect(routes.ApplicationController.index()))
-//            } yield {
-//              env.eventBus.publish(SignUpEvent(user, request, request2Messages))
-//              //env.eventBus.publish(LoginEvent(user, request, request2Messages))
-//              //result
-//              Redirect(routes.AdministratorController.index()).flashing("success" -> Messages("user.added"))
-//            }
-//        }
           userService.exists(loginInfo) match {
             case true =>
               Future.successful(Redirect(routes.AdministratorController.index()).flashing("error" -> Messages("user.exists")))

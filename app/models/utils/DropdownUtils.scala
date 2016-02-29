@@ -43,7 +43,6 @@ object DropdownUtils {
   /**
    * @return List[String] possible doses of breakthrough Morphine with the first element set as an empty String
    */
-//  def getBreakthroughMorphineDoses: List[String] = "Dose" :: List.range(2.5, 51.0, 2.5).foldLeft(List[String]()){intListToDoseList}.map(dose => dose + "mg prn")
   def getBreakthroughMorphineDoses: List[String] = createDoseList(2.5, 51.0, 2.5, "mg prn")
 
 

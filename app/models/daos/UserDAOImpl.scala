@@ -41,120 +41,15 @@ class UserDAOImpl extends UserDAO with DAOSlick {
             Prescriber(UUID.fromString(user.userID), loginInfo, user.title, user.firstName, user.lastName, user.email)
           }
         }
-      //      case None => val userQuery = for {
-//        dbLoginInfo <- loginInfoQuery(loginInfo)
-//        dbUser <- slickAdministrators.filter(_.userID === dbLoginInfo.userID)
-//      } yield dbUser
-//        db.run(userQuery.result.headOption).map { dbUserOption =>
-//          dbUserOption.map { user =>
-//            Administrator(UUID.fromString(user.userID), loginInfo, user.title, user.firstName, user.lastName, user.email)
-//          }
-//        }
     }
-
-    //    val userQuery = for {
-    //      dbLoginInfo <- loginInfoQuery(loginInfo)
-    //      dbUser <- slickUsers.filter(_.userID === dbLoginInfo.userID)
-    //    } yield dbUser
-    //    db.run(userQuery.result.headOption).map { dbUserOption =>
-    //      dbUserOption.map { user =>
-    //        Administrator(UUID.fromString(user.userID), loginInfo, user.title, user.firstName, user.lastName, user.email)
-    //      }
-    //    }
   }
 
-
-//  def getUserType(loginInfo: LoginInfo) = {
-//    val userQuery = for {
-//      dbLoginInfo <- loginInfoQuery(loginInfo)
-//    } yield dbLoginInfo
-//    db.run(userQuery.result.headOption).map { loginInfoOption =>
-//      loginInfoOption.map {
-//        info => (info.userID, info.userType)
-//      }
-//    }
-//  }
-
-  //  /**
-  //   * Finds a user in the database and returns an instance of that user.
-  //   *
-  //   * @param userType The type of user.
-  //   * @param findUserAction The action to perform on the database to find the user data.
-  //   * @param loginInfo The login info of the user to find.
-  //   * @return An instance of the found user.
-  //   */
-  //  def getUser(userType: String, findUserAction: Option[Query[Users, DBUser, Seq]], loginInfo: LoginInfo) = {
-  //    findUserAction match{
-  //      case Some(actn) if userType == "administrator" => db.run(actn.result.headOption).map { resultOption =>
-  //        resultOption.map {
-  //          case usr =>
-  //            Administrator(
-  //              UUID.fromString(usr.userID),
-  //              LoginInfo(loginInfo.providerID, loginInfo.providerKey),
-  //              usr.title,
-  //              usr.firstName,
-  //              usr.lastName,
-  //              usr.email)
-  //        }
-  //      }
-  //      case Some(actn) if userType == "prescriber" => db.run(actn.result.headOption).map { resultOption =>
-  //        resultOption.map {
-  //          case usr =>
-  //            Administrator(
-  //              UUID.fromString(usr.userID),
-  //              LoginInfo(loginInfo.providerID, loginInfo.providerKey),
-  //              usr.title,
-  //              usr.firstName,
-  //              usr.lastName,
-  //              usr.email)
-  //        }
-  //      }
-  //    }
-  //  }
-
-//  /**
-//   * Returns a Database Query to find a user from a tuple of the userType and userID.
-//   *
-//   * @param userToReturn a tuple of the userType and userID for a user.
-//   * @return The Database Query to find the user.
-//   */
-//  def getFindUserAction(userToReturn: Option[(String, String)]) = {
-//    userToReturn map {
-//      case (id, user) if user == "administrator" => slickUsers.filter(_.userID === id)
-//      case (id, user) if user == "prescriber" => slickUsers.filter(_.userID === id)
-//    }
-//  }
-
-//  /**
-//   * Gets the userType of the user as a String from a tuple of the userType and userID.
-//   *
-//   * @param userToReturn a tuple of the userType and userID for a user.
-//   * @return The userType as a String.
-//   */
-//  def getUserType(userToReturn: Option[(String, String)]) = {
-//    val userType = userToReturn map (usr => usr._2)
-//    userType match {
-//      case Some(userTypeString) => userTypeString
-//      case None => ""
-//    }
-//  }
-
-//  /**
-//   * Gets the userID and userType of the user from the users loginInfo.
-//   *
-//   * @param loginInfo The loginInfo of the user to find.
-//   * @return The userID and userType of the user.
-//   */
-//    def getUserTypeAndID(loginInfo: LoginInfo) = {
-//      val userQuery = for {
-//        dbLoginInfo <- loginInfoQuery(loginInfo)
-//      } yield dbLoginInfo
-//      val dbresult = db.run(userQuery.result.headOption)
-//      val userOption = Await.result(dbresult, 5 second) // await until Future result is returned otherwise problems with Slick chronology of instantiating vals
-//      if(userOption.isEmpty) userOption map {info => (info.userID, info.userType)}
-//      else None
-//    }
-
+  /**
+   * Checks if a user exists.
+   *
+   * @param loginInfo The loginInfo of the user to find.
+   * @return boolean whether the user exists or not.
+   */
   def userExists(loginInfo: LoginInfo): Boolean = {
     val userQuery = for {
       dbLoginInfo <- loginInfoQuery(loginInfo)
@@ -217,31 +112,4 @@ class UserDAOImpl extends UserDAO with DAOSlick {
     }
   }
 }
-
- //CREATE TABLE logininfo (
-   //userID varchar NOT NULL,
-   //providerID varchar NOT NULL,
-   //providerKey varchar NOT NULL,
-   //usertype varchar NOT NULL,
-   //PRIMARY KEY (userID)
-   //);
- //
- //CREATE TABLE passwordinfo (
-   //hasher varchar NOT NULL,
-   //password varchar NOT NULL,
-   //userID varchar NOT NULL
-   //);
- //
- //CREATE TABLE administrators (
-   //userID varchar NOT NULL,
-   //title varchar NOT NULL,
-   //firstName varchar NOT NULL,
-   //lastName varchar NOT NULL,
-   //email varchar,
-   //PRIMARY KEY (userID)
-   //);
-
-//-- drop table "administrators";
-//-- drop table "passwordinfo";
-//-- drop table "logininfo";
 

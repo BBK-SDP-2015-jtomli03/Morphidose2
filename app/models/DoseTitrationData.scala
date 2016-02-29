@@ -14,7 +14,7 @@ case class DoseTitrationData (
                                breakthroughDoseTitration: String
                                )
 
-//The QueryStringBinder for the Patient class
+//The QueryStringBinder for the DoseTitrationData class
 object DoseTitrationData{
   implicit val doseTitrationDataFormat = Json.format[DoseTitrationData]
 
