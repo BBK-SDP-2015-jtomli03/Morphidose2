@@ -47,7 +47,7 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
    * @return The result to display.
    */
   def editPatientForm(patient: models.Patient) = SecuredAction(AuthorizedWithUserType("models.Prescriber")).async { implicit request =>
-    Future.successful(Ok(views.html.editPtDetails(EditPatientForm.form, request.identity, patient: Patient, DropdownUtils.getTitles.updated(0, patient.title), DropdownUtils.getDaysOfMonth.updated(0, patient.dob.substring(0, patient.dob.length - 9)), DropdownUtils.getMonths.updated(0, patient.dob.substring(3,6)), DropdownUtils.getYears.updated(0, patient.dob.substring(7)))))
+    Future.successful(Ok(views.html.editPtDetails(EditPatientForm.form, request.identity, patient: Patient, DropdownUtils.getTitles.updated(0, patient.title), DropdownUtils.getDaysOfMonth.updated(0, formatDateOfBirth(patient.dob, "day")), DropdownUtils.getMonths.updated(0, formatDateOfBirth(patient.dob, "month")), DropdownUtils.getYears.updated(0, formatDateOfBirth(patient.dob, "year")))))
   }
 
   /**
@@ -86,6 +86,23 @@ class PrescriberController @Inject()(val messagesApi: MessagesApi, val env: Envi
             Future.successful(Redirect(routes.PrescriberController.editPatientForm(pt)).flashing("success" -> Messages("patient.edit")))
       }
     )
+  }
+
+  /**
+   * @return the patients day, month, or year of dob formatted as a single String for a dropdown
+   */
+  def formatDateOfBirth(dob: String, format: String): String = {
+    format match{
+      case "day" => dob.substring(0, dob.length - 9)
+      case "month" => dob.length match {
+        case 10 => dob.substring(2,5)
+        case 11 => dob.substring(3,6)
+      }
+      case "year" => dob.length match {
+        case 10 => dob.substring(6)
+        case 11 => dob.substring(7)
+      }
+    }
   }
 
   /**
