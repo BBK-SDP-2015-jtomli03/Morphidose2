@@ -74,7 +74,7 @@ class PrescriptionDAOImpl @Inject()(timeZone: DateTimeZone)(implicit ex: Executi
    */
   override def getLatestPrescription(hospitalNumber: String): Future[Option[Prescription]] = {
     val query = for {
-      prescriptionOption <- slickPrescriptions.filter(_.ptHospitalNumber === hospitalNumber).sortBy(_.date.asc)
+      prescriptionOption <- slickPrescriptions.filter(_.ptHospitalNumber === hospitalNumber).sortBy(_.date.desc)
     }yield prescriptionOption
     db.run(query.result.headOption).map { resultOption =>
       resultOption.map {
