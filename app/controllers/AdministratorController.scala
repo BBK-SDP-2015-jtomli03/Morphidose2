@@ -6,7 +6,8 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import models.User
 import models.forms.SignUpForm
-import models.utils.{AuthorizedWithUserType, DropdownUtils}
+import models.utils.DropdownUtils
+import models.utils.AuthorizedWithUserType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Controller
 

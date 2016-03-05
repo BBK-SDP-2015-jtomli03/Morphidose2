@@ -75,7 +75,7 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
    */
     def getDoseTitrationData(prescription: Prescription) = {
       val numOfBreakthroughDoses = Await.result(doseDAO.countBreakthroughDoses(prescription.ptHospitalNumber, prescription.date), 5.seconds)
-      val daysSinceCurrentPrescription = numberOfDays(prescription.date)
+      val daysSinceCurrentPrescription = numberOfDays(prescription.date, new DateTime().withZone(timeZone))
       val average24hrBreakthroughDose = DoseCalculator.average24hrBreakthroughDose(numOfBreakthroughDoses, prescription.breakthroughDose, daysSinceCurrentPrescription)
       val totalDailyMRDose = DoseCalculator.totalDailyMRDose(prescription.MRDose)
       val averageTotalDailyDose = DoseCalculator.averageTotalDailyDose(totalDailyMRDose, average24hrBreakthroughDose)
@@ -108,11 +108,11 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
   /**
    * Calculates the number of days between a timestamp and the current day.
    *
-   * @param date the timestamp
+   * @param dateFrom the timestamp
    * @return Int the number of days
    */
-  def numberOfDays(date: Timestamp) = {
-    Days.daysBetween(new DateTime(date.getTime()).toLocalDate(), new DateTime().withZone(timeZone).toLocalDate()).getDays match {
+  def numberOfDays(dateFrom: Timestamp, dateTo: DateTime) = {
+    Days.daysBetween(new DateTime(dateFrom.getTime).toLocalDate, dateTo.toLocalDate).getDays match {
       case days if days < 0 => 0
       case days => days
     }
