@@ -75,13 +75,22 @@ class PrescriptionDataFormatterImpl @Inject()(prescriberDAO: PrescriberDAO, dose
    */
     def getDoseTitrationData(prescription: Prescription) = {
       val numOfBreakthroughDoses = Await.result(doseDAO.countBreakthroughDoses(prescription.ptHospitalNumber, prescription.date), 5.seconds)
-      val daysSinceCurrentPrescription = numberOfDays(prescription.date, new DateTime().withZone(timeZone))
+      val daysSinceCurrentPrescription = numberOfDays(prescription.date, getTodaysDateTime)
       val average24hrBreakthroughDose = DoseCalculator.average24hrBreakthroughDose(numOfBreakthroughDoses, prescription.breakthroughDose, daysSinceCurrentPrescription)
       val totalDailyMRDose = DoseCalculator.totalDailyMRDose(prescription.MRDose)
       val averageTotalDailyDose = DoseCalculator.averageTotalDailyDose(totalDailyMRDose, average24hrBreakthroughDose)
       val MRDoseTitration = DoseCalculator.MRDoseTitration(averageTotalDailyDose)
       val breakthroughDoseTitration = DoseCalculator.breakthroughDoseTitration(averageTotalDailyDose, prescription.breakthroughDose, numOfBreakthroughDoses)
       DoseTitrationData(numOfBreakthroughDoses.toString, daysSinceCurrentPrescription.toString, getDoseAsString(average24hrBreakthroughDose), getDoseAsString(totalDailyMRDose), getDoseAsString(averageTotalDailyDose), getDoseAsString(MRDoseTitration), getDoseAsString(breakthroughDoseTitration))
+  }
+
+  /**
+   * Returns a DateTime object for today.
+   *
+   * @return DateTime for today
+   */
+  def getTodaysDateTime = {
+    new DateTime().withZone(timeZone)
   }
 
   /**
