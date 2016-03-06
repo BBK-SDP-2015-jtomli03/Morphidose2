@@ -1,9 +1,7 @@
-package controllers.models.forms
+package models.forms
 
-import models.forms.PrescriptionForm
 import models.forms.PrescriptionForm.Data
 import org.specs2.mutable.Specification
-
 
 class PrescriptionFormSpec extends Specification {
   val MRDrug = "Zomorph"

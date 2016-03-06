@@ -1,6 +1,4 @@
-package controllers.models
-
-import models.DoseCalculator
+package models
 
 
 class DoseCalculatorSpec extends org.specs2.mutable.Specification{

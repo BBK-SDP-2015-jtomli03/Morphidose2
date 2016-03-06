@@ -1,9 +1,9 @@
-package controllers.models.utils
+package models.utils
 
-import models.utils.DropdownUtils
+import org.specs2.mutable.Specification
 
 
-class DropDownUtilsSpec extends org.specs2.mutable.Specification {
+class DropDownUtilsSpec extends Specification{
 
   "the helper method intListToStringList returns a function that" >> {
     "converts a List[Int] to a List[String]" >> {

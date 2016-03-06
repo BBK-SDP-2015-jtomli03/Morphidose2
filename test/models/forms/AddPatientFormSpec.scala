@@ -1,21 +1,19 @@
-package controllers.models.forms
+package models.forms
 
-import models.forms.AddPatientForm
 import models.forms.AddPatientForm.Data
 import org.specs2.mutable.Specification
 
-
 class AddPatientFormSpec extends Specification{
-  val hospitalNumber = "1"
-  val title = "Miss"
-  val firstName = "Bridget"
-  val surname = "Jones"
-  val day = "15"
-  val month = "JUN"
-  val year = "1970"
+val hospitalNumber = "1"
+val title = "Miss"
+val firstName = "Bridget"
+val surname = "Jones"
+val day = "15"
+val month = "JUN"
+val year = "1970"
 
 
-  "the validate function" should {
+"the validate function" should {
     "return the correct Data if the date is valid" in {
       AddPatientForm.validate(hospitalNumber, title, firstName, surname, day, month, year) must_== Some(Data(hospitalNumber, title, firstName, surname, day, month, year))
     }

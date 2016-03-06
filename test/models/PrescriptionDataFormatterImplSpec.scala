@@ -1,5 +1,4 @@
 package models
-
 import java.sql.Timestamp
 
 import models.daos.{DoseDAO, PrescriberDAO}
@@ -7,9 +6,9 @@ import org.joda.time.{DateTime, DateTimeZone}
 import org.specs2.mock._
 import org.specs2.mutable._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{Future, ExecutionContext}
 
-class PrescriptionDataFormatterImplSpec(implicit ec: ExecutionContext) extends Specification with Mockito{
+class PrescriptionDataFormatterImplSpec (implicit ec: ExecutionContext) extends Specification with Mockito{
   val timezone = DateTimeZone.forID("Europe/London")
   val mockPrescriberDAO = mock[PrescriberDAO]
   val mockDoseDAO = mock[DoseDAO]

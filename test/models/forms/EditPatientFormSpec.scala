@@ -1,6 +1,5 @@
-package controllers.models.forms
+package models.forms
 
-import models.forms.EditPatientForm
 import models.forms.EditPatientForm.Data
 import org.specs2.mutable.Specification
 
