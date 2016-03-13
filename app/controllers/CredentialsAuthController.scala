@@ -58,7 +58,7 @@ class CredentialsAuthController @Inject() (
                 case "models.Administrator" => Redirect(routes.AdministratorController.index())
                 case "models.Prescriber" => Redirect(routes.PrescriberController.index())
               }
-              val c = configuration.underlying
+              //val c = configuration.underlying
               env.authenticatorService.create(loginInfo).map {
                 case authenticator => authenticator
                   //create the cookie -> v = cookie, result = redirect as above
