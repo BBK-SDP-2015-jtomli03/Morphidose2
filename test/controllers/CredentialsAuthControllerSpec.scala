@@ -14,6 +14,7 @@ import models.{Administrator, User}
 import org.specs2.mock.Mockito
 import play.api.Configuration
 import play.api.i18n.MessagesApi
+import play.api.libs.json.Json
 import play.api.test.{FakeApplication, FakeRequest, PlaySpecification, WithApplication}
 import play.filters.csrf.CSRF
 
@@ -32,21 +33,18 @@ class CredentialsAuthControllerSpec extends PlaySpecification with Mockito{
       val messagesApi = play.api.Play.current.injector.instanceOf[MessagesApi]
       val config = play.api.Play.current.injector.instanceOf[Configuration]
       implicit val env = FakeEnvironment[User, CookieAuthenticator](Seq(identity.loginInfo -> identity))
-
-
-      val formData = ("bill@thehospital.com", "123")
-
-//      Result r = callAction(routes.ref.UserController.add(), fakeRequest()
-//        .withFormUrlEncodedBody(Form.form(User.class).bind(userData).data()));
+      val formData = Json.obj(
+        "email" -> "bill@thehospital.com",
+        "password" -> "123"
+      )
       val mockAuthInfRepo = mock[AuthInfoRepository]
       val mockCredentialsProvider = mock[CredentialsProvider]
       val mockClock = mock[Clock]
       val mockUserDAO = mock[UserDAO]
       val mockUserService = new UserServiceImpl(mockUserDAO)
       val spyUserService = spy(mockUserService)
-      spyUserService.retrieve(mockLoginInfo) returns Future(Some(identity))
-
-      val request = FakeRequest().withFormUrlEncodedBody(formData).withSession("csrfToken" -> CSRF.SignedTokenProvider.generateToken)
+      doReturn(Future(Some(identity))).when(spyUserService).retrieve(mockLoginInfo)
+      val request = FakeRequest().withBody(formData).withSession("csrfToken" -> CSRF.SignedTokenProvider.generateToken)
       val controller = new CredentialsAuthController(messagesApi, env, spyUserService, mockAuthInfRepo, mockCredentialsProvider, config, mockClock)
       val result = controller.authenticate(request)
       status(result) must equalTo(303)
@@ -65,7 +63,7 @@ class CredentialsAuthControllerSpec extends PlaySpecification with Mockito{
       val mockUserDAO = mock[UserDAO]
       val mockUserService = new UserServiceImpl(mockUserDAO)
       val spyUserService = spy(mockUserService)
-      spyUserService.retrieve(mockLoginInfo) returns Future(Some(identity))
+      doReturn(Future(Some(identity))).when(spyUserService).retrieve(mockLoginInfo)
       val request = FakeRequest().withFormUrlEncodedBody(formData).withSession("csrfToken" -> CSRF.SignedTokenProvider.generateToken)
       val controller = new CredentialsAuthController(messagesApi, env, spyUserService, mockAuthInfRepo, mockCredentialsProvider, config, mockClock)
       val result = controller.authenticate(request)
