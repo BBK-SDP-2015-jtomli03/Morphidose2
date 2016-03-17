@@ -64,7 +64,7 @@ class PatientControllerSpec extends PlaySpecification with Mockito{
       val timeZone = DateTimeZone.forID("Europe/London")
       val dataFormatter = new PrescriptionDataFormatterImpl(mockPrescriberDAO, mockDoseDAO, timeZone)
       val spyDataFormatter = spy(dataFormatter)
-      val mockPrescription = new Prescription("123", "prescriberID", new Timestamp(new DateTime().withZone(timeZone).getMillis), "MRDrug", 5.00, "breakthroughDrug", 10.00)
+      val mockPrescription = new Prescription("123", "prescriberID", new Timestamp(new DateTime(2016,3,13,1,58).getMillis), "MRDrug", 5.00, "breakthroughDrug", 10.00)
       doReturn("Dr Doolittle").when(spyDataFormatter).getPrescriberName(mockPrescription)
       val controller = new PatientController(messagesApi, env, mockPtDAO, mockDoseDAO, mockCredentialsProvider, mockPrescriptionDAO, timeZone, spyDataFormatter)
       val spyController = spy(controller)
