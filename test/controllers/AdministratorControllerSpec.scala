@@ -30,7 +30,7 @@ class AdministratorControllerSpec (implicit ec: ExecutionContext) extends Specif
       val result = controller.index(request)
       status(result) must equalTo(OK)
     }
-    "redirect the user to the sign in page if an unauthorized requests it (with a 303 redirect)" in new WithApplication(app){
+    "redirect the user to the sign in page if an unauthorized user requests it (with a 303 redirect)" in new WithApplication(app){
       val mockUuid = UUID.randomUUID()
       val identity = Prescriber(mockUuid, LoginInfo("email", "bill@thehospital.com"), "Mr", "Bill", "Smith", "bill@thehospital.com")
       val messagesApi = play.api.Play.current.injector.instanceOf[MessagesApi]
