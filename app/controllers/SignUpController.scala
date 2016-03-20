@@ -38,7 +38,7 @@ class SignUpController @Inject() (
 
   /**
    * Registers a new administrator or prescriber.
-   * Only authenticated administrators can access this page, otherwise the user is redirected to the sign in page.
+   * Only authenticated administrators can access this page, otherwise the user is redirected to admin home page.
    *
    * @param userType the type of user to register.
    * @return The result to display.

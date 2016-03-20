@@ -101,13 +101,11 @@ class UserDAOImpl extends UserDAO with DAOSlick {
         _ <- slickAdministrators.insertOrUpdate(dbUser)
         loginInfo <- loginInfoAction
       } yield ()).transactionally
-        // run actions and return user afterwards
         db.run(actions).map(_ => user)
       case "prescriber" => val actions = (for {
         _ <- slickPrescribers.insertOrUpdate(dbUser)
         loginInfo <- loginInfoAction
       } yield ()).transactionally
-        // run actions and return user afterwards
         db.run(actions).map(_ => user)
     }
   }
