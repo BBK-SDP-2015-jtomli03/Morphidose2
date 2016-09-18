@@ -1,46 +1,32 @@
-Silhouette Slick Seed Template
-==============================
+## Morphidose Web Application
+This application provides the prescriber and administrator functionality for the Morphidose software.
 
-This is a fork of the official Silhouette Seed project. If you want to have a first look at Silhouette, I suggest you have a look at the [official project](https://github.com/mohiva/play-silhouette-seed).
+It is used alongside the Android Application (https://github.com/BBK-SDP-2015-jtomli03/MorphidoseAndroid) which allows patient's to log doses of breakthrough medication.
+
+It was started from the Silhouette Slick Seed Template (https://github.com/sbrunk/play-silhouette-slick-seed). This project template is also [hosted at typesafe](https://typesafe.com/activator/template/play-silhouette-slick-seed). The template code is licensed under [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0). It is a fork of the official Silhouette Seed project. If you want to have a first look at Silhouette, I suggest you have a look at the [official project](https://github.com/mohiva/play-silhouette-seed).
 
 The Silhouette Seed project is an Activator template which shows how [Silhouette](https://github.com/mohiva/play-silhouette) can be implemented in a Play Framework application. It's a starting point which can be extended to fit your needs.
 It uses the [play-slick](https://github.com/playframework/play-slick) library for database access.
 
-## Example
+##Running the Code
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+1) Clone the project
 
-(The "Build App" phase will take a few minutes)
+2) Set up a postgreSQL database and point the web application to it by changing the current database url in the application.conf file.
 
-Currently, there is no live example of this template.
+3) Start the application by navigating to your project folder and opening the 'activator', which will display a GUI to run the application.
 
-## Features
+4) Select the project, and then click on run. The project will open in http://localhost:9000
 
-* Sign Up
-* Sign In (Credentials)
-* Social Auth (Facebook, Google+, VK, Twitter, Xing, Yahoo)
-* Two-factor authentication with Clef
-* Dependency Injection with Guice
-* Publishing Events
-* Avatar service
-* Remember me functionality
-* play-slick database access
+5) A test account has been added for an administrator, so login with the following details:
 
-## Documentation
 
-Consulate the [Silhouette documentation](http://silhouette.mohiva.com/docs) for more information. If you need help with the integration of Silhouette into your project, don't hesitate and ask questions in our [mailing list](https://groups.google.com/forum/#!forum/play-silhouette) or on [Stack Overflow](http://stackoverflow.com/questions/tagged/playframework).
+email address: email
 
-### Slick
+password: password
 
-The template stores all authentication information in a database via [Slick](http://slick.typesafe.com/) It uses an in memory [H2](www.h2database.com/) database by default.
+This account will allow you to add a prescriber or another administrator.
 
-In order to use another database supported by Slick, you need to change the driver in your application.conf and add the corresponding JDBC driver to your dependencies. The [Play Slick documentation](https://www.playframework.com/documentation/2.4.x/PlaySlick) has more information about database configuration.
+6) A prescriber can add patients and prescribe medication, both of which are required to be able to use this alongside the Android Application.
 
-## Activator
-
-This project template is also
-[hosted at typesafe](https://typesafe.com/activator/template/play-silhouette-slick-seed).
-
-# License
-
-The code is licensed under [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
+ 
