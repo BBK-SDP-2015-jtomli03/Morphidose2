@@ -102,6 +102,7 @@ trait DBTableDefinitions {
     def * = (ptHospitalNumber, date) <> (Dose.tupled, Dose.unapply)
     def pkey = primaryKey("doses_pk", (ptHospitalNumber, date))
     def patient = foreignKey("patient_fk", ptHospitalNumber, slickPatients)(_.hospitalNumber)
+    def prescription = foreignKey("prescription_fk", ptHospitalNumber, slickPrescriptions)(_.ptHospitalNumber)
   }
 
   // table query definitions
