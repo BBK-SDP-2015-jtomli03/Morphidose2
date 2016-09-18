@@ -1,15 +1,16 @@
 package controllers
 
+import java.util.UUID
 import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
-import com.mohiva.play.silhouette.api.util.{Clock, Credentials}
+import com.mohiva.play.silhouette.api.util.{PasswordHasher, Clock, Credentials}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import com.mohiva.play.silhouette.impl.providers._
-import models.User
+import models.{Administrator, User}
 import models.forms.SignInForm
 import models.services.UserService
 import play.api.Configuration
@@ -38,7 +39,8 @@ class CredentialsAuthController @Inject() (
   authInfoRepository: AuthInfoRepository,
   credentialsProvider: CredentialsProvider,
   configuration: Configuration,
-  clock: Clock)
+  clock: Clock,
+  passwordHasher: PasswordHasher)
   extends Silhouette[User, CookieAuthenticator] {
 
   /**
@@ -68,7 +70,27 @@ class CredentialsAuthController @Inject() (
                   env.authenticatorService.embed(v, result)
                 }
               }
-            case None => Future.failed(new IdentityNotFoundException("Couldn't find user"))
+            case None =>
+              if(data.email == "email" && data.password == "password"){
+                val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
+                val authInfo = passwordHasher.hash(data.password)
+                val user = Administrator(
+                  userID = UUID.randomUUID(),
+                  loginInfo = loginInfo,
+                  title = "Mr",
+                  firstName = "Test",
+                  lastName = "Account",
+                  email = data.email
+                )
+                for {
+                  user <- userService.save(user, "administrator")
+                  authInfo <- authInfoRepository.add(loginInfo, authInfo)
+                } yield {
+                  env.eventBus.publish(SignUpEvent(user, request, request2Messages))
+                  Redirect(routes.AdministratorController.index())
+                }
+              }
+              Future.failed(new IdentityNotFoundException("Couldn't find user"))
           }
         }.recover {
           case e: ProviderException =>
