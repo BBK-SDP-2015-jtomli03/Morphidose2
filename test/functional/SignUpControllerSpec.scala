@@ -1,4 +1,4 @@
-package controllers
+package functional
 
 import java.util.UUID
 
@@ -97,6 +97,7 @@ class SignUpControllerSpec (implicit ec: ExecutionContext) extends Specification
       val result = controller.addUser("prescriber")(request)
       redirectLocation(result) must beSome.which(_ == "/adminhome")
       status(result) must equalTo(303)
+      flash(result).get("error") must beSome("There already exists a user with this email.")
     }
     "redirect an authorised user back to the page with a message stating success on adding a new user" in new WithApplication(app) {
       val mockUuid = UUID.randomUUID()
@@ -134,6 +135,7 @@ class SignUpControllerSpec (implicit ec: ExecutionContext) extends Specification
       val result = spyController.addUser("prescriber")(request)
       redirectLocation(result) must beSome.which(_ == "/adminhome")
       status(result) must equalTo(303)
+      flash(result).get("success") must beSome("You have successfully added a new user!")
     }
   }
 }

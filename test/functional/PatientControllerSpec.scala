@@ -1,4 +1,4 @@
-package controllers
+package functional
 
 import java.sql.Timestamp
 import java.util.UUID

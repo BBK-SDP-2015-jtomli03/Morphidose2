@@ -6,6 +6,7 @@ import com.mohiva.play.silhouette.api.LoginInfo
 import models.{Administrator, Prescriber, User}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.postfixOps

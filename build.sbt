@@ -25,7 +25,10 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc4",
   cache,
   evolutions,
-  filters
+  filters,
+ "org.seleniumhq.selenium" % "selenium-java" % "2.41.0" % Test,
+ "org.fluentlenium" % "fluentlenium-core" % "0.10.3" % Test,
+ "org.fluentlenium" % "fluentlenium-festassert" % "0.9.2" % Test
 )
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)

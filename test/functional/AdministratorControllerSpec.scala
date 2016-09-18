@@ -1,5 +1,4 @@
-package controllers
-
+package functional
 
 import java.util.UUID
 

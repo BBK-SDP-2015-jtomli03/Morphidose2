@@ -2,11 +2,10 @@ package controllers
 
 import javax.inject.Inject
 
-import com.mohiva.play.silhouette.api.{ Environment, LogoutEvent, Silhouette }
+import com.mohiva.play.silhouette.api.{Environment, LogoutEvent, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
-import models.forms._
 import models.User
-import play.api.cache.Cached
+import models.forms._
 import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
@@ -18,7 +17,6 @@ import scala.concurrent.Future
  * @param env The Silhouette environment.
  */
 class ApplicationController @Inject() (
-  val cached: Cached,
   val messagesApi: MessagesApi,
   val env: Environment[User, CookieAuthenticator])
   extends Silhouette[User, CookieAuthenticator] {
@@ -29,7 +27,7 @@ class ApplicationController @Inject() (
    *
    * @return The result to display.
    */
-  def login = cached("login") {
+  def login = {
     UserAwareAction.async { implicit request =>
       request.identity match {
         case Some(user) => user.getClass.getTypeName match {

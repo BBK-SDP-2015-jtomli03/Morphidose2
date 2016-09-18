@@ -3,7 +3,6 @@ package models.utils
 import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.SecuredErrorHandler
-import controllers.routes
 import play.api.http.DefaultHttpErrorHandler
 import play.api.i18n.Messages
 import play.api.mvc.Results._
